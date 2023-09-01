@@ -4,7 +4,11 @@ import SignupForm from './SignupForm';
 const Signup = () => {
   return (
     <div className='flex flex-col items-center justify-center px-4'>
-      <img src={ilmslogo} alt='ILMS logo' className='w-[200px] mt-8' />
+      <img
+        src={ilmslogo}
+        alt='ILMS logo'
+        className='w-[200px] h-[120px] mt-8'
+      />
       <h1 className='font-semibold text-xl text-slate-700 my-3'>
         Student Registration
       </h1>

@@ -15,7 +15,7 @@ const Home = () => {
           backgroundPosition: 'center',
         }}
       >
-        <img src={lnulogo} alt='LNU logo' className=' w-[400px]' />
+        <img src={lnulogo} alt='LNU logo' className='w-[400px] h-[200px]' />
 
         <div className='text-center'>
           <h1 className='font-semibold text-5xl'>
@@ -51,6 +51,7 @@ const Home = () => {
             onClick={() => {
               navigate('/admin-login');
             }}
+            type='button'
             variant={'outline'}
             className='h-14 w-44 rounded-3xl bg-transparent border-2 border-secondary hover:bg-[#c9302c] hover:text-white'
           >
