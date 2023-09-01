@@ -8,7 +8,7 @@ const Home = () => {
   return (
     <>
       <div
-        className={`h-[calc(100vh-5rem)] flex flex-col items-center text-white overflow-y-auto`}
+        className={`h-[calc(100vh-5rem)] flex flex-col items-center px-2 text-white overflow-y-auto`}
         style={{
           backgroundImage: `url(${backgroundimg})`,
           backgroundSize: 'cover',

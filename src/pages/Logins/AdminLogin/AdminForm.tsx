@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Form,
   FormControl,
@@ -9,30 +10,35 @@ import {
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
+import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { useState } from 'react';
+import { useAdminLogin } from '@/hooks/useAuth';
+import { AlertTriangle } from 'lucide-react';
 
 const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 4 characters.',
-  }),
-  password: z.string().min(6, {
-    message: 'Password must be at least 6 characters.',
-  }),
+  username: z.string().min(1, 'Username is required'),
+  password: z.string().min(1, 'Password is required'),
 });
 
 const AdminForm = () => {
+  const adminLogin = useAdminLogin();
   const [passwordShown, setPasswordShown] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     console.log(data);
+
+    adminLogin.mutate(data);
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-6'>
@@ -45,7 +51,7 @@ const AdminForm = () => {
               <FormControl>
                 <Input placeholder='username' {...field} />
               </FormControl>
-              <FormMessage />
+              <FormMessage></FormMessage>
             </FormItem>
           )}
         />
@@ -84,6 +90,13 @@ const AdminForm = () => {
             Show password
           </label>
         </div>
+
+        {adminLogin.isError && (
+          <p className='mt-3 pl-2 text-left text-sm text-rose-600 flex items-center'>
+            <AlertTriangle className='mr-2' size={20} />
+            {adminLogin.error.message}
+          </p>
+        )}
 
         <Button variant={'default'} type='submit' className='w-full'>
           Login

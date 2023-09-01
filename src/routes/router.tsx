@@ -9,7 +9,6 @@ const LibrarianLogin = lazy(() => import('@/pages/Logins/LibrarianLogin'));
 const AdminLogin = lazy(() => import('@/pages/Logins/AdminLogin'));
 const Signup = lazy(() => import('@/pages/Signup'));
 const Dashboard = lazy(() => import('@/pages/Dashboard'));
-const Test = lazy(() => import('@/pages/Test'));
 
 const Router = () => {
   return useRoutes([
@@ -47,10 +46,6 @@ const Router = () => {
         {
           path: 'dashboard',
           element: <Dashboard />,
-        },
-        {
-          path: 'test',
-          element: <Test />,
         },
       ],
     },

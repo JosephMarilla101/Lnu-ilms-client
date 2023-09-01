@@ -16,8 +16,8 @@ export const request = async ({ ...options }: AxiosRequestConfig) => {
   const onSuccess = (response: AxiosResponse) => {
     return response.data;
   };
-  const onError = (error: AxiosError): AxiosError => {
-    throw error.response;
+  const onError = (error: AxiosError) => {
+    throw error.response?.data;
   };
 
   return client(options).then(onSuccess).catch(onError);
