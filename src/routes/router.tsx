@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import { useRoutes } from 'react-router-dom';
 import Spinner from '@/components/Spinner';
+import NotFound from '@/components/NotFound';
 import UnAuthLayout from '@/layout/UnAuthLayout';
 import { useAuthenticatedUser } from '@/hooks/useAuth';
 import AdminRoutes from './AdminRoutes';
@@ -13,6 +14,7 @@ const Signup = lazy(() => import('@/pages/Signup'));
 
 const Router = () => {
   const auth = useAuthenticatedUser();
+  const adminRoutes = AdminRoutes();
   const routes = useRoutes([
     {
       path: '/',
@@ -40,14 +42,10 @@ const Router = () => {
         },
       ],
     },
-    auth.data?.role === 'ADMIN' ? AdminRoutes() : {},
+    auth.data?.role === 'ADMIN' ? adminRoutes : {},
     {
       path: '*',
-      element: (
-        <div className='bg-black h-screen w-screen text-white'>
-          Route not found
-        </div>
-      ),
+      element: <NotFound />,
     },
   ]);
 

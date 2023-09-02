@@ -1,7 +1,6 @@
-import { lazy } from 'react';
 import BaseLayout from '@/layout/BaseLayout';
-
-const Dashboard = lazy(() => import('@/pages/Dashboard'));
+import DashboardAdmin from '@/pages/DashboardAdmin';
+import Authors from '@/pages/Authors';
 
 const AdminRoutes = () => {
   return {
@@ -10,7 +9,11 @@ const AdminRoutes = () => {
     children: [
       {
         path: 'dashboard',
-        element: <Dashboard />,
+        element: <DashboardAdmin />,
+      },
+      {
+        path: 'authors',
+        element: <Authors />,
       },
     ],
   };

@@ -7,7 +7,7 @@ interface ImageProps {
 
 const Image: React.FC<ImageProps> = ({ className }) => {
   return (
-    <div className={cn('w-1/4', className)}>
+    <div className={cn('w-1/4 min-w-[300px]', className)}>
       <>
         <style
           dangerouslySetInnerHTML={{
