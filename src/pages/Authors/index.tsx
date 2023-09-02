@@ -47,9 +47,9 @@ export default function DemoPage() {
       },
       {
         id: '7',
-        amount: 100,
+        amount: 20,
         status: 'pending',
-        author: 'Joseph Marilla',
+        author: 'Jake Rosales',
       },
       {
         id: '8',
