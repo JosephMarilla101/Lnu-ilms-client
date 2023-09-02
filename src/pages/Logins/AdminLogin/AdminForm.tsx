@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useAdminLogin } from '@/hooks/useAuth';
 import { AlertTriangle } from 'lucide-react';
 
@@ -23,6 +24,7 @@ const FormSchema = z.object({
 
 const AdminForm = () => {
   const adminLogin = useAdminLogin();
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -38,6 +40,13 @@ const AdminForm = () => {
 
     adminLogin.mutate(data);
   };
+
+  useEffect(() => {
+    if (adminLogin.isSuccess) {
+      adminLogin.reset();
+      navigate('/dashboard');
+    }
+  }, [adminLogin, adminLogin.isSuccess, navigate]);
 
   return (
     <Form {...form}>

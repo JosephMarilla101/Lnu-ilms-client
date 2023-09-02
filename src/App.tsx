@@ -1,7 +1,9 @@
-import Router from '@/routes/router';
+import Router from './routes/router';
 
 function App() {
-  return <div className='App'>{Router()}</div>;
+  const routes = Router();
+
+  return <div className='App'>{routes}</div>;
 }
 
 export default App;
