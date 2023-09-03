@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { Menu, User, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthenticatedUser } from '@/hooks/useAuth';
 import useSidebar from '@/context/useSidebar';
 import headerlogo from '@/assets/headerlogo.png';
 
@@ -19,6 +20,7 @@ type NavbarProps = {
 };
 
 const Navbar: React.FC<NavbarProps> = ({ className }) => {
+  const auth = useAuthenticatedUser();
   const navigate = useNavigate();
   const { setToggled } = useSidebar();
 
@@ -60,7 +62,9 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
             className='w-[220px] absolute -right-5'
           >
             <DropdownMenuLabel>
-              <p className='truncate'>admin@gmail.com</p>
+              <p className='truncate'>{`${'(' + auth.data?.username + ')'} ${
+                auth.data?.email
+              }`}</p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

@@ -1,12 +1,17 @@
-import { columns } from './TableColumns';
+import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import AddDialog from './AddDialog';
 import { useGetAllAuthors } from '@/hooks/useAuthor';
+import useTableDialog from '@/context/useTableDialog';
+import DeleteDialog from './DeleteDialog';
+import UpdateDialog from './UpdateDialog';
 
 export default function DemoPage() {
   const authors = useGetAllAuthors();
+  const columns = ColumnsFunction();
+  const { action } = useTableDialog();
 
   return (
     <div className='container mx-auto py-10'>
@@ -23,6 +28,10 @@ export default function DemoPage() {
         loading={authors.isLoading}
         searchable='name'
       />
+
+      {/* Dialogs */}
+      {action === 'delete' && <DeleteDialog />}
+      {action === 'update' && <UpdateDialog />}
     </div>
   );
 }

@@ -33,6 +33,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   useEffect(() => {
     if (createAuthor.isSuccess) {
       setOpen(false);
+      setFormData({ name: '' });
       createAuthor.reset();
     }
   }, [createAuthor]);
@@ -51,7 +52,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
           <div className='grid gap-4 py-4'>
             <div className='grid grid-cols-4 items-center gap-4'>
               <Label htmlFor='name' className='text-right'>
-                Author name
+                Author Name
               </Label>
               <Input
                 required
@@ -64,7 +65,9 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
             </div>
           </div>
           <DialogFooter>
-            <Button type='submit'>Save changes</Button>
+            <Button type='submit' loading={createAuthor.isLoading}>
+              Save changes
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

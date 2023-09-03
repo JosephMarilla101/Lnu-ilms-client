@@ -105,7 +105,12 @@ const AdminForm = () => {
           </p>
         )}
 
-        <Button variant={'default'} type='submit' className='w-full'>
+        <Button
+          variant={'default'}
+          type='submit'
+          className='w-full'
+          loading={adminLogin.isLoading}
+        >
           Login
         </Button>
       </form>

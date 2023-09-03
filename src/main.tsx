@@ -10,6 +10,7 @@ import Error from './components/Error/index.tsx';
 import Spinner from './components/Spinner/index.tsx';
 import { Toaster } from '@/components/ui/toaster.tsx';
 import SidebarProvider from '@/components/Providers/SidebarProvider';
+import TableDialogProvider from '@/components/Providers/TableDialogProvider';
 
 const queryClient = new QueryClient();
 
@@ -20,8 +21,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <Suspense fallback={<Spinner />}>
           <BrowserRouter>
             <SidebarProvider>
-              <App />
-              <Toaster />
+              <TableDialogProvider>
+                <App />
+                <Toaster />
+              </TableDialogProvider>
             </SidebarProvider>
           </BrowserRouter>
         </Suspense>
