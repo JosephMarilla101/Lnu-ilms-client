@@ -75,7 +75,11 @@ export default function DataTablePagination<TData>({
           <Button
             variant='outline'
             className='h-8 w-8 p-0'
-            onClick={() => table.nextPage()}
+            onClick={() => {
+              if (table.getCanNextPage()) {
+                table.nextPage();
+              }
+            }}
             disabled={!table.getCanNextPage()}
           >
             <span className='sr-only'>Go to next page</span>
