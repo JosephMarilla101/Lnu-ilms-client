@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { request } from '@/lib/axios-interceptor';
 
-type Category = {
+export type Category = {
   id: number;
   name: string;
   status: boolean;

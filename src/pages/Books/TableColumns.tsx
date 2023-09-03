@@ -19,7 +19,14 @@ import {
 import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import useTableDialog from '@/context/useTableDialog';
-import { Category } from '@/hooks/useCategory';
+
+type Category = {
+  id: number;
+  name: string;
+  status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 const ColumnsFunction = () => {
   const { setId, setAction } = useTableDialog();

@@ -8,7 +8,7 @@ import useTableDialog from '@/context/useTableDialog';
 import DeleteDialog from './DeleteDialog';
 import UpdateDialog from './UpdateDialog';
 
-export default function DemoPage() {
+export default function Categories() {
   const category = useGetAllCategories();
   const columns = ColumnsFunction();
   const { action } = useTableDialog();

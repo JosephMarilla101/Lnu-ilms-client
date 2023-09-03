@@ -3,13 +3,13 @@ import DataTable from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import AddDialog from './AddDialog';
-import { useGetAllAuthors } from '@/hooks/useAuthor';
+import { useGetAllCategories } from '@/hooks/useCategory';
 import useTableDialog from '@/context/useTableDialog';
 import DeleteDialog from './DeleteDialog';
 import UpdateDialog from './UpdateDialog';
 
-export default function Authors() {
-  const authors = useGetAllAuthors();
+export default function Books() {
+  const category = useGetAllCategories();
   const columns = ColumnsFunction();
   const { action } = useTableDialog();
 
@@ -18,14 +18,14 @@ export default function Authors() {
       <div className='flex justify-end mb-2'>
         <AddDialog>
           <Button variant={'default'} className='ml-auto w-[160px]'>
-            <Plus className='mr-2' /> Add Author
+            <Plus className='mr-2' /> Add Book
           </Button>
         </AddDialog>
       </div>
       <DataTable
         columns={columns}
-        data={authors.data ?? []}
-        loading={authors.isLoading}
+        data={category.data ?? []}
+        loading={category.isLoading}
         searchable='name'
       />
 

@@ -2,6 +2,7 @@ import BaseLayout from '@/layout/BaseLayout';
 import DashboardAdmin from '@/pages/DashboardAdmin';
 import Authors from '@/pages/Authors';
 import Categories from '@/pages/Categories';
+import Books from '@/pages/Books';
 
 const AdminRoutes = () => {
   return {
@@ -19,6 +20,10 @@ const AdminRoutes = () => {
       {
         path: 'categories',
         element: <Categories />,
+      },
+      {
+        path: 'books',
+        element: <Books />,
       },
     ],
   };
