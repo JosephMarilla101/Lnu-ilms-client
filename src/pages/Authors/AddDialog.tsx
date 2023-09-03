@@ -44,24 +44,26 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
       <DialogContent className='sm:max-w-[400px]'>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Add new Author</DialogTitle>
+            <DialogTitle>Add new author</DialogTitle>
             <DialogDescription>
-              Add the author name here. Click save when you're done.
+              Add author here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
-          <div className='grid gap-4 py-4'>
-            <div className='grid grid-cols-4 items-center gap-4'>
-              <Label htmlFor='name' className='text-right'>
-                Author Name
-              </Label>
-              <Input
-                required
-                onChange={(e) => {
-                  setFormData((prev) => ({ ...prev, name: e.target.value }));
-                }}
-                value={formData.name}
-                className='col-span-3'
-              />
+          <div className='my-3'>
+            <div className='grid gap-4 py-4'>
+              <div className='grid grid-cols-4 items-center gap-4'>
+                <Label htmlFor='name' className='text-right'>
+                  Author Name
+                </Label>
+                <Input
+                  required
+                  onChange={(e) => {
+                    setFormData((prev) => ({ ...prev, name: e.target.value }));
+                  }}
+                  value={formData.name}
+                  className='col-span-3'
+                />
+              </div>
             </div>
           </div>
           <DialogFooter>

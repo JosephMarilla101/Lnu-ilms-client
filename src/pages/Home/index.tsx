@@ -22,7 +22,7 @@ const Home = () => {
             Welcome to <span className='text-secondary'>LNU-ILMS</span>
           </h1>
           <p className='text-lg mt-2'>
-            Manage books, students, and transations with ease!
+            Manage books, students, and transactions with ease!
           </p>
         </div>
 
