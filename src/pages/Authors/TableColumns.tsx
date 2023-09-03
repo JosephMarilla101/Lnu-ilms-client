@@ -8,14 +8,22 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreHorizontal } from 'lucide-react';
+import {
+  MoreHorizontal,
+  CheckCheck,
+  XCircle,
+  Trash2,
+  PenSquare,
+  Eye,
+} from 'lucide-react';
+import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 
-export type Author = {
-  id: string;
-  amount: number;
-  status: 'pending' | 'processing' | 'success' | 'failed';
-  author: string;
+type Author = {
+  id: number;
+  name: string;
+  status: boolean;
+  createdAt: Date;
 };
 
 export const columns: ColumnDef<Author>[] = [
@@ -24,30 +32,47 @@ export const columns: ColumnDef<Author>[] = [
     header: 'ID #',
   },
   {
-    accessorKey: 'author',
+    accessorKey: 'name',
     header: ({ column }) => <ColumnHeader column={column} title='Author' />,
   },
   {
     accessorKey: 'status',
     header: ({ column }) => <ColumnHeader column={column} title='Status' />,
+    cell: ({ row }) => {
+      const status = row.getValue('status');
+
+      if (status)
+        return (
+          <div className='flex flex-row'>
+            <CheckCheck size={20} className='mr-2 text-green-600' />{' '}
+            <span>Active</span>
+          </div>
+        );
+      else
+        return (
+          <div className='flex flex-row'>
+            <XCircle size={20} className='mr-2 text-red-600' />{' '}
+            <span>Inactive</span>
+          </div>
+        );
+    },
   },
 
   {
-    accessorKey: 'amount',
-    header: ({ column }) => <ColumnHeader column={column} title='Amount' />,
+    accessorKey: 'createdAt',
+    header: ({ column }) => (
+      <ColumnHeader column={column} title='Creation Date' />
+    ),
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue('amount'));
-      const formatted = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-      }).format(amount);
+      const date = parseISO(row.getValue('createdAt'));
+      const dateFormat = 'EEE MMM d, yyyy';
+      const formattedDate = format(date, dateFormat);
 
-      return <div className=' font-medium'>{formatted}</div>;
+      return <div className='font-medium'>{formattedDate}</div>;
     },
   },
   {
     id: 'actions',
-    size: 150,
     cell: ({ row }) => {
       const rowData = row.original;
       return (
@@ -63,11 +88,17 @@ export const columns: ColumnDef<Author>[] = [
           <DropdownMenuContent align='end'>
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem onClick={() => console.log(rowData.id)}>
-              View Authored Books
+              <Eye size={15} className='mr-2 text-gray-600' />
+              Authored Books
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete Author</DropdownMenuItem>
-            <DropdownMenuItem>Update Author</DropdownMenuItem>
+            <DropdownMenuItem>
+              <Trash2 size={15} className='mr-2 text-red-600' /> Delete Author
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <PenSquare size={15} className='mr-2 text-blue-600' /> Update
+              Author
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

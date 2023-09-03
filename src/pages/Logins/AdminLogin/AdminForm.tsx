@@ -36,8 +36,6 @@ const AdminForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
-
     adminLogin.mutate(data);
   };
 

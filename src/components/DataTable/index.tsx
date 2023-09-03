@@ -27,12 +27,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchable?: string;
+  loading: boolean;
 }
 
 export default function DataTable<TData, TValue>({
   columns,
   data,
   searchable,
+  loading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -60,7 +62,7 @@ export default function DataTable<TData, TValue>({
       <div className='flex items-center py-4'>
         {searchable && (
           <Input
-            placeholder={`Search ${searchable}...`}
+            placeholder={`Search...`}
             value={
               (table.getColumn(searchable)?.getFilterValue() as string) ?? ''
             }
@@ -95,7 +97,16 @@ export default function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {loading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className='h-24 text-center'
+                >
+                  Loading
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

@@ -9,7 +9,7 @@ const BaseLayout = () => {
 
       <div className='flex bg-[#F2F3F6]'>
         <Sidebar />
-        <div className='h-[calc(100vh-5rem)] flex-grow overflow-y-auto'>
+        <div className='h-[calc(100vh-5rem)] flex-grow overflow-y-auto p-2'>
           <Outlet />
         </div>
       </div>
