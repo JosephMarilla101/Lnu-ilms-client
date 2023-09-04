@@ -19,9 +19,6 @@ const authenticatedUser = () => request({ url: '/auth' });
 export const useAuthenticatedUser =
   (): UseQueryResult<AuthenticatedUserRes> => {
     return useQuery(['auth'], authenticatedUser, {
-      onError: () => {
-        localStorage.removeItem('token');
-      },
       refetchOnWindowFocus: false,
       retry: false,
     });

@@ -24,40 +24,69 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
 import { useGetActiveCategories, Category } from '@/hooks/useCategory';
 import { useGetActiveAuthors } from '@/hooks/useAuthor';
+import { useCreateBook } from '@/hooks/useBook';
+import { useImageUpload } from '@/hooks/useImageUpload';
 import { ChevronDown } from 'lucide-react';
 import BookCoverUploader from '@/components/BookCoverUploader';
+import { Input } from '@/components/ui/input';
 
 type AddDialogProps = {
   children: React.ReactNode;
 };
 
 type formDataType = {
-  author: string | undefined;
+  authorId: number | undefined;
   bookCover: string | undefined;
+  bookCoverId: string | undefined;
+  name: string;
+  stock: number;
+  categoryIds: number[];
+};
+
+const formDataInitialValue = {
+  authorId: undefined,
+  bookCover: undefined,
+  bookCoverId: undefined,
+  name: '',
+  stock: 1,
+  categoryIds: [],
 };
 
 const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   const [open, setOpen] = useState(false);
   const activeCategories = useGetActiveCategories();
   const activeAuthors = useGetActiveAuthors();
+  const imageUploader = useImageUpload();
+  const createBook = useCreateBook();
   const [categoryList, setCategoryList] = useState<Category[]>([]);
 
-  const [formData, setFormData] = useState<formDataType>({
-    author: undefined,
-    bookCover: undefined,
-  });
+  const [formData, setFormData] = useState<formDataType>(formDataInitialValue);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    let data = { ...formData };
+
+    if (formData.bookCover) {
+      const response = await imageUploader.mutateAsync(formData.bookCover);
+
+      if (response.status === 200) {
+        data = { ...data, bookCover: response.data.secure_url };
+        data = { ...data, bookCoverId: response.data.public_id };
+      }
+    }
+
+    createBook.mutate(data);
   };
 
   const selectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, author: value }));
+    setFormData((prev) => ({ ...prev, authorId: parseInt(value) }));
   };
 
   const bookCoverChangeHandler = (value: string | undefined) => {
@@ -82,15 +111,38 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   };
 
   useEffect(() => {
+    if (categoryList) {
+      const idList = categoryList
+        .filter((category) => category.status === false)
+        .map((category) => {
+          return category.id;
+        });
+
+      setFormData((prev) => ({ ...prev, categoryIds: idList }));
+    }
+  }, [categoryList]);
+
+  useEffect(() => {
     if (activeCategories.isSuccess) {
       setCategoryList(activeCategories.data);
     }
   }, [activeCategories.data, activeCategories.isSuccess]);
 
+  useEffect(() => {
+    if (createBook.isSuccess) {
+      // reset states
+      setFormData(formDataInitialValue);
+      imageUploader.reset();
+      createBook.reset();
+      setCategoryList([]);
+      setOpen(false);
+    }
+  }, [createBook, imageUploader]);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className='sm:max-w-[550px]'>
+      <DialogContent className='sm:max-w-[580px]'>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>Add new book</DialogTitle>
@@ -100,27 +152,56 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
           </DialogHeader>
           <div className='mb-3 mt-4'>
             <div className='grid grid-cols-12 gap-4'>
-              <div className='col-span-12 sm:col-span-4 flex flex-col'>
-                {/* <div
-                  className='h-[200px]'
-                  style={{
-                    backgroundImage: `url(https://images.unsplash.com/photo-1639690283395-b62444cf9a76?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80)`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                ></div> */}
+              <div className='col-span-12 sm:col-span-4 items-center flex flex-col'>
                 <BookCoverUploader
-                  className='h-[200px] w-[160px]'
+                  className='h-[200px] w-[170px]'
                   value={formData.bookCover}
                   changeHandler={bookCoverChangeHandler}
                 />
-                <span className='text-center font-bold mt-2'>-- ISBN --</span>
-                <span className='break-all text-center'>3938765120947</span>
+
+                {imageUploader.isLoading && (
+                  <Progress
+                    value={imageUploader.progress}
+                    className='mt-2 h-3 bg-gray-300 '
+                  />
+                )}
+
+                <Input
+                  placeholder='Book name'
+                  value={formData.name}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    setFormData((prev) => ({ ...prev, name: e.target.value }));
+                  }}
+                  className='mt-3 max-w-[170px]'
+                />
               </div>
 
               <div className='col-span-12 sm:col-span-8'>
                 <div className='grid grid-cols-12 gap-2 items-center'>
+                  <Label
+                    htmlFor='stock'
+                    className='text-sm col-span-3 text-gray-600'
+                  >
+                    Stocks:
+                  </Label>
+
+                  <div className='col-span-9'>
+                    <Input
+                      type='number'
+                      value={formData.stock}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        if (parseInt(e.target.value) >= 0) {
+                          setFormData((prev) => ({
+                            ...prev,
+                            stock: parseInt(e.target.value),
+                          }));
+                        }
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className='grid grid-cols-12 gap-2 mt-2 items-center'>
                   <Label
                     htmlFor='author'
                     className='text-sm col-span-3 text-gray-600'
@@ -131,7 +212,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                   <div className='col-span-9'>
                     <Select
                       name='author'
-                      value={formData.author}
+                      value={formData.authorId?.toString()}
                       onValueChange={selectChange}
                     >
                       <SelectTrigger className='w-full'>
@@ -156,7 +237,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                   </div>
                 </div>
 
-                <div className='grid grid-cols-12 gap-2 mt-4 items-center'>
+                <div className='grid grid-cols-12 gap-2 mt-2 items-center'>
                   <Label
                     htmlFor='category'
                     className='text-sm col-span-3 text-gray-600'
@@ -194,8 +275,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                 </div>
 
                 <div className='grid grid-cols-12 gap-2 mt-4 items-center'>
-                  <div className='col-span-3'></div>
-                  <div className='col-span-9 flex flex-row flex-wrap gap-1'>
+                  <div className='col-span-12 flex flex-row flex-wrap gap-1'>
                     {categoryList
                       .filter((category) => category.status === false)
                       .map((category) => {
@@ -216,7 +296,9 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
           </div>
 
           <DialogFooter>
-            <Button type='submit'>Save changes</Button>
+            <Button type='submit' className='w-full sm:w-[160px] mt-2'>
+              Save changes
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
