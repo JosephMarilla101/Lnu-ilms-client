@@ -70,6 +70,7 @@ const UpdateDialog = () => {
       resetState();
       setOpen(false);
       toast({
+        variant: 'default',
         title: 'Success!',
         description: 'Author updated successfully',
       });

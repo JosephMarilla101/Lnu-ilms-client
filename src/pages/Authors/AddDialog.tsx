@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
@@ -20,6 +21,7 @@ type AddDialogProps = {
 const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   const createAuthor = useCreateAuthor();
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
   });
@@ -35,8 +37,13 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
       setOpen(false);
       setFormData({ name: '' });
       createAuthor.reset();
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Author added successfully.',
+      });
     }
-  }, [createAuthor]);
+  }, [createAuthor, toast]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

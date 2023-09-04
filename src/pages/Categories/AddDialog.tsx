@@ -16,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useToast } from '@/components/ui/use-toast';
 import { CheckCheck, XCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -29,6 +30,7 @@ type AddDialogProps = {
 const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   const createCategory = useCreateCategory();
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: '',
     status: true,
@@ -53,8 +55,13 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
       setOpen(false);
       setFormData({ name: '', status: true });
       createCategory.reset();
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Book Category added successfully.',
+      });
     }
-  }, [createCategory]);
+  }, [createCategory, toast]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

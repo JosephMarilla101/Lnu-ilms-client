@@ -24,6 +24,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useToast } from '@/components/ui/use-toast';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
@@ -65,6 +66,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   const imageUploader = useImageUpload();
   const createBook = useCreateBook();
   const [categoryList, setCategoryList] = useState<Category[]>([]);
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState<formDataType>(formDataInitialValue);
 
@@ -136,8 +138,13 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
       createBook.reset();
       setCategoryList([]);
       setOpen(false);
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Book added successfully.',
+      });
     }
-  }, [createBook, imageUploader]);
+  }, [createBook, imageUploader, toast]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -295,8 +302,18 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
             </div>
           </div>
 
+          {createBook.isError && (
+            <p className='text-center italic text-red-600'>
+              {createBook.error?.message}
+            </p>
+          )}
+
           <DialogFooter>
-            <Button type='submit' className='w-full sm:w-[160px] mt-2'>
+            <Button
+              type='submit'
+              className='w-full sm:w-[160px] mt-2'
+              loading={createBook.isLoading || imageUploader.isLoading}
+            >
               Save changes
             </Button>
           </DialogFooter>
