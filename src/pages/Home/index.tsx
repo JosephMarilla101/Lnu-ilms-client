@@ -13,6 +13,7 @@ const Home = () => {
           backgroundImage: `url(${backgroundimg})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       >
         <img src={lnulogo} alt='LNU logo' className='w-[400px] h-[200px]' />

@@ -28,6 +28,13 @@ export const useGetAllCategories = (): UseQueryResult<Category[]> =>
     onError: (error: ErrorResponse) => error,
   });
 
+const getActiveCategories = () => request({ url: '/category/active' });
+
+export const useGetActiveCategories = (): UseQueryResult<Category[]> =>
+  useQuery(['category', 'active'], getActiveCategories, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 const createCategory = (data: { name: string; status: boolean }) =>
   request({ url: '/category', method: 'post', data });
 

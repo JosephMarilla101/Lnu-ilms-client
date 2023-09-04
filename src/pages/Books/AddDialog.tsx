@@ -27,9 +27,10 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
-import { useGetAllCategories, Category } from '@/hooks/useCategory';
-import { useGetAllAuthors } from '@/hooks/useAuthor';
+import { useGetActiveCategories, Category } from '@/hooks/useCategory';
+import { useGetActiveAuthors } from '@/hooks/useAuthor';
 import { ChevronDown } from 'lucide-react';
+import BookCoverUploader from '@/components/BookCoverUploader';
 
 type AddDialogProps = {
   children: React.ReactNode;
@@ -37,16 +38,18 @@ type AddDialogProps = {
 
 type formDataType = {
   author: string | undefined;
+  bookCover: string | undefined;
 };
 
 const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   const [open, setOpen] = useState(false);
-  const getCategories = useGetAllCategories();
-  const allAuthors = useGetAllAuthors();
+  const activeCategories = useGetActiveCategories();
+  const activeAuthors = useGetActiveAuthors();
   const [categoryList, setCategoryList] = useState<Category[]>([]);
 
   const [formData, setFormData] = useState<formDataType>({
     author: undefined,
+    bookCover: undefined,
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -55,6 +58,10 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
 
   const selectChange = (value: string) => {
     setFormData((prev) => ({ ...prev, author: value }));
+  };
+
+  const bookCoverChangeHandler = (value: string | undefined) => {
+    setFormData((prev) => ({ ...prev, bookCover: value }));
   };
 
   const onCategoryCheckChange = (category: Category) => {
@@ -75,10 +82,10 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    if (getCategories.isSuccess) {
-      setCategoryList(getCategories.data);
+    if (activeCategories.isSuccess) {
+      setCategoryList(activeCategories.data);
     }
-  }, [getCategories.data, getCategories.isSuccess]);
+  }, [activeCategories.data, activeCategories.isSuccess]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -94,7 +101,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
           <div className='mb-3 mt-4'>
             <div className='grid grid-cols-12 gap-4'>
               <div className='col-span-12 sm:col-span-4 flex flex-col'>
-                <div
+                {/* <div
                   className='h-[200px]'
                   style={{
                     backgroundImage: `url(https://images.unsplash.com/photo-1639690283395-b62444cf9a76?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80)`,
@@ -102,7 +109,12 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                   }}
-                ></div>
+                ></div> */}
+                <BookCoverUploader
+                  className='h-[200px] w-[160px]'
+                  value={formData.bookCover}
+                  changeHandler={bookCoverChangeHandler}
+                />
                 <span className='text-center font-bold mt-2'>-- ISBN --</span>
                 <span className='break-all text-center'>3938765120947</span>
               </div>
@@ -127,8 +139,8 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {allAuthors.isSuccess &&
-                            allAuthors.data.map((author) => {
+                          {activeAuthors.isSuccess &&
+                            activeAuthors.data.map((author) => {
                               return (
                                 <SelectItem
                                   value={author.id.toString()}
@@ -155,7 +167,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                   <div className='col-span-9'>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <div className='w-full flex justify-between items-center border rounded-sm px-3 py-2 cursor-pointer border-gray-200'>
+                        <div className='w-full flex justify-between items-center border rounded-sm px-3 py-[9px] cursor-pointer border-gray-200'>
                           <span className='text-sm'>Select Categories</span>
                           <ChevronDown size={16} className='text-slate-500' />
                         </div>

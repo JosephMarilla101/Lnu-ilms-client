@@ -28,6 +28,13 @@ export const useGetAllAuthors = (): UseQueryResult<Author[]> =>
     onError: (error: ErrorResponse) => error,
   });
 
+const getActiveAuthors = () => request({ url: '/author/active' });
+
+export const useGetActiveAuthors = (): UseQueryResult<Author[]> =>
+  useQuery(['author', 'active'], getActiveAuthors, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 const createAuthor = (data: { name: string }) =>
   request({ url: '/author', method: 'post', data });
 
