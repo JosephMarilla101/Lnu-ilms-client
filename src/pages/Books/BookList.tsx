@@ -15,7 +15,18 @@ const BookList: React.FC<BookListProps> = ({ className }) => {
   return (
     <div className={cn('mt-4', className)}>
       {bookList.isLoading ? (
-        'Loading'
+        <div className='flex flex-row gap-3 gap-x-6 flex-wrap justify-items-start'>
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+          <BookSkeletonLoader />
+        </div>
       ) : !bookList.data?.pages ? (
         ''
       ) : bookList.data.pages[0].length < 1 ? (

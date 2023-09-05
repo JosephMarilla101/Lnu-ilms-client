@@ -14,11 +14,11 @@ const BookCard: React.FC<BookCardProps> = ({ className, bookId }) => {
   if (book.isLoading) return <BookSkeletonLoader />;
 
   return (
-    <div className='w-[170px] overflow-hidden hover:scale-105 transition duration-300 ease-in-out'>
+    <div className='w-[170px] overflow-hidden cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
       <div className={cn('relative h-[220px]', className)}>
         {book.data?.bookCover ? (
           <img
-            className='absolute w-full h-full inset-0 object-cover pointer-events-none'
+            className='absolute rounded-sm w-full h-full inset-0 object-cover pointer-events-none'
             src={book.data.bookCover}
             alt=''
           />

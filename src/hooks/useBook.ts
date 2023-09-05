@@ -4,6 +4,7 @@ import {
   useInfiniteQuery,
   useMutation,
   useQuery,
+  useQueryClient,
 } from '@tanstack/react-query';
 import { request } from '@/lib/axios-interceptor';
 
@@ -34,7 +35,11 @@ const createBook = (data: {
 }) => request({ url: '/book', method: 'post', data });
 
 export const useCreateBook = () => {
+  const queryClient = useQueryClient();
   return useMutation(createBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['bookList']);
+    },
     onError: (error: ErrorResponse) => error,
   });
 };

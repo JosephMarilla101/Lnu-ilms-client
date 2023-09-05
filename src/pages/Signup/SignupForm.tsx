@@ -19,18 +19,27 @@ import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { useStudentRegistration } from '@/hooks/useStudent';
+import { AlertTriangle } from 'lucide-react';
+import { useEffect } from 'react';
 
 const FormSchema = z.object({
-  studentId: z.string().min(4, {
-    message: 'Student ID must be at least 4 characters.',
-  }),
-  fullname: z.string(),
-  course: z.string(),
-  college: z.string(),
-  mobile: z.number(),
-  email: z.string().email(),
-  password: z.string().min(6),
-  password_confirmation: z.string().min(6),
+  studentId: z
+    .string()
+    .min(4, {
+      message: 'Student ID must be at least 4 characters.',
+    })
+    .max(8, { message: 'Student ID must not exceed 8 characters' }),
+  fullname: z.string().min(1, 'Full Name is required'),
+  course: z.string().min(1, 'Course is required'),
+  college: z.string().min(1, 'College is required'),
+  mobile: z.string().min(1, 'Mobile number is required'),
+  email: z.string().email().min(1, 'Email is required'),
+  password: z.string().min(6).min(1, 'Password is required'),
+  password_confirmation: z
+    .string()
+    .min(6)
+    .min(1, 'Password confirmation is required'),
 });
 
 const courseSelection = [
@@ -50,14 +59,33 @@ const courseSelection = [
 const collegeSelection = ['CAS', 'CME', 'COE'];
 
 const SignupForm = () => {
+  const register = useStudentRegistration();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      studentId: '',
+      fullname: '',
+      course: '',
+      college: '',
+      mobile: '',
+      email: '',
+      password: '',
+      password_confirmation: '',
+    },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
+    register.mutate(data);
   };
+
+  useEffect(() => {
+    if (register.isSuccess) {
+      register.reset();
+      form.reset();
+      alert('Registered Successfully');
+    }
+  }, [register, register.isSuccess, navigate, form]);
   return (
     <Form {...form}>
       <form
@@ -99,13 +127,14 @@ const SignupForm = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Course</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder='Select Course' />
+                      {field.value ? (
+                        <SelectValue placeholder='Select Course' />
+                      ) : (
+                        'Select Course'
+                      )}
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -125,17 +154,18 @@ const SignupForm = () => {
 
           <FormField
             control={form.control}
-            name='course'
+            name='college'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>College</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder='Select College' />
+                      {field.value ? (
+                        <SelectValue placeholder='Select College' />
+                      ) : (
+                        'Select College'
+                      )}
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -220,11 +250,18 @@ const SignupForm = () => {
           />
         </div>
 
-        <div className='col-span-12 mt-4 mb-4 flex flex-col'>
+        <div className='col-span-12 mt-4 mb-4 flex flex-col justify-center items-center'>
+          {register.isError && (
+            <p className='pl-2 text-sm text-rose-600 flex items-center mb-3'>
+              <AlertTriangle className='mr-2' size={20} />
+              {register.error.message}
+            </p>
+          )}
           <Button
             variant={'default'}
             type='submit'
-            className='w-full rounded-2xl max-w-[300px] mx-auto block'
+            className='w-full rounded-2xl max-w-[300px]'
+            loading={register.isLoading}
           >
             Create Account
           </Button>
@@ -233,8 +270,9 @@ const SignupForm = () => {
             onClick={() => {
               navigate('/student-login');
             }}
+            type='button'
             variant={'link'}
-            className='mt-2'
+            className='mt-2 md:mt-0'
           >
             Already have an account? Login
           </Button>
