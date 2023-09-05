@@ -46,7 +46,7 @@ type formDataType = {
   bookCover: string | undefined;
   bookCoverId: string | undefined;
   name: string;
-  stock: number;
+  copies: number;
   categoryIds: number[];
 };
 
@@ -55,7 +55,7 @@ const formDataInitialValue = {
   bookCover: undefined,
   bookCoverId: undefined,
   name: '',
-  stock: 1,
+  copies: 1,
   categoryIds: [],
 };
 
@@ -186,21 +186,22 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
               <div className='col-span-12 sm:col-span-8'>
                 <div className='grid grid-cols-12 gap-2 items-center'>
                   <Label
-                    htmlFor='stock'
+                    htmlFor='copies'
                     className='text-sm col-span-3 text-gray-600'
                   >
-                    Stocks:
+                    Copies:
                   </Label>
 
                   <div className='col-span-9'>
                     <Input
+                      name='copies'
                       type='number'
-                      value={formData.stock}
+                      value={formData.copies}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         if (parseInt(e.target.value) >= 0) {
                           setFormData((prev) => ({
                             ...prev,
-                            stock: parseInt(e.target.value),
+                            copies: parseInt(e.target.value),
                           }));
                         }
                       }}

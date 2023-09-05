@@ -11,8 +11,8 @@ type Book = {
   id: number;
   isbn: number;
   name: string;
-  isIssued: boolean;
   bookCover?: string;
+  copies: number;
   author: { id: number; name: string };
   category: { id: number; name: string };
 };
@@ -30,6 +30,7 @@ const createBook = (data: {
   bookCoverId?: string;
   authorId?: number;
   categoryIds: number[];
+  copies: number;
 }) => request({ url: '/book', method: 'post', data });
 
 export const useCreateBook = () => {

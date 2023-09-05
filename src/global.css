@@ -68,3 +68,19 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+/* and remove [alt] to apply to all images*/
+img[alt]:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: gainsboro;
+  font-family: 'Helvetica';
+  font-weight: 300;
+  line-height: 2;
+  text-align: center;
+  content: attr(alt);
+}
