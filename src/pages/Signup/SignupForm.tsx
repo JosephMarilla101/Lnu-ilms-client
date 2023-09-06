@@ -29,17 +29,17 @@ const FormSchema = z.object({
     .min(4, {
       message: 'Student ID must be at least 4 characters.',
     })
-    .max(8, { message: 'Student ID must not exceed 8 characters' }),
-  fullname: z.string().min(1, 'Full Name is required'),
-  course: z.string().min(1, 'Course is required'),
-  college: z.string().min(1, 'College is required'),
-  mobile: z.string().min(1, 'Mobile number is required'),
-  email: z.string().email().min(1, 'Email is required'),
-  password: z.string().min(6).min(1, 'Password is required'),
+    .max(8, { message: 'Student ID must not exceed 8 characters.' }),
+  fullname: z.string().min(1, 'Full Name is required.'),
+  course: z.string().min(1, 'Course is required.'),
+  college: z.string().min(1, 'College is required.'),
+  mobile: z.string().min(1, 'Mobile number is required.'),
+  email: z.string().email().min(1, 'Email is required.'),
+  password: z.string().min(6).min(1, 'Password is required.'),
   password_confirmation: z
     .string()
     .min(6)
-    .min(1, 'Password confirmation is required'),
+    .min(1, 'Password confirmation is required.'),
 });
 
 const courseSelection = [
@@ -98,7 +98,7 @@ const SignupForm = () => {
             name='studentId'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>StudentId</FormLabel>
+                <FormLabel>Student ID</FormLabel>
                 <FormControl>
                   <Input placeholder='Enter Student ID' {...field} />
                 </FormControl>

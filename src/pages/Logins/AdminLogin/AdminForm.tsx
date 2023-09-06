@@ -18,8 +18,8 @@ import { useAdminLogin } from '@/hooks/useAuth';
 import { AlertTriangle } from 'lucide-react';
 
 const FormSchema = z.object({
-  username: z.string().min(1, 'Username is required'),
-  password: z.string().min(1, 'Password is required'),
+  username: z.string().min(1, 'Username is required.'),
+  password: z.string().min(1, 'Password is required.'),
 });
 
 const AdminForm = () => {
