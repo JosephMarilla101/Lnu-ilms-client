@@ -3,7 +3,7 @@ import { useRoutes } from 'react-router-dom';
 import Spinner from '@/components/Spinner';
 import NotFound from '@/components/NotFound';
 import UnAuthLayout from '@/layout/UnAuthLayout';
-import { useAuthenticatedUser } from '@/hooks/useAuth';
+import { useAuthenticateUser } from '@/hooks/useAuth';
 import AdminRoutes from './AdminRoutes';
 
 const Home = lazy(() => import('@/pages/Home'));
@@ -13,7 +13,7 @@ const AdminLogin = lazy(() => import('@/pages/Logins/AdminLogin'));
 const Signup = lazy(() => import('@/pages/Signup'));
 
 const Router = () => {
-  const auth = useAuthenticatedUser();
+  const auth = useAuthenticateUser();
   const adminRoutes = AdminRoutes();
   const routes = useRoutes([
     {

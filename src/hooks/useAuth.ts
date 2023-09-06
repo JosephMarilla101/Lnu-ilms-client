@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { request } from '@/lib/axios-interceptor';
 
-type AuthenticatedUserRes = {
+type AuthenticateUserRes = {
   id: number;
   role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT';
   email: string;
@@ -14,15 +14,14 @@ type AuthenticatedUserRes = {
   password: string;
 };
 
-const authenticatedUser = () => request({ url: '/auth' });
+const authenticateUser = () => request({ url: '/auth' });
 
-export const useAuthenticatedUser =
-  (): UseQueryResult<AuthenticatedUserRes> => {
-    return useQuery(['auth'], authenticatedUser, {
-      refetchOnWindowFocus: false,
-      retry: false,
-    });
-  };
+export const useAuthenticateUser = (): UseQueryResult<AuthenticateUserRes> => {
+  return useQuery(['auth'], authenticateUser, {
+    refetchOnWindowFocus: false,
+    retry: false,
+  });
+};
 
 const adminLogin = (data: { username: string; password: string }) =>
   request({ url: '/auth/login/admin', method: 'post', data });
