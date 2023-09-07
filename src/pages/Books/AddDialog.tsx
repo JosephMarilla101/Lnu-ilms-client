@@ -136,7 +136,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
       setFormData(formDataInitialValue);
       imageUploader.reset();
       createBook.reset();
-      setCategoryList([]);
+      setCategoryList(activeCategories.data ?? []);
       setOpen(false);
       toast({
         variant: 'default',
@@ -144,6 +144,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
         description: 'Book added successfully.',
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createBook, imageUploader, toast]);
 
   return (
