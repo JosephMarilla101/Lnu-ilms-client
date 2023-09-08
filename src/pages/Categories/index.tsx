@@ -27,6 +27,7 @@ export default function Categories() {
         data={category.data ?? []}
         loading={category.isLoading}
         searchable='name'
+        searchableText='Category Name'
       />
 
       {/* Dialogs */}

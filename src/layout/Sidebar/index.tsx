@@ -6,7 +6,7 @@ import {
   ScrollText,
   Users2,
   BookOpenCheck,
-  Settings,
+  BookUp,
 } from 'lucide-react';
 import useSidebar from '@/context/useSidebar';
 
@@ -57,19 +57,23 @@ const SidebarLayout = () => {
             Authors
           </MenuItem>
           <MenuItem
+            icon={<BookUp />}
+            component={<NavLink to='/book-requests' />}
+          >
+            Book Requests
+          </MenuItem>
+          <MenuItem
             icon={<BookOpenCheck />}
             component={<NavLink to='/issued-books' />}
           >
             Issued Books
           </MenuItem>
+
           <MenuItem icon={<Users2 />} component={<NavLink to='/students' />}>
             Students
           </MenuItem>
           <MenuItem icon={<Users2 />} component={<NavLink to='/librarians' />}>
             Librarians
-          </MenuItem>
-          <MenuItem icon={<Settings />} component={<NavLink to='/settings' />}>
-            Settings
           </MenuItem>
         </Menu>
       </Sidebar>

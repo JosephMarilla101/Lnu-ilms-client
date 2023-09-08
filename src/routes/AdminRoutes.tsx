@@ -3,6 +3,7 @@ import DashboardAdmin from '@/pages/DashboardAdmin';
 import Authors from '@/pages/Authors';
 import Categories from '@/pages/Categories';
 import Books from '@/pages/Books';
+import BookRequest from '@/pages/BookRequest';
 
 const AdminRoutes = () => {
   return {
@@ -24,6 +25,10 @@ const AdminRoutes = () => {
       {
         path: 'books',
         element: <Books />,
+      },
+      {
+        path: 'book-requests',
+        element: <BookRequest />,
       },
     ],
   };

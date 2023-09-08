@@ -44,6 +44,22 @@ export const useCreateBook = () => {
   });
 };
 
+export type RequestedBook = {
+  id: number;
+  bookName: string;
+  isbn: number;
+  studentId: number;
+  isApproved: boolean;
+  requestDate: Date;
+};
+
+const getALLRequestedBooks = () => request({ url: '/book/requested/all' });
+
+export const useGetALLRequestedBooks = (): UseQueryResult<RequestedBook[]> =>
+  useQuery(['books', 'requested', 'all'], getALLRequestedBooks, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 type InfiniteQueryBookList = [{ id: number }];
 
 const fetchBookList = ({ pageParam = undefined }: { pageParam?: unknown }) =>

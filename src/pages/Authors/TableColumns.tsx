@@ -132,7 +132,6 @@ const ColumnsFunction = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            ;
           </div>
         );
       },

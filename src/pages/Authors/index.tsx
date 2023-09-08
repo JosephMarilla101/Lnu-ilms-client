@@ -27,6 +27,7 @@ export default function Authors() {
         data={authors.data ?? []}
         loading={authors.isLoading}
         searchable='name'
+        searchableText='Author Name'
       />
 
       {/* Dialogs */}
