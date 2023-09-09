@@ -47,8 +47,8 @@ export const useCreateBook = () => {
 export type RequestedBook = {
   id: number;
   bookName: string;
-  isbn: number;
-  studentId: number;
+  isbn: string;
+  studentId: string;
   isApproved: boolean;
   requestDate: Date;
 };

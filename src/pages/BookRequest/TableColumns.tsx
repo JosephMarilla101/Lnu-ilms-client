@@ -1,8 +1,17 @@
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import { CheckCheck, XCircle } from 'lucide-react';
+import { Check, CheckCheck, MoreHorizontal, Trash2 } from 'lucide-react';
 import { RequestedBook } from '@/hooks/useBook';
 import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
+import { Button } from '@/components/ui/button';
 // import useTableDialog from '@/context/useTableDialog';
 
 const ColumnsFunction = () => {
@@ -21,11 +30,6 @@ const ColumnsFunction = () => {
     {
       accessorKey: 'isbn',
       header: ({ column }) => <ColumnHeader column={column} title='ISBN' />,
-      cell: ({ row }) => {
-        const isbn = row.getValue('isbn') as number;
-
-        return <div>{isbn}</div>;
-      },
     },
     {
       accessorKey: 'bookName',
@@ -67,10 +71,52 @@ const ColumnsFunction = () => {
         else
           return (
             <div className='flex flex-row'>
-              <XCircle size={20} className='mr-2 text-red-600' />{' '}
               <span>Pending</span>
             </div>
           );
+      },
+    },
+    {
+      id: 'actions',
+      cell: ({ row }) => {
+        const rowData = row.original;
+        return (
+          <div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className='text-center'>
+                  <Button variant='ghost' className='h-8 w-8 p-0'>
+                    <span className='sr-only'>Open menu</span>
+                    <MoreHorizontal className='h-4 w-4' />
+                  </Button>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align='end'>
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  onClick={() => {
+                    console.log(rowData.id);
+                  }}
+                >
+                  <Trash2 size={15} className='mr-2 text-red-600' />
+                  Delete
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => {
+                    console.log('test2');
+                  }}
+                >
+                  <Check size={15} className='mr-2 text-green-600' />
+                  Approve
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
       },
     },
   ];
