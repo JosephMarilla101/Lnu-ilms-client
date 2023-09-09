@@ -44,11 +44,43 @@ export const useCreateBook = () => {
   });
 };
 
+const borrowBook = (data: { dueDate: Date | undefined; requestId: number }) =>
+  request({ url: '/book/borrow_book', method: 'post', data });
+
+export const useBorrowBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation(borrowBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['books', 'requested', 'all']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const cancelRequest = (data: { bookId: number; studentId: number }) =>
+  request({ url: '/book/cancel_request', method: 'post', data });
+
+export const useCancelRequest = () => {
+  const queryClient = useQueryClient();
+  return useMutation(cancelRequest, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['books', 'requested', 'all']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+type ErrorResponse = {
+  message?: string;
+};
+
 export type RequestedBook = {
   id: number;
+  bookId: number;
   bookName: string;
   isbn: string;
   studentId: string;
+  borrowerId: number;
   isApproved: boolean;
   requestDate: Date;
 };

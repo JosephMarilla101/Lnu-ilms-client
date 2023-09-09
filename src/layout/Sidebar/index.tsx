@@ -58,13 +58,13 @@ const SidebarLayout = () => {
           </MenuItem>
           <MenuItem
             icon={<BookUp />}
-            component={<NavLink to='/book-requests' />}
+            component={<NavLink to='/book/requests' />}
           >
             Book Requests
           </MenuItem>
           <MenuItem
             icon={<BookOpenCheck />}
-            component={<NavLink to='/issued-books' />}
+            component={<NavLink to='/book/issued' />}
           >
             Issued Books
           </MenuItem>

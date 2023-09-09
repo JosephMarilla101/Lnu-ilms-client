@@ -28,7 +28,7 @@ const searchSelection = [
   },
 ];
 
-const BookRequest = () => {
+const IssuedBooks = () => {
   const [selected, setSelected] = useState('studentId');
   const requestedBooks = useGetALLRequestedBooks();
   const { action } = useTableDialog();
@@ -81,4 +81,4 @@ const BookRequest = () => {
   );
 };
 
-export default BookRequest;
+export default IssuedBooks;

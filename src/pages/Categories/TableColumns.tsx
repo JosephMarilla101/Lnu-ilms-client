@@ -5,7 +5,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -14,7 +13,6 @@ import {
   XCircle,
   Trash2,
   PenSquare,
-  Eye,
 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
@@ -97,13 +95,6 @@ const ColumnsFunction = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem onClick={() => console.log(rowData.id)}>
-                  <Eye size={15} className='mr-2 text-gray-600' />
-                  Category Books
-                </DropdownMenuItem>
-
-                <DropdownMenuSeparator />
-
                 <DropdownMenuItem
                   onClick={() => {
                     setAction('delete');
