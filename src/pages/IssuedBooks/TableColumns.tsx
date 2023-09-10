@@ -7,32 +7,61 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  Check,
-  CheckCheck,
-  Loader,
-  MoreHorizontal,
-  Trash2,
-} from 'lucide-react';
-import { RequestedBook, useCancelRequest } from '@/hooks/useBook';
-import { format, parseISO } from 'date-fns';
+import { Check, MoreHorizontal, Undo2 } from 'lucide-react';
+import { IssuedBooks, useGetBookLateFee } from '@/hooks/useBook';
+import { format, parseISO, isValid, differenceInDays, isAfter } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import useTableDialog from '@/context/useTableDialog';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const ColumnsFunction = () => {
-  const cancelRequest = useCancelRequest();
   const { setId, setAction } = useTableDialog();
-  const columns: ColumnDef<RequestedBook>[] = [
+  const getBookLateFee = useGetBookLateFee();
+
+  const calculateLateFee = (
+    dueDate: Date,
+    initialFee: number,
+    feePerDay: number
+  ): number => {
+    const currentDateAndTime = new Date();
+
+    const daysLate = differenceInDays(currentDateAndTime, dueDate);
+
+    let lateFee = 0;
+    if (isAfter(currentDateAndTime, dueDate)) lateFee = lateFee + initialFee;
+
+    // add the followingDateFee if late for more than 1 day
+    if (daysLate >= 1) {
+      for (let i = daysLate; i >= 1; i--) {
+        lateFee = lateFee + feePerDay;
+      }
+    }
+
+    return lateFee;
+  };
+
+  const columns: ColumnDef<IssuedBooks>[] = [
     {
-      accessorKey: 'bookId',
-      header: 'ID #',
-    },
-    {
-      accessorKey: 'studentId',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Student ID' />
-      ),
+      accessorKey: 'Book Cover',
+      header: '',
+      cell: ({ row }) => {
+        const bookCover = row.original.bookCover;
+        return (
+          <div className='relative h-[100px] w-[70px]'>
+            {!bookCover ? (
+              <Skeleton className='w-full h-full rounded-sm bg-slate-200' />
+            ) : (
+              <img
+                className='absolute rounded-sm w-full h-full inset-0 object-cover pointer-events-none'
+                loading='lazy'
+                src={bookCover}
+                alt='Book Cover'
+              />
+            )}
+          </div>
+        );
+      },
     },
     {
       accessorKey: 'isbn',
@@ -41,21 +70,25 @@ const ColumnsFunction = () => {
     {
       accessorKey: 'bookName',
       header: ({ column }) => (
-        <ColumnHeader column={column} title='Book Name' />
+        <ColumnHeader column={column} title='Book Title' />
+      ),
+    },
+    {
+      accessorKey: 'studentId',
+      header: ({ column }) => (
+        <ColumnHeader column={column} title='Student ID' />
       ),
       cell: ({ row }) => {
-        const bookName = row.getValue('bookName') as string;
+        const studentId = row.getValue('studentId') as string;
 
-        return <div>{bookName}</div>;
+        return <div>{studentId}</div>;
       },
     },
     {
-      accessorKey: 'requestDate',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Request Date' />
-      ),
+      accessorKey: 'dueDate',
+      header: ({ column }) => <ColumnHeader column={column} title='Due Date' />,
       cell: ({ row }) => {
-        const date = parseISO(row.getValue('requestDate'));
+        const date = parseISO(row.getValue('dueDate'));
         const dateFormat = 'EEE MMM dd, yyyy';
         const formattedDate = format(date, dateFormat);
 
@@ -63,25 +96,48 @@ const ColumnsFunction = () => {
       },
     },
     {
-      accessorKey: 'isApproved',
-      header: ({ column }) => <ColumnHeader column={column} title='Status' />,
+      accessorKey: 'returnedDate',
+      header: ({ column }) => (
+        <ColumnHeader column={column} title='Return Date' />
+      ),
       cell: ({ row }) => {
-        const status = row.getValue('isApproved');
+        const date = parseISO(row.getValue('returnedDate'));
 
-        if (status)
+        if (!isValid(date))
           return (
             <div className='flex flex-row'>
-              <CheckCheck size={20} className='mr-2 text-green-600' />{' '}
-              <span>Approved</span>
+              <Undo2 size={20} className='mr-2 text-red-400' />{' '}
+              <span>Unreturn</span>
             </div>
           );
-        else
-          return (
-            <div className='flex flex-row'>
-              <Loader size={20} className='mr-2 text-yellow-600' />
-              <span>Pending</span>
-            </div>
+
+        const dateFormat = 'EEE MMM dd, yyyy';
+        const formattedDate = format(date, dateFormat);
+
+        return <div>{formattedDate}</div>;
+      },
+    },
+    {
+      accessorKey: 'lateFee',
+      header: ({ column }) => <ColumnHeader column={column} title='Late Fee' />,
+      cell: ({ row }) => {
+        const lateFee = row.original.lateFee;
+        const dueDate = row.original.dueDate;
+
+        if (getBookLateFee.isLoading || !getBookLateFee.data)
+          return <div>Please wait...</div>;
+
+        // calculate the late fee if the book is unreturn
+        if (!row.original.isReturn) {
+          const fee = calculateLateFee(
+            parseISO(dueDate),
+            getBookLateFee.data?.initialFee,
+            getBookLateFee.data?.followingDateFee
           );
+          return <div>{`₱ ${fee.toFixed(2)}`}</div>;
+        }
+
+        return <div>{`₱ ${lateFee.toFixed(2)}`}</div>;
       },
     },
     {
@@ -106,24 +162,12 @@ const ColumnsFunction = () => {
 
                 <DropdownMenuItem
                   onClick={() => {
-                    cancelRequest.mutate({
-                      bookId: rowData.bookId,
-                      studentId: rowData.borrowerId,
-                    });
-                  }}
-                >
-                  <Trash2 size={15} className='mr-2 text-red-600' />
-                  Delete
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onClick={() => {
                     setAction('update');
                     setId(rowData.id);
                   }}
                 >
                   <Check size={15} className='mr-2 text-green-600' />
-                  Approve
+                  Mark as return
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -31,7 +31,12 @@ const ApproveDialog = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    borrowBook.mutate({ dueDate: date, requestId: id ?? 0 });
+    // set dueDate to selected date and 11:59 pm
+    const newDate = date
+      ? new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59)
+      : undefined;
+
+    borrowBook.mutate({ dueDate: newDate, requestId: id ?? 0 });
   };
 
   useEffect(() => {

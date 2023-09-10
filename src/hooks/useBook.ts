@@ -70,6 +70,18 @@ export const useCancelRequest = () => {
   });
 };
 
+type LateFee = {
+  initialFee: number;
+  followingDateFee: number;
+};
+
+const getBookLateFee = () => request({ url: '/book/late_fee' });
+
+export const useGetBookLateFee = (): UseQueryResult<LateFee> =>
+  useQuery(['book', 'latefee'], getBookLateFee, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 type ErrorResponse = {
   message?: string;
 };
@@ -78,6 +90,8 @@ export type RequestedBook = {
   id: number;
   bookId: number;
   bookName: string;
+  bookCover?: string;
+  copies: number;
   isbn: string;
   studentId: string;
   borrowerId: number;
@@ -89,6 +103,25 @@ const getALLRequestedBooks = () => request({ url: '/book/requested/all' });
 
 export const useGetALLRequestedBooks = (): UseQueryResult<RequestedBook[]> =>
   useQuery(['books', 'requested', 'all'], getALLRequestedBooks, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+export type IssuedBooks = {
+  id: number;
+  isbn: string;
+  bookName: string;
+  bookCover?: string;
+  studentId: string;
+  dueDate: string;
+  returnedDate: string;
+  isReturn: string;
+  lateFee: number;
+};
+
+const getAllIssuedBooks = () => request({ url: '/book/issued/all' });
+
+export const useGetAllIssuedBooks = (): UseQueryResult<IssuedBooks[]> =>
+  useQuery(['books', 'issued', 'all'], getAllIssuedBooks, {
     onError: (error: ErrorResponse) => error,
   });
 

@@ -19,20 +19,40 @@ import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import useTableDialog from '@/context/useTableDialog';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useEffect } from 'react';
 
 const ColumnsFunction = () => {
   const cancelRequest = useCancelRequest();
   const { setId, setAction } = useTableDialog();
+
+  useEffect(() => {
+    if (cancelRequest.isSuccess) {
+      cancelRequest.reset();
+    }
+  }, [cancelRequest]);
+
   const columns: ColumnDef<RequestedBook>[] = [
     {
-      accessorKey: 'bookId',
-      header: 'ID #',
-    },
-    {
-      accessorKey: 'studentId',
-      header: ({ column }) => (
-        <ColumnHeader column={column} title='Student ID' />
-      ),
+      accessorKey: 'Book Cover',
+      header: '',
+      cell: ({ row }) => {
+        const bookCover = row.original.bookCover;
+        return (
+          <div className='relative h-[100px] w-[70px]'>
+            {!bookCover ? (
+              <Skeleton className='w-full h-full rounded-sm bg-slate-200' />
+            ) : (
+              <img
+                className='absolute rounded-sm w-full h-full inset-0 object-cover pointer-events-none'
+                loading='lazy'
+                src={bookCover}
+                alt='Book Cover'
+              />
+            )}
+          </div>
+        );
+      },
     },
     {
       accessorKey: 'isbn',
@@ -48,6 +68,18 @@ const ColumnsFunction = () => {
 
         return <div>{bookName}</div>;
       },
+    },
+    {
+      accessorKey: 'copies',
+      header: ({ column }) => (
+        <ColumnHeader column={column} title='Copies Available' />
+      ),
+    },
+    {
+      accessorKey: 'studentId',
+      header: ({ column }) => (
+        <ColumnHeader column={column} title='Requestor ID' />
+      ),
     },
     {
       accessorKey: 'requestDate',
@@ -117,6 +149,7 @@ const ColumnsFunction = () => {
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
+                  disabled={rowData.isApproved}
                   onClick={() => {
                     setAction('update');
                     setId(rowData.id);

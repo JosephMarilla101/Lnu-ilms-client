@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/select';
 import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
-import { useGetALLRequestedBooks } from '@/hooks/useBook';
+import { useGetAllIssuedBooks } from '@/hooks/useBook';
 import { useState } from 'react';
 import useTableDialog from '@/context/useTableDialog';
 import ApproveDialog from './ApproveDialog';
@@ -30,7 +30,7 @@ const searchSelection = [
 
 const IssuedBooks = () => {
   const [selected, setSelected] = useState('studentId');
-  const requestedBooks = useGetALLRequestedBooks();
+  const issuedBooks = useGetAllIssuedBooks();
   const { action } = useTableDialog();
   const columns = ColumnsFunction();
 
@@ -69,8 +69,8 @@ const IssuedBooks = () => {
       </div>
       <DataTable
         columns={columns}
-        data={requestedBooks.data ?? []}
-        loading={requestedBooks.isLoading}
+        data={issuedBooks.data ?? []}
+        loading={issuedBooks.isLoading}
         searchable={selected}
         searchableText={getSearchableText(selected)}
       />
