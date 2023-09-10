@@ -88,7 +88,7 @@ const ColumnsFunction = () => {
       ),
       cell: ({ row }) => {
         const date = parseISO(row.getValue('requestDate'));
-        const dateFormat = 'EEE MMM dd, yyyy';
+        const dateFormat = 'MMM dd yyyy hh:mm a';
         const formattedDate = format(date, dateFormat);
 
         return <div>{formattedDate}</div>;

@@ -8,15 +8,18 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
 import { Check, MoreHorizontal, Undo2 } from 'lucide-react';
-import { IssuedBooks, useGetBookLateFee } from '@/hooks/useBook';
-import { format, parseISO, isValid, differenceInDays, isAfter } from 'date-fns';
+import {
+  IssuedBooks,
+  useGetBookLateFee,
+  useReturnBorrowedBook,
+} from '@/hooks/useBook';
+import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
-import useTableDialog from '@/context/useTableDialog';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const ColumnsFunction = () => {
-  const { setId, setAction } = useTableDialog();
+  const returnBook = useReturnBorrowedBook();
   const getBookLateFee = useGetBookLateFee();
 
   const calculateLateFee = (
@@ -89,7 +92,7 @@ const ColumnsFunction = () => {
       header: ({ column }) => <ColumnHeader column={column} title='Due Date' />,
       cell: ({ row }) => {
         const date = parseISO(row.getValue('dueDate'));
-        const dateFormat = 'EEE MMM dd, yyyy';
+        const dateFormat = 'MMM dd yyyy hh:mm a';
         const formattedDate = format(date, dateFormat);
 
         return <div>{formattedDate}</div>;
@@ -101,9 +104,7 @@ const ColumnsFunction = () => {
         <ColumnHeader column={column} title='Return Date' />
       ),
       cell: ({ row }) => {
-        const date = parseISO(row.getValue('returnedDate'));
-
-        if (!isValid(date))
+        if (!row.original.isReturn)
           return (
             <div className='flex flex-row'>
               <Undo2 size={20} className='mr-2 text-red-400' />{' '}
@@ -111,7 +112,8 @@ const ColumnsFunction = () => {
             </div>
           );
 
-        const dateFormat = 'EEE MMM dd, yyyy';
+        const date = parseISO(row.original.returnedDate.toString());
+        const dateFormat = 'MMM dd yyyy hh:mm a';
         const formattedDate = format(date, dateFormat);
 
         return <div>{formattedDate}</div>;
@@ -161,9 +163,9 @@ const ColumnsFunction = () => {
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem
+                  disabled={rowData.isReturn}
                   onClick={() => {
-                    setAction('update');
-                    setId(rowData.id);
+                    returnBook.mutate({ borrowedBookId: rowData.id });
                   }}
                 >
                   <Check size={15} className='mr-2 text-green-600' />

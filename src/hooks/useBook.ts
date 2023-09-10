@@ -57,6 +57,19 @@ export const useBorrowBook = () => {
   });
 };
 
+const returnBorrowedBook = (data: { borrowedBookId: number }) =>
+  request({ url: '/book/borrowed/return', method: 'put', data });
+
+export const useReturnBorrowedBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation(returnBorrowedBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['books', 'issued', 'all']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
 const cancelRequest = (data: { bookId: number; studentId: number }) =>
   request({ url: '/book/cancel_request', method: 'post', data });
 
@@ -113,8 +126,8 @@ export type IssuedBooks = {
   bookCover?: string;
   studentId: string;
   dueDate: string;
-  returnedDate: string;
-  isReturn: string;
+  returnedDate: Date;
+  isReturn: boolean;
   lateFee: number;
 };
 
