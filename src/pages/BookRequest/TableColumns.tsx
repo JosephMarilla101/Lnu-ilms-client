@@ -7,13 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  Check,
-  CheckCheck,
-  Loader,
-  MoreHorizontal,
-  Trash2,
-} from 'lucide-react';
+import { BadgeCheck, Loader, MoreHorizontal, Trash2 } from 'lucide-react';
 import { RequestedBook, useCancelRequest } from '@/hooks/useBook';
 import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
@@ -64,9 +58,7 @@ const ColumnsFunction = () => {
         <ColumnHeader column={column} title='Book Name' />
       ),
       cell: ({ row }) => {
-        const bookName = row.getValue('bookName') as string;
-
-        return <div>{bookName}</div>;
+        return <div>{row.original.bookName}</div>;
       },
     },
     {
@@ -103,14 +95,14 @@ const ColumnsFunction = () => {
         if (status)
           return (
             <div className='flex flex-row'>
-              <CheckCheck size={20} className='mr-2 text-green-600' />{' '}
+              <BadgeCheck size={20} className='mr-1 text-green-600' />{' '}
               <span>Approved</span>
             </div>
           );
         else
           return (
             <div className='flex flex-row'>
-              <Loader size={20} className='mr-2 text-yellow-600' />
+              <Loader size={20} className='mr-1 text-yellow-600' />
               <span>Pending</span>
             </div>
           );
@@ -133,8 +125,19 @@ const ColumnsFunction = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
                 <DropdownMenuSeparator />
+
+                <DropdownMenuItem
+                  disabled={rowData.isApproved}
+                  onClick={() => {
+                    setAction('update');
+                    setId(rowData.id);
+                  }}
+                  className='text-green-600'
+                >
+                  <BadgeCheck size={20} className='mr-2' />
+                  Approve
+                </DropdownMenuItem>
 
                 <DropdownMenuItem
                   onClick={() => {
@@ -143,20 +146,10 @@ const ColumnsFunction = () => {
                       studentId: rowData.borrowerId,
                     });
                   }}
+                  className='text-red-600'
                 >
-                  <Trash2 size={15} className='mr-2 text-red-600' />
+                  <Trash2 size={20} className='mr-2' />
                   Delete
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  disabled={rowData.isApproved}
-                  onClick={() => {
-                    setAction('update');
-                    setId(rowData.id);
-                  }}
-                >
-                  <Check size={15} className='mr-2 text-green-600' />
-                  Approve
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

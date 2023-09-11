@@ -71,13 +71,26 @@ export const useReturnBorrowedBook = () => {
 };
 
 const cancelRequest = (data: { bookId: number; studentId: number }) =>
-  request({ url: '/book/cancel_request', method: 'post', data });
+  request({ url: '/book/cancel_request', method: 'delete', data });
 
 export const useCancelRequest = () => {
   const queryClient = useQueryClient();
   return useMutation(cancelRequest, {
     onSuccess: () => {
       queryClient.invalidateQueries(['books', 'requested', 'all']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const deleteBorrowedBook = (data: { issuedId: number }) =>
+  request({ url: '/book/issued_book', method: 'delete', data });
+
+export const useDeleteBorrowedBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation(deleteBorrowedBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['books', 'issued', 'all']);
     },
     onError: (error: ErrorResponse) => error,
   });

@@ -7,20 +7,24 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import { Check, MoreHorizontal, Undo2 } from 'lucide-react';
+import { MoreHorizontal, BadgeX, BadgeCheck, Trash2 } from 'lucide-react';
 import {
   IssuedBooks,
   useGetBookLateFee,
   useReturnBorrowedBook,
+  useDeleteBorrowedBook,
 } from '@/hooks/useBook';
 import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import useTableDialog from '@/context/useTableDialog';
 
 const ColumnsFunction = () => {
+  const { setId, setAction } = useTableDialog();
   const returnBook = useReturnBorrowedBook();
   const getBookLateFee = useGetBookLateFee();
+  const deleteBorrowedBook = useDeleteBorrowedBook();
 
   const calculateLateFee = (
     dueDate: Date,
@@ -106,9 +110,9 @@ const ColumnsFunction = () => {
       cell: ({ row }) => {
         if (!row.original.isReturn)
           return (
-            <div className='flex flex-row'>
-              <Undo2 size={20} className='mr-2 text-red-400' />{' '}
-              <span>Unreturn</span>
+            <div className='flex flex-row items-center text-red-600'>
+              <BadgeX size={20} className='mr-1 ml-1' />
+              <span className='ml-1'>Unreturn</span>
             </div>
           );
 
@@ -116,7 +120,12 @@ const ColumnsFunction = () => {
         const dateFormat = 'MMM dd yyyy hh:mm a';
         const formattedDate = format(date, dateFormat);
 
-        return <div>{formattedDate}</div>;
+        return (
+          <div className='flex flex-row items-center text-green-600'>
+            <BadgeCheck size={28} className='mr-2' />
+            <span>{formattedDate}</span>
+          </div>
+        );
       },
     },
     {
@@ -145,7 +154,6 @@ const ColumnsFunction = () => {
     {
       id: 'actions',
       cell: ({ row }) => {
-        const rowData = row.original;
         return (
           <div>
             <DropdownMenu>
@@ -159,17 +167,32 @@ const ColumnsFunction = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
                 <DropdownMenuSeparator />
 
                 <DropdownMenuItem
-                  disabled={rowData.isReturn}
+                  disabled={row.original.isReturn}
                   onClick={() => {
-                    returnBook.mutate({ borrowedBookId: rowData.id });
+                    returnBook.mutate({ borrowedBookId: row.original.id });
                   }}
+                  className='text-green-600'
                 >
-                  <Check size={15} className='mr-2 text-green-600' />
-                  Mark as return
+                  <BadgeCheck size={20} className='mr-2' />
+                  Mark as Returned
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => {
+                    if (row.original.isReturn) {
+                      deleteBorrowedBook.mutate({ issuedId: row.original.id });
+                    } else {
+                      setAction('delete');
+                      setId(row.original.id);
+                    }
+                  }}
+                  className='text-red-600'
+                >
+                  <Trash2 size={20} className='mr-2' />
+                  Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

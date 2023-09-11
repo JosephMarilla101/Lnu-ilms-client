@@ -5,6 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -23,8 +24,10 @@ const ColumnsFunction = () => {
   const { setId, setAction } = useTableDialog();
   const columns: ColumnDef<Category>[] = [
     {
-      accessorKey: 'id',
-      header: 'ID #',
+      header: '#',
+      cell: ({ row }) => {
+        return <div>{row.index + 1}</div>;
+      },
     },
     {
       accessorKey: 'name',
@@ -95,24 +98,26 @@ const ColumnsFunction = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setAction('delete');
-                    setId(rowData.id);
-                  }}
-                >
-                  <Trash2 size={15} className='mr-2 text-red-600' /> Delete
-                  Category
-                </DropdownMenuItem>
+                <DropdownMenuSeparator />
 
                 <DropdownMenuItem
                   onClick={() => {
                     setAction('update');
                     setId(rowData.id);
                   }}
+                  className='text-primary'
                 >
-                  <PenSquare size={15} className='mr-2 text-blue-600' /> Update
-                  Category
+                  <PenSquare size={15} className='mr-2' /> Edit Category
+                </DropdownMenuItem>
+
+                <DropdownMenuItem
+                  onClick={() => {
+                    setAction('delete');
+                    setId(rowData.id);
+                  }}
+                  className='text-red-600'
+                >
+                  <Trash2 size={15} className='mr-2' /> Delete Category
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

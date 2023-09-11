@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query';
+import { UseQueryResult, useMutation, useQuery } from '@tanstack/react-query';
 import { request } from '@/lib/axios-interceptor';
 
 const studentRegistration = (data: {
@@ -17,3 +17,25 @@ export const useStudentRegistration = () => {
     onError: (error: ErrorResponse) => error,
   });
 };
+
+export type Student = {
+  id: number;
+  studentId: number;
+  email: string;
+  fullname: string;
+  profilePhoto: string | null;
+  profilePhotoId: string | null;
+  course: string;
+  college: string;
+  mobile: string;
+  status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+const getALLStudents = () => request({ url: '/student/all' });
+
+export const useGetALLStudents = (): UseQueryResult<Student[]> =>
+  useQuery(['student', 'all'], getALLStudents, {
+    onError: (error: ErrorResponse) => error,
+  });

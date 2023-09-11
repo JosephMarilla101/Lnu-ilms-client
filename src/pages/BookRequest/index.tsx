@@ -15,21 +15,21 @@ import ApproveDialog from './ApproveDialog';
 
 const searchSelection = [
   {
-    searchable: 'studentId',
-    searchableText: 'student ID',
-  },
-  {
     searchable: 'isbn',
-    searchableText: 'book ISBN',
+    searchableText: 'ISBN',
   },
   {
     searchable: 'bookName',
-    searchableText: 'book name',
+    searchableText: 'Book Name',
+  },
+  {
+    searchable: 'studentId',
+    searchableText: 'Requestor ID',
   },
 ];
 
 const BookRequest = () => {
-  const [selected, setSelected] = useState('studentId');
+  const [selected, setSelected] = useState(searchSelection[0].searchable);
   const requestedBooks = useGetALLRequestedBooks();
   const { action } = useTableDialog();
   const columns = ColumnsFunction();
