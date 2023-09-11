@@ -5,6 +5,8 @@ import Categories from '@/pages/Categories';
 import Books from '@/pages/Books';
 import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
+import Students from '@/pages/Students';
+import Librarians from '@/pages/Librarians';
 
 const AdminRoutes = () => {
   return {
@@ -34,6 +36,14 @@ const AdminRoutes = () => {
       {
         path: 'book/issued',
         element: <IssuedBooks />,
+      },
+      {
+        path: 'students',
+        element: <Students />,
+      },
+      {
+        path: 'librarians',
+        element: <Librarians />,
       },
     ],
   };

@@ -23,16 +23,16 @@ const DashboardAdmin = () => {
     color: string;
   }) => {
     return (
-      <div className='w-[200px] h-[220px] px-3 text-center bg-[#FFFFF7] rounded-xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer flex flex-col  hover:scale-105 transition duration-300 ease-in-out'>
+      <div className='w-[180px] h-[200px] px-3 text-center bg-[#FFFFF7] rounded-xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer flex flex-col  hover:scale-105 transition duration-300 ease-in-out'>
         <span
-          className={`text-lg font-semibold text-center pt-3 pb-2 ${color}`}
+          className={`text-base font-semibold text-center pt-3 pb-2 ${color}`}
         >
           {title}
         </span>
         <Separator />
 
         <div className='h-full flex flex-col items-center justify-center gap-5'>
-          <Icon size={80} className={color} />
+          <Icon size={60} className={color} />
 
           <span className={`text-xl ${color} font-semibold`}>{count}</span>
         </div>
