@@ -6,6 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useToast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
 import {
   MoreHorizontal,
@@ -13,13 +14,43 @@ import {
   GanttChartSquare,
   ShieldCheck,
 } from 'lucide-react';
-import { Student } from '@/hooks/useStudent';
+import {
+  Student,
+  useSuspendStudent,
+  useUnsuspendStudent,
+} from '@/hooks/useStudent';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
 // import useTableDialog from '@/context/useTableDialog';
 
 const ColumnsFunction = () => {
   // const { setId, setAction } = useTableDialog();
+  const suspendStudent = useSuspendStudent();
+  const unsuspendStudent = useUnsuspendStudent();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (suspendStudent.isSuccess) {
+      suspendStudent.reset();
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Student suspended successfully.',
+      });
+    }
+  }, [suspendStudent, suspendStudent.isSuccess, toast]);
+
+  useEffect(() => {
+    if (unsuspendStudent.isSuccess) {
+      unsuspendStudent.reset();
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Student unsuspended successfully.',
+      });
+    }
+  }, [unsuspendStudent, unsuspendStudent.isSuccess, toast]);
 
   const columns: ColumnDef<Student>[] = [
     {
@@ -65,7 +96,7 @@ const ColumnsFunction = () => {
           return (
             <div className='flex flex-row items-center text-red-600'>
               <ShieldAlert size={20} />
-              <span className='ml-1'>Blocked</span>
+              <span className='ml-1'>Suspended</span>
             </div>
           );
         }
@@ -99,10 +130,27 @@ const ColumnsFunction = () => {
                   Details
                 </DropdownMenuItem>
 
-                <DropdownMenuItem className='text-red-600'>
-                  <ShieldAlert size={20} className='mr-2' />
-                  Block
-                </DropdownMenuItem>
+                {row.original.status ? (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      suspendStudent.mutate({ id: row.original.id });
+                    }}
+                    className='text-red-600'
+                  >
+                    <ShieldAlert size={20} className='mr-2' />
+                    Suspend
+                  </DropdownMenuItem>
+                ) : (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      unsuspendStudent.mutate({ id: row.original.id });
+                    }}
+                    className='text-green-600'
+                  >
+                    <ShieldCheck size={20} className='mr-2' />
+                    Unsuspend
+                  </DropdownMenuItem>
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

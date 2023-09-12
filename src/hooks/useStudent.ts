@@ -1,4 +1,9 @@
-import { UseQueryResult, useMutation, useQuery } from '@tanstack/react-query';
+import {
+  UseQueryResult,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { request } from '@/lib/axios-interceptor';
 
 const studentRegistration = (data: {
@@ -39,3 +44,29 @@ export const useGetALLStudents = (): UseQueryResult<Student[]> =>
   useQuery(['student', 'all'], getALLStudents, {
     onError: (error: ErrorResponse) => error,
   });
+
+const suspendStudent = (data: { id: number }) =>
+  request({ url: '/student/suspend', method: 'post', data });
+
+export const useSuspendStudent = () => {
+  const queryClient = useQueryClient();
+  return useMutation(suspendStudent, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['student', 'all']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const unsuspendStudent = (data: { id: number }) =>
+  request({ url: '/student/unsuspend', method: 'post', data });
+
+export const useUnsuspendStudent = () => {
+  const queryClient = useQueryClient();
+  return useMutation(unsuspendStudent, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['student', 'all']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
