@@ -9,9 +9,11 @@ import {
   BookUp,
 } from 'lucide-react';
 import useSidebar from '@/context/useSidebar';
+import { useAuthenticateUser } from '@/hooks/useAuth';
 
 const SidebarLayout = () => {
   const { toggled, setToggled, collapsed } = useSidebar();
+  const auth = useAuthenticateUser();
 
   return (
     <div>
@@ -72,9 +74,14 @@ const SidebarLayout = () => {
           <MenuItem icon={<Users2 />} component={<NavLink to='/students' />}>
             Students
           </MenuItem>
-          <MenuItem icon={<Users2 />} component={<NavLink to='/librarians' />}>
-            Librarians
-          </MenuItem>
+          {auth.data?.role === 'ADMIN' && (
+            <MenuItem
+              icon={<Users2 />}
+              component={<NavLink to='/librarians' />}
+            >
+              Librarians
+            </MenuItem>
+          )}
         </Menu>
       </Sidebar>
     </div>

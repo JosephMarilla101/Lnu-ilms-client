@@ -37,3 +37,18 @@ export const useAdminLogin = () => {
     onError: (error: ErrorResponse) => error,
   });
 };
+
+const librarianLogin = (data: { username: string; password: string }) =>
+  request({ url: '/auth/login/librarian', method: 'post', data });
+
+export const useLibrarianLogin = () => {
+  const queryClient = useQueryClient();
+  return useMutation(librarianLogin, {
+    onSuccess: (data) => {
+      localStorage.setItem('token', data.token);
+      const user = data.user;
+      queryClient.setQueriesData(['auth'], user);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};

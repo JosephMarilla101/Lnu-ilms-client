@@ -5,6 +5,7 @@ import NotFound from '@/components/NotFound';
 import UnAuthLayout from '@/layout/UnAuthLayout';
 import { useAuthenticateUser } from '@/hooks/useAuth';
 import AdminRoutes from './AdminRoutes';
+import LibrarianRoutes from './LibrarianRoutes';
 
 const Home = lazy(() => import('@/pages/Home'));
 const StudentLogin = lazy(() => import('@/pages/Logins/StudentLogin'));
@@ -15,6 +16,7 @@ const Signup = lazy(() => import('@/pages/Signup'));
 const Router = () => {
   const auth = useAuthenticateUser();
   const adminRoutes = AdminRoutes();
+  const librarianRoutes = LibrarianRoutes();
   const routes = useRoutes([
     {
       path: '/',
@@ -43,6 +45,7 @@ const Router = () => {
       ],
     },
     auth.data?.role === 'ADMIN' ? adminRoutes : {},
+    auth.data?.role === 'LIBRARIAN' ? librarianRoutes : {},
     {
       path: '*',
       element: <NotFound />,

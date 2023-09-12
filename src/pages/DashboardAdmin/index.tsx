@@ -18,9 +18,11 @@ import {
   useTotalStudents,
   useTotalLibrarians,
 } from '@/hooks/useDashboard';
+import { useAuthenticateUser } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const DashboardAdmin = () => {
+  const auth = useAuthenticateUser();
   const totalBooks = useTotalBooks();
   const totalUnreturnedBooks = useTotalUnreturnedBooks();
   const totalRequestedBooks = useTotalRequestedBooks();
@@ -113,13 +115,15 @@ const DashboardAdmin = () => {
         url='/students'
       />
 
-      <Card
-        icon={Users2}
-        color='text-secondary'
-        title='Librarians'
-        count={totalLibrarians.data}
-        url='/librarians'
-      />
+      {auth.data?.role === 'ADMIN' && (
+        <Card
+          icon={Users2}
+          color='text-secondary'
+          title='Librarians'
+          count={totalLibrarians.data}
+          url='/librarians'
+        />
+      )}
     </div>
   );
 };

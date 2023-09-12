@@ -12,7 +12,10 @@ import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useLibrarianLogin } from '@/hooks/useAuth';
+import { AlertTriangle } from 'lucide-react';
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -24,6 +27,8 @@ const FormSchema = z.object({
 });
 
 const LibrarianForm = () => {
+  const librarianLogin = useLibrarianLogin();
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -31,8 +36,16 @@ const LibrarianForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
+    librarianLogin.mutate(data);
   };
+
+  useEffect(() => {
+    if (librarianLogin.isSuccess) {
+      librarianLogin.reset();
+      navigate('/dashboard');
+    }
+  }, [librarianLogin, librarianLogin.isSuccess, navigate]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-6'>
@@ -85,7 +98,19 @@ const LibrarianForm = () => {
           </label>
         </div>
 
-        <Button variant={'default'} type='submit' className='w-full'>
+        {librarianLogin.isError && (
+          <p className='mt-3 pl-2 text-left text-sm text-rose-600 flex items-center'>
+            <AlertTriangle className='mr-2' size={20} />
+            {librarianLogin.error.message}
+          </p>
+        )}
+
+        <Button
+          variant={'default'}
+          type='submit'
+          className='w-full'
+          loading={librarianLogin.isLoading}
+        >
           Login
         </Button>
       </form>
