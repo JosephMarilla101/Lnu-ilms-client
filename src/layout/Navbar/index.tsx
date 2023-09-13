@@ -62,9 +62,13 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
             className='w-[220px] absolute -right-5'
           >
             <DropdownMenuLabel>
-              <p className='truncate'>{`${'(' + auth.data?.username + ')'} ${
-                auth.data?.email
-              }`}</p>
+              {auth.data?.role !== 'STUDENT' ? (
+                <p className='truncate'>{`${'(' + auth.data?.username + ')'} ${
+                  auth.data?.email
+                }`}</p>
+              ) : (
+                <p className='truncate'>{auth.data.email}</p>
+              )}
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>

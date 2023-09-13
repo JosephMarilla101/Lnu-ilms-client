@@ -1,12 +1,12 @@
 import { Sidebar, Menu, MenuItem } from 'react-pro-sidebar';
 import { NavLink } from 'react-router-dom';
 import {
-  GaugeCircle,
   BookCopy,
   ScrollText,
   Users2,
   BookOpenCheck,
   BookUp,
+  LayoutDashboard,
 } from 'lucide-react';
 import useSidebar from '@/context/useSidebar';
 import { useAuthenticateUser } from '@/hooks/useAuth';
@@ -40,47 +40,66 @@ const SidebarLayout = () => {
             },
           }}
         >
-          <MenuItem
-            icon={<GaugeCircle />}
-            component={<NavLink to='/dashboard' />}
-          >
-            Dashboard
-          </MenuItem>
-          <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
-            Books
-          </MenuItem>
-          <MenuItem
-            icon={<ScrollText />}
-            component={<NavLink to='/categories' />}
-          >
-            Categories
-          </MenuItem>
-          <MenuItem icon={<Users2 />} component={<NavLink to='/authors' />}>
-            Authors
-          </MenuItem>
-          <MenuItem
-            icon={<BookUp />}
-            component={<NavLink to='/book/requests' />}
-          >
-            Book Requests
-          </MenuItem>
-          <MenuItem
-            icon={<BookOpenCheck />}
-            component={<NavLink to='/book/issued' />}
-          >
-            Issued Books
-          </MenuItem>
+          {auth.data?.role !== 'STUDENT' ? (
+            <>
+              <MenuItem
+                icon={<LayoutDashboard />}
+                component={<NavLink to='/dashboard' />}
+              >
+                Dashboard
+              </MenuItem>
+              <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
+                Books
+              </MenuItem>
+              <MenuItem
+                icon={<ScrollText />}
+                component={<NavLink to='/categories' />}
+              >
+                Categories
+              </MenuItem>
+              <MenuItem icon={<Users2 />} component={<NavLink to='/authors' />}>
+                Authors
+              </MenuItem>
+              <MenuItem
+                icon={<BookUp />}
+                component={<NavLink to='/book/requests' />}
+              >
+                Book Requests
+              </MenuItem>
+              <MenuItem
+                icon={<BookOpenCheck />}
+                component={<NavLink to='/book/issued' />}
+              >
+                Issued Books
+              </MenuItem>
 
-          <MenuItem icon={<Users2 />} component={<NavLink to='/students' />}>
-            Students
-          </MenuItem>
-          {auth.data?.role === 'ADMIN' && (
-            <MenuItem
-              icon={<Users2 />}
-              component={<NavLink to='/librarians' />}
-            >
-              Librarians
-            </MenuItem>
+              <MenuItem
+                icon={<Users2 />}
+                component={<NavLink to='/students' />}
+              >
+                Students
+              </MenuItem>
+              {auth.data?.role === 'ADMIN' && (
+                <MenuItem
+                  icon={<Users2 />}
+                  component={<NavLink to='/librarians' />}
+                >
+                  Librarians
+                </MenuItem>
+              )}
+            </>
+          ) : (
+            <>
+              <MenuItem
+                icon={<LayoutDashboard />}
+                component={<NavLink to='/dashboard' />}
+              >
+                Dashboard
+              </MenuItem>
+              <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
+                Books
+              </MenuItem>
+            </>
           )}
         </Menu>
       </Sidebar>

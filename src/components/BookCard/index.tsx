@@ -3,6 +3,8 @@ import { useGetBook } from '@/hooks/useBook';
 import BookSkeletonLoader from '@/components/Skeletons/BookSkeletonLoader';
 import { ImageOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import useTableDialog from '@/context/useTableDialog';
+import { useAuthenticateUser } from '@/hooks/useAuth';
 
 type BookCardProps = {
   className?: string;
@@ -10,14 +12,25 @@ type BookCardProps = {
 };
 
 const BookCard: React.FC<BookCardProps> = ({ className, bookId }) => {
+  const { setId, setAction } = useTableDialog();
+  const auth = useAuthenticateUser();
   const navigate = useNavigate();
   const book = useGetBook(bookId);
+
+  const handleBookClick = () => {
+    if (auth.data?.role === 'ADMIN' || auth.data?.role === 'LIBRARIAN') {
+      navigate(`/book/${bookId}`);
+    } else {
+      setAction('update');
+      setId(bookId);
+    }
+  };
 
   if (book.isLoading) return <BookSkeletonLoader />;
 
   return (
     <div
-      onClick={() => navigate(`/book/${bookId}`)}
+      onClick={handleBookClick}
       className='w-[170px] overflow-hidden cursor-pointer hover:scale-105 transition duration-300 ease-in-out'
     >
       <div className={cn('relative h-[220px]', className)}>

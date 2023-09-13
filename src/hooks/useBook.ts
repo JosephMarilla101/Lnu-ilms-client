@@ -111,6 +111,7 @@ export const useCancelRequest = () => {
   return useMutation(cancelRequest, {
     onSuccess: () => {
       queryClient.invalidateQueries(['books', 'requested', 'all']);
+      queryClient.invalidateQueries(['book', 'requested']);
     },
     onError: (error: ErrorResponse) => error,
   });
@@ -202,3 +203,38 @@ export const useBookList = (): UseInfiniteQueryResult<
       return lastPost?.id;
     },
   });
+
+const requestBook = (data: { bookId: number }) =>
+  request({ url: '/book/request', method: 'post', data });
+
+export const useRequestBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation(requestBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['book', 'requested']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+type BookRequestResponse = {
+  book: Book;
+  isApproved: boolean;
+  requestDate: Date;
+  updatedAt: Date;
+};
+
+const getRequestedBook = () => request({ url: '/book/requested' });
+
+export const useGetRequestedBook = (): UseQueryResult<BookRequestResponse> =>
+  useQuery(['book', 'requested'], getRequestedBook);
+
+type UnreturnedBook = {
+  book: Book;
+  isReturn: true;
+  dueDate: Date;
+};
+
+const getUnreturnedBook = () => request({ url: '/book/unreturned' });
+
+export const useGetUnreturnedBook = (): UseQueryResult<UnreturnedBook> =>
+  useQuery(['book', 'unreturned'], getUnreturnedBook);

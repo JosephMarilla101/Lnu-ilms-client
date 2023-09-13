@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import Navbar from '../Navbar';
+import { Suspense } from 'react';
 
 const BaseLayout = () => {
   return (
@@ -10,7 +11,9 @@ const BaseLayout = () => {
       <div className='flex bg-[#F2F3F6]'>
         <Sidebar />
         <div className='h-[calc(100vh-5rem)] flex-grow overflow-y-auto p-2'>
-          <Outlet />
+          <Suspense fallback={<>Please wait....</>}>
+            <Outlet />
+          </Suspense>
         </div>
       </div>
     </>

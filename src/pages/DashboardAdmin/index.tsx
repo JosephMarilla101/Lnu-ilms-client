@@ -8,6 +8,7 @@ import {
   Users,
   Users2,
   LucideIcon,
+  CalendarX,
 } from 'lucide-react';
 import {
   useTotalBooks,
@@ -17,6 +18,7 @@ import {
   useTotalCatoegories,
   useTotalStudents,
   useTotalLibrarians,
+  useTotalBorrowedBooks,
 } from '@/hooks/useDashboard';
 import { useAuthenticateUser } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +32,7 @@ const DashboardAdmin = () => {
   const totalCatoegories = useTotalCatoegories();
   const totalStudents = useTotalStudents();
   const totalLibrarians = useTotalLibrarians();
+  const totalBorrowedBooks = useTotalBorrowedBooks();
   const navigate = useNavigate();
 
   const Card = ({
@@ -66,64 +69,79 @@ const DashboardAdmin = () => {
     );
   };
   return (
-    <div className='container mx-auto py-10 flex flex-row gap-6 gap-x-12 flex-wrap justify-center'>
-      <Card
-        icon={Book}
-        color='text-green-700'
-        title='Books Listed'
-        count={totalBooks.data}
-        url='/books'
-      />
-
-      <Card
-        icon={History}
-        color='text-red-700'
-        title='Unreturned Books'
-        count={totalUnreturnedBooks.data}
-        url='/book/issued'
-      />
-
-      <Card
-        icon={BookUp}
-        color='text-blue-600'
-        title='Book Requests'
-        count={totalRequestedBooks.data}
-        url='/book/requests'
-      />
-
-      <Card
-        icon={UserSquare}
-        color='text-yellow-700'
-        title='Authors Listed'
-        count={totalAuthors.data}
-        url='/authors'
-      />
-
-      <Card
-        icon={ScrollText}
-        color='text-emerald-600'
-        title='Categories Listed'
-        count={totalCatoegories.data}
-        url='/categories'
-      />
-
-      <Card
-        icon={Users}
-        color='text-primary'
-        title='Students'
-        count={totalStudents.data}
-        url='/students'
-      />
-
-      {auth.data?.role === 'ADMIN' && (
+    <div className='container mx-auto py-10 '>
+      <div className='flex flex-row gap-6 gap-x-12 flex-wrap justify-center'>
         <Card
-          icon={Users2}
-          color='text-secondary'
-          title='Librarians'
-          count={totalLibrarians.data}
-          url='/librarians'
+          icon={Book}
+          color='text-green-700'
+          title='Books Listed'
+          count={totalBooks.data}
+          url='/books'
         />
-      )}
+
+        <Card
+          icon={History}
+          color='text-red-700'
+          title='Unreturned Books'
+          count={totalUnreturnedBooks.data}
+          url='/book/issued'
+        />
+
+        <Card
+          icon={BookUp}
+          color='text-blue-600'
+          title='Pending Requests'
+          count={totalRequestedBooks.data}
+          url='/book/requests'
+        />
+        {(auth.data?.role === 'ADMIN' || auth.data?.role === 'LIBRARIAN') && (
+          <>
+            <Card
+              icon={UserSquare}
+              color='text-yellow-700'
+              title='Authors Listed'
+              count={totalAuthors.data}
+              url='/authors'
+            />
+
+            <Card
+              icon={ScrollText}
+              color='text-emerald-600'
+              title='Categories Listed'
+              count={totalCatoegories.data}
+              url='/categories'
+            />
+
+            <Card
+              icon={Users}
+              color='text-primary'
+              title='Students'
+              count={totalStudents.data}
+              url='/students'
+            />
+          </>
+        )}
+
+        {auth.data?.role === 'STUDENT' && (
+          <Card
+            icon={CalendarX}
+            color='text-secondary'
+            title='Borrowed Books'
+            count={totalBorrowedBooks.data}
+            url='/books'
+          />
+        )}
+
+        {auth.data?.role === 'ADMIN' && (
+          <Card
+            icon={Users2}
+            color='text-secondary'
+            title='Librarians'
+            count={totalLibrarians.data}
+            url='/librarians'
+          />
+        )}
+      </div>
     </div>
   );
 };

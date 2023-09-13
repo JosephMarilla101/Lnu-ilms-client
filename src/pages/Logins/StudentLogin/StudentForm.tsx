@@ -12,7 +12,10 @@ import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useStudentLogin } from '@/hooks/useAuth';
+import { AlertTriangle } from 'lucide-react';
 
 const FormSchema = z.object({
   email: z
@@ -27,6 +30,8 @@ const FormSchema = z.object({
 });
 
 const StudentForm = () => {
+  const studentLogin = useStudentLogin();
+  const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -34,8 +39,16 @@ const StudentForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
-    console.log(data);
+    studentLogin.mutate(data);
   };
+
+  useEffect(() => {
+    if (studentLogin.isSuccess) {
+      studentLogin.reset();
+      navigate('/dashboard');
+    }
+  }, [studentLogin, studentLogin.isSuccess, navigate]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='w-full space-y-6'>
@@ -87,6 +100,13 @@ const StudentForm = () => {
             Show password
           </label>
         </div>
+
+        {studentLogin.isError && (
+          <p className='mt-3 pl-2 text-left text-sm text-rose-600 flex items-center'>
+            <AlertTriangle className='mr-2' size={20} />
+            {studentLogin.error.message}
+          </p>
+        )}
 
         <Button variant={'default'} type='submit' className='w-full'>
           Login
