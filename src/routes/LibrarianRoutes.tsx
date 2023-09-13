@@ -3,6 +3,7 @@ import DashboardAdmin from '@/pages/DashboardAdmin';
 import Authors from '@/pages/Authors';
 import Categories from '@/pages/Categories';
 import Books from '@/pages/Books';
+import BookEdit from '@/pages/BookEdit';
 import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
@@ -27,6 +28,10 @@ const LibrarianRoutes = () => {
       {
         path: 'books',
         element: <Books />,
+      },
+      {
+        path: 'book/:id',
+        element: <BookEdit />,
       },
       {
         path: 'book/requests',

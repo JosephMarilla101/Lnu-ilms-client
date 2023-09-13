@@ -15,7 +15,7 @@ type Book = {
   bookCover?: string;
   copies: number;
   author: { id: number; name: string };
-  category: { id: number; name: string };
+  category: { id: number; name: string }[];
 };
 
 export const useGetBook = (id: number): UseQueryResult<Book> => {
@@ -37,6 +37,39 @@ const createBook = (data: {
 export const useCreateBook = () => {
   const queryClient = useQueryClient();
   return useMutation(createBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['bookList']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const updateBook = (data: {
+  id: number;
+  name: string;
+  bookCover?: string;
+  bookCoverId?: string;
+  authorId?: number;
+  categoryIds: number[];
+  copies: number;
+}) => request({ url: '/book', method: 'put', data });
+
+export const useUpdateBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updateBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['bookList']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const deleteBook = (data: { id: number }) =>
+  request({ url: '/book', method: 'delete', data });
+
+export const useDeleteBook = () => {
+  const queryClient = useQueryClient();
+  return useMutation(deleteBook, {
     onSuccess: () => {
       queryClient.invalidateQueries(['bookList']);
     },

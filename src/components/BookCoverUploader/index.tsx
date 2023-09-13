@@ -6,12 +6,14 @@ interface BookCoverUploaderProps {
   changeHandler: (value: string | undefined) => void;
   value?: string;
   className?: string;
+  heightClass?: string;
 }
 
 const BookCoverUploader: React.FC<BookCoverUploaderProps> = ({
   changeHandler,
   value,
   className,
+  heightClass = 'h-[200px]',
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +43,9 @@ const BookCoverUploader: React.FC<BookCoverUploaderProps> = ({
   return (
     <div className={cn('relative', className)}>
       {!value ? (
-        <div className='relative bg-gray-100 border-dashed border-2 border-primary h-[200px]'>
+        <div
+          className={`relative bg-gray-100 border-dashed border-2 border-primary ${heightClass}`}
+        >
           <input
             className='absolute w-full h-full cursor-pointer opacity-0'
             type='file'

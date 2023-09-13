@@ -2,6 +2,7 @@ import { cn } from '@/lib/utils';
 import { useGetBook } from '@/hooks/useBook';
 import BookSkeletonLoader from '@/components/Skeletons/BookSkeletonLoader';
 import { ImageOff } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 type BookCardProps = {
   className?: string;
@@ -9,12 +10,16 @@ type BookCardProps = {
 };
 
 const BookCard: React.FC<BookCardProps> = ({ className, bookId }) => {
+  const navigate = useNavigate();
   const book = useGetBook(bookId);
 
   if (book.isLoading) return <BookSkeletonLoader />;
 
   return (
-    <div className='w-[170px] overflow-hidden cursor-pointer hover:scale-105 transition duration-300 ease-in-out'>
+    <div
+      onClick={() => navigate(`/book/${bookId}`)}
+      className='w-[170px] overflow-hidden cursor-pointer hover:scale-105 transition duration-300 ease-in-out'
+    >
       <div className={cn('relative h-[220px]', className)}>
         {book.data?.bookCover ? (
           <img
