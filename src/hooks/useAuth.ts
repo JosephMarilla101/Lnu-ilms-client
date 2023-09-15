@@ -9,10 +9,18 @@ import { request } from '@/lib/axios-interceptor';
 type AuthenticateUserRes = {
   id: number;
   role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT';
+  studentId?: number;
   email: string;
   fullname?: string;
+  profilePhoto?: string | null;
+  course?: string;
+  college?: string;
+  mobile?: string;
   username: string;
   password: string;
+  status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 const authenticateUser = () => request({ url: '/auth' });

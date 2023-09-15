@@ -195,7 +195,7 @@ const BookRequest = () => {
             </div>
 
             <div className='col-span-5 text-gray-700 italic'>Request Date:</div>
-            <div className='col-span-7 font-mediumtext-primary'>
+            <div className='col-span-7 font-medium text-primary'>
               {formatDate(getRequestedBook.data?.requestDate)}
             </div>
           </div>

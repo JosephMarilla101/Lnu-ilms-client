@@ -70,3 +70,32 @@ export const useUnsuspendStudent = () => {
     onError: (error: ErrorResponse) => error,
   });
 };
+
+const updateProfile = (data: {
+  email: string;
+  fullname: string;
+  course: string;
+  college: string;
+  mobile: string;
+}) => request({ url: '/student', method: 'put', data });
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updateProfile, {
+    onSuccess: async (data) => {
+      queryClient.setQueriesData(['auth'], data);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const changePassword = (data: {
+  current_password: string;
+  new_password: string;
+  password_confirmation: string;
+}) => request({ url: '/student/change_password', method: 'put', data });
+
+export const useChangePassword = () =>
+  useMutation(changePassword, {
+    onError: (error: ErrorResponse) => error,
+  });

@@ -1,6 +1,7 @@
 import BaseLayout from '@/layout/BaseLayout';
 import DashboardAdmin from '@/pages/DashboardAdmin';
 import Books from '@/pages/Books';
+import StudentProfile from '@/pages/StudentProfile';
 
 const StudentRoutes = () => {
   return {
@@ -14,6 +15,10 @@ const StudentRoutes = () => {
       {
         path: 'books',
         element: <Books />,
+      },
+      {
+        path: 'profile',
+        element: <StudentProfile />,
       },
     ],
   };

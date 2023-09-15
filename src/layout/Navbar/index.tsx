@@ -72,9 +72,9 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate('/profile')}>
                 <User className='mr-2 h-4 w-4' />
-                <span>Account</span>
+                <span>My Profile</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className='mr-2 h-4 w-4' />
