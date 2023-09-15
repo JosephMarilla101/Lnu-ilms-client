@@ -50,9 +50,9 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
       <div className='ml-auto mr-2'>
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
-            <div className='bg-slate-300 p-[2px] rounded-full cursor-pointer'>
+            <div className='bg-secondary p-[2px] rounded-full cursor-pointer'>
               <Avatar className='text-sm h-[47px] w-[47px] text-black'>
-                <AvatarImage src='' />
+                <AvatarImage src={auth.data?.profilePhoto ?? ''} />
                 <AvatarFallback>DP</AvatarFallback>
               </Avatar>
             </div>

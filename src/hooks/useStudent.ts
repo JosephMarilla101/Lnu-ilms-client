@@ -89,6 +89,21 @@ export const useUpdateProfile = () => {
   });
 };
 
+const updateProfilePhoto = (data: {
+  profilePhoto: string;
+  profilePhotoId: string;
+}) => request({ url: '/student/profile_photo', method: 'put', data });
+
+export const useUpdateProfilePhoto = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updateProfilePhoto, {
+    onSuccess: async (data) => {
+      queryClient.setQueriesData(['auth'], data);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
 const changePassword = (data: {
   current_password: string;
   new_password: string;
