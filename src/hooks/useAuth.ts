@@ -10,6 +10,7 @@ type AuthenticateUserRes = {
   id: number;
   role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT';
   studentId?: number;
+  employeeId?: number;
   email: string;
   fullname?: string;
   profilePhoto?: string | null;

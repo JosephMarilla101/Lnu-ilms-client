@@ -7,6 +7,7 @@ import BookEdit from '@/pages/BookEdit';
 import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
+import LibrarianProfile from '@/pages/LibrarianProfile';
 
 const LibrarianRoutes = () => {
   return {
@@ -44,6 +45,10 @@ const LibrarianRoutes = () => {
       {
         path: 'students',
         element: <Students />,
+      },
+      {
+        path: 'profile',
+        element: <LibrarianProfile />,
       },
     ],
   };

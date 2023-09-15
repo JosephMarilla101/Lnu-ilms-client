@@ -72,3 +72,46 @@ export const useUnsuspendLibrarian = () => {
     onError: (error: ErrorResponse) => error,
   });
 };
+
+const updateProfile = (data: {
+  email: string;
+  fullname: string;
+  mobile: string;
+  username: string;
+}) => request({ url: '/librarian', method: 'put', data });
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updateProfile, {
+    onSuccess: async (data) => {
+      queryClient.setQueriesData(['auth'], data);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const updateProfilePhoto = (data: {
+  profilePhoto: string;
+  profilePhotoId: string;
+}) => request({ url: '/librarian/profile_photo', method: 'put', data });
+
+export const useUpdateProfilePhoto = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updateProfilePhoto, {
+    onSuccess: async (data) => {
+      queryClient.setQueriesData(['auth'], data);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const changePassword = (data: {
+  current_password: string;
+  new_password: string;
+  password_confirmation: string;
+}) => request({ url: '/librarian/change_password', method: 'put', data });
+
+export const useChangePassword = () =>
+  useMutation(changePassword, {
+    onError: (error: ErrorResponse) => error,
+  });

@@ -8,12 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  MoreHorizontal,
-  ShieldAlert,
-  GanttChartSquare,
-  ShieldCheck,
-} from 'lucide-react';
+import { MoreHorizontal, ShieldAlert, ShieldCheck } from 'lucide-react';
 import {
   Student,
   useSuspendStudent,
@@ -120,7 +115,7 @@ const ColumnsFunction = () => {
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem
+                {/* <DropdownMenuItem
                   onClick={() => {
                     console.log(row.original.id);
                   }}
@@ -128,7 +123,7 @@ const ColumnsFunction = () => {
                 >
                   <GanttChartSquare size={20} className='mr-2' />
                   Details
-                </DropdownMenuItem>
+                </DropdownMenuItem> */}
 
                 {row.original.status ? (
                   <DropdownMenuItem
