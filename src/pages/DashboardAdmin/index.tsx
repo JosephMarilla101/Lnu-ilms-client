@@ -50,7 +50,13 @@ const DashboardAdmin = () => {
   }) => {
     return (
       <div
-        onClick={() => navigate(`${url}`)}
+        onClick={() => {
+          if (url === '/book/issued' || url === '/book/requests') {
+            if (auth.data?.role === 'STUDENT') return;
+          }
+
+          navigate(`${url}`);
+        }}
         className='w-[180px] h-[200px] px-3 text-center bg-[#FFFFF7] rounded-xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer flex flex-col  hover:scale-105 transition duration-300 ease-in-out'
       >
         <span
