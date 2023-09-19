@@ -33,6 +33,7 @@ type formDataType = {
   authorId: number | undefined;
   bookCover: string | undefined;
   bookCoverId: string | undefined;
+  isbn: string;
   name: string;
   copies: number;
   categoryIds: number[];
@@ -42,6 +43,7 @@ const formDataInitialValue = {
   authorId: undefined,
   bookCover: undefined,
   bookCoverId: undefined,
+  isbn: '',
   name: '',
   copies: 1,
   categoryIds: [],
@@ -126,7 +128,7 @@ const BookEdit = () => {
       imageUploader.reset();
       toast({
         variant: 'destructive',
-        title: 'Errro!',
+        title: 'Error!',
         description: bookUpdate.error.message,
       });
     }
@@ -162,6 +164,7 @@ const BookEdit = () => {
       setFormData((prev) => ({
         ...prev,
         bookCover: book.data.bookCover,
+        isbn: book.data.isbn,
         name: book.data.name,
         copies: book.data.copies,
       }));
@@ -261,7 +264,16 @@ const BookEdit = () => {
                 className='my-2 h-3 bg-gray-300 '
               />
             )}
-            <span className='mt-1 font-medium'>ISBN: 123456789</span>
+            <Input
+              placeholder='ISBN'
+              value={formData.isbn}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setFormData((prev) => ({ ...prev, isbn: e.target.value }));
+              }}
+              name='isbn'
+              className='mt-3 w-[180px]'
+            />
+            {/* <span className='mt-1 font-medium'>ISBN: {book.data.isbn}</span> */}
           </div>
         </div>
 

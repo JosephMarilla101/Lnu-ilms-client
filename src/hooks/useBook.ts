@@ -10,7 +10,7 @@ import { request } from '@/lib/axios-interceptor';
 
 type Book = {
   id: number;
-  isbn: number;
+  isbn: string;
   name: string;
   bookCover?: string;
   copies: number;
@@ -26,6 +26,7 @@ export const useGetBook = (id: number): UseQueryResult<Book> => {
 };
 
 const createBook = (data: {
+  isbn: string;
   name: string;
   bookCover?: string;
   bookCoverId?: string;
@@ -46,6 +47,7 @@ export const useCreateBook = () => {
 
 const updateBook = (data: {
   id: number;
+  isbn: string;
   name: string;
   bookCover?: string;
   bookCoverId?: string;

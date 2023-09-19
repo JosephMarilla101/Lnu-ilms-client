@@ -42,6 +42,7 @@ type AddDialogProps = {
 };
 
 type formDataType = {
+  isbn: string;
   authorId: number | undefined;
   bookCover: string | undefined;
   bookCoverId: string | undefined;
@@ -51,6 +52,7 @@ type formDataType = {
 };
 
 const formDataInitialValue = {
+  isbn: '',
   authorId: undefined,
   bookCover: undefined,
   bookCoverId: undefined,
@@ -175,10 +177,10 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                 )}
 
                 <Input
-                  placeholder='Book name'
-                  value={formData.name}
+                  placeholder='ISBN'
+                  value={formData.isbn}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setFormData((prev) => ({ ...prev, name: e.target.value }));
+                    setFormData((prev) => ({ ...prev, isbn: e.target.value }));
                   }}
                   className='mt-3 max-w-[170px]'
                 />
@@ -186,6 +188,29 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
 
               <div className='col-span-12 sm:col-span-8'>
                 <div className='grid grid-cols-12 gap-2 items-center'>
+                  <Label
+                    htmlFor='bookName'
+                    className='text-sm col-span-3 text-gray-600'
+                  >
+                    Title:
+                  </Label>
+
+                  <div className='col-span-9'>
+                    <Input
+                      name='bookName'
+                      placeholder='Enter Book Title'
+                      value={formData.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }));
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className='grid grid-cols-12 gap-2 mt-2 items-center'>
                   <Label
                     htmlFor='copies'
                     className='text-sm col-span-3 text-gray-600'
