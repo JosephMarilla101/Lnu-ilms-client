@@ -7,7 +7,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
+// import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -15,7 +15,7 @@ import * as z from 'zod';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLibrarianLogin } from '@/hooks/useAuth';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, Eye, EyeOff } from 'lucide-react';
 
 const FormSchema = z.object({
   username: z.string().min(2, {
@@ -37,6 +37,10 @@ const LibrarianForm = () => {
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
     librarianLogin.mutate(data);
+  };
+
+  const handlePasswordShown = () => {
+    setPasswordShown((prev) => !prev);
   };
 
   useEffect(() => {
@@ -74,6 +78,9 @@ const LibrarianForm = () => {
                   placeholder='password'
                   type={passwordShown ? 'text' : 'password'}
                   autoComplete='off'
+                  icon={passwordShown ? Eye : EyeOff}
+                  iconPosition='end'
+                  iconClick={handlePasswordShown}
                   {...field}
                 />
               </FormControl>
@@ -82,7 +89,7 @@ const LibrarianForm = () => {
           )}
         />
 
-        <div className='flex items-center space-x-2'>
+        {/* <div className='flex items-center space-x-2'>
           <Checkbox
             id='show-password'
             checked={passwordShown}
@@ -96,7 +103,7 @@ const LibrarianForm = () => {
           >
             Show password
           </label>
-        </div>
+        </div> */}
 
         {librarianLogin.isError && (
           <p className='mt-3 pl-2 text-left text-sm text-rose-600 flex items-center'>
