@@ -212,7 +212,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
 
           <DialogFooter>
             <Button type='submit' loading={registerLibrarian.isLoading}>
-              Save changes
+              Save
             </Button>
           </DialogFooter>
         </form>
