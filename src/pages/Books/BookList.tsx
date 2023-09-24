@@ -3,6 +3,7 @@ import BookSkeletonLoader from '@/components/Skeletons/BookSkeletonLoader';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
+import { useInView } from 'react-intersection-observer';
 
 const BookCard = lazy(() => import('@/components/BookCard'));
 
@@ -13,6 +14,17 @@ type BookListProps = {
 const BookList: React.FC<BookListProps> = ({ className }) => {
   const [filter, setFilter] = useState('');
   const bookList = useBookList(filter);
+
+  const { ref, inView } = useInView({
+    threshold: 0.5,
+  });
+
+  useEffect(() => {
+    if (inView) {
+      bookList.fetchNextPage();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView]);
 
   useEffect(() => {
     bookList.refetch();
@@ -67,6 +79,8 @@ const BookList: React.FC<BookListProps> = ({ className }) => {
               </div>
             );
           })}
+
+          <div ref={ref}></div>
         </>
       )}
     </div>
