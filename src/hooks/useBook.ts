@@ -192,17 +192,23 @@ type InfiniteQueryBookList = [{ id: number }];
 const fetchBookList = ({
   pageParam = undefined,
   filter = '',
+  category = '',
 }: {
   pageParam?: unknown;
   filter?: string;
-}) => request({ url: `/book/list/?cursor=${pageParam}&filter=${filter}` });
+  category?: string;
+}) =>
+  request({
+    url: `/book/list/?cursor=${pageParam}&filter=${filter}&category=${category}`,
+  });
 
 export const useBookList = (
-  filter: string
+  filter: string,
+  category: string
 ): UseInfiniteQueryResult<InfiniteQueryBookList, Error> =>
   useInfiniteQuery({
     queryKey: ['bookList'],
-    queryFn: (context) => fetchBookList({ ...context, filter }),
+    queryFn: (context) => fetchBookList({ ...context, filter, category }),
     getNextPageParam: (lastPage) => {
       const lastPost = lastPage[lastPage.length - 1];
       // return the book id as cursor for next page request

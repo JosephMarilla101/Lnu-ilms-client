@@ -59,16 +59,17 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
           <div className='my-3'>
             <div className='grid gap-4 py-4'>
               <div className='grid grid-cols-4 items-center gap-4'>
-                <Label htmlFor='name' className='text-right'>
+                <Label htmlFor='name' className='text-right col-span-1'>
                   Author Name
                 </Label>
+                
                 <Input
                   required
                   onChange={(e) => {
                     setFormData((prev) => ({ ...prev, name: e.target.value }));
                   }}
                   value={formData.name}
-                  className='col-span-3'
+                  className='col-span-3 w-full'
                 />
               </div>
             </div>

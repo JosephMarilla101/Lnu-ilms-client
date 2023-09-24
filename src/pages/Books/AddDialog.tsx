@@ -252,7 +252,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                       <SelectTrigger className='w-full'>
                         <SelectValue placeholder='Select Author' />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className='max-h-[250px] overflox-x-auto'>
                         <SelectGroup>
                           {activeAuthors.isSuccess &&
                             activeAuthors.data.map((author) => {
@@ -287,23 +287,23 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                           <ChevronDown size={16} className='text-slate-500' />
                         </div>
                       </DropdownMenuTrigger>
-                      <DropdownMenuContent className='w-56'>
-                        <DropdownMenuLabel>Categories</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        {categoryList.map((category) => {
-                          return (
-                            <DropdownMenuCheckboxItem
+                        <DropdownMenuContent className='w-56 max-h-[300px] overflow-auto'>
+                          <DropdownMenuLabel>Categories</DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          {categoryList.map((category) => {
+                            return (
+                              <DropdownMenuCheckboxItem
                               checked={!category.status}
                               onCheckedChange={() => {
                                 onCategoryCheckChange(category);
                               }}
                               key={category.id}
-                            >
-                              {category.name}
-                            </DropdownMenuCheckboxItem>
-                          );
-                        })}
-                      </DropdownMenuContent>
+                              >
+                                {category.name}
+                              </DropdownMenuCheckboxItem>
+                            );
+                          })}
+                        </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
                 </div>
