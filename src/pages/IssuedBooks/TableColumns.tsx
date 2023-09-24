@@ -151,7 +151,10 @@ const ColumnsFunction = () => {
         return (
           <div className='flex flex-row items-center justify-center'>
             <span>{`₱${lateFee.toFixed(2)}`}</span>
-            <span className='text-green-600'>(Paid)</span>
+            {lateFee > 0 && (
+              <span className='text-green-600'>(Paid)</span>
+            )}
+            
           </div>
         )
       },
