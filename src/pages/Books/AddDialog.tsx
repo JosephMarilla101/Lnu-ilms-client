@@ -341,7 +341,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
               className='w-full sm:w-[160px] mt-2'
               loading={createBook.isLoading || imageUploader.isLoading}
             >
-              Save changes
+              Save
             </Button>
           </DialogFooter>
         </form>

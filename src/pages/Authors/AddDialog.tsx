@@ -75,7 +75,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
           </div>
           <DialogFooter>
             <Button type='submit' loading={createAuthor.isLoading}>
-              Save changes
+              Save
             </Button>
           </DialogFooter>
         </form>

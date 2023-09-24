@@ -131,7 +131,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
 
           <DialogFooter>
             <Button type='submit' loading={createCategory.isLoading}>
-              Save changes
+              Save
             </Button>
           </DialogFooter>
         </form>

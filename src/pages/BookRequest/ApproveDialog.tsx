@@ -104,7 +104,7 @@ const ApproveDialog = () => {
               loading={borrowBook.isLoading}
               className='w-[140px]'
             >
-              Save changes
+              Save
             </Button>
           </DialogFooter>
         </form>

@@ -26,7 +26,7 @@ const BookList: React.FC<BookListProps> = ({ className }) => {
         onChange={(e) => {
           setFilter(e.target.value);
         }}
-        placeholder='Search Books'
+        placeholder='Search Books...'
         className='mb-6 max-w-xs'
       />
 
