@@ -60,7 +60,7 @@ export default function DataTable<TData, TValue>({
   });
 
   return (
-    <div>
+    <div className=''>
       <div className='flex items-center py-4'>
         {searchable && (
           <Input

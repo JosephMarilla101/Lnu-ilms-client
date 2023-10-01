@@ -16,94 +16,89 @@ const SidebarLayout = () => {
   const auth = useAuthenticateUser();
 
   return (
-    <div>
-      <Sidebar
-        className='h-screen text-white'
-        breakPoint='md'
-        onBackdropClick={() => setToggled(false)}
-        toggled={toggled}
-        collapsed={collapsed}
-        transitionDuration={500}
-        backgroundColor='#070372'
-      >
-        <Menu
-          menuItemStyles={{
-            button: {
-              [`&.active`]: {
-                backgroundColor: '#1e5288',
-                color: 'primary',
-              },
-              [`:hover`]: {
-                backgroundColor: '#1e5288',
-                color: '',
-              },
+    <Sidebar
+      className='h-full text-white'
+      breakPoint='md'
+      onBackdropClick={() => setToggled(false)}
+      toggled={toggled}
+      collapsed={collapsed}
+      transitionDuration={500}
+      backgroundColor='#070372'
+    >
+      <Menu
+        menuItemStyles={{
+          button: {
+            [`&.active`]: {
+              backgroundColor: '#1e5288',
+              color: 'primary',
             },
-          }}
-        >
-          {auth.data?.role !== 'STUDENT' ? (
-            <>
-              <MenuItem
-                icon={<LayoutDashboard />}
-                component={<NavLink to='/dashboard' />}
-              >
-                Dashboard
-              </MenuItem>
-              <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
-                Books
-              </MenuItem>
-              <MenuItem
-                icon={<ScrollText />}
-                component={<NavLink to='/categories' />}
-              >
-                Categories
-              </MenuItem>
-              <MenuItem icon={<Users2 />} component={<NavLink to='/authors' />}>
-                Authors
-              </MenuItem>
-              <MenuItem
-                icon={<BookUp />}
-                component={<NavLink to='/book/requests' />}
-              >
-                Book Requests
-              </MenuItem>
-              <MenuItem
-                icon={<BookOpenCheck />}
-                component={<NavLink to='/book/issued' />}
-              >
-                Issued Books
-              </MenuItem>
+            [`:hover`]: {
+              backgroundColor: '#1e5288',
+              color: '',
+            },
+          },
+        }}
+      >
+        {auth.data?.role !== 'STUDENT' ? (
+          <>
+            <MenuItem
+              icon={<LayoutDashboard />}
+              component={<NavLink to='/dashboard' />}
+            >
+              Dashboard
+            </MenuItem>
+            <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
+              Books
+            </MenuItem>
+            <MenuItem
+              icon={<ScrollText />}
+              component={<NavLink to='/categories' />}
+            >
+              Categories
+            </MenuItem>
+            <MenuItem icon={<Users2 />} component={<NavLink to='/authors' />}>
+              Authors
+            </MenuItem>
+            <MenuItem
+              icon={<BookUp />}
+              component={<NavLink to='/book/requests' />}
+            >
+              Book Requests
+            </MenuItem>
+            <MenuItem
+              icon={<BookOpenCheck />}
+              component={<NavLink to='/book/issued' />}
+            >
+              Issued Books
+            </MenuItem>
 
+            <MenuItem icon={<Users2 />} component={<NavLink to='/students' />}>
+              Students
+            </MenuItem>
+            {auth.data?.role === 'ADMIN' && (
               <MenuItem
                 icon={<Users2 />}
-                component={<NavLink to='/students' />}
+                component={<NavLink to='/librarians' />}
               >
-                Students
+                Librarians
               </MenuItem>
-              {auth.data?.role === 'ADMIN' && (
-                <MenuItem
-                  icon={<Users2 />}
-                  component={<NavLink to='/librarians' />}
-                >
-                  Librarians
-                </MenuItem>
-              )}
-            </>
-          ) : (
-            <>
-              <MenuItem
-                icon={<LayoutDashboard />}
-                component={<NavLink to='/dashboard' />}
-              >
-                Dashboard
-              </MenuItem>
-              <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
-                Books
-              </MenuItem>
-            </>
-          )}
-        </Menu>
-      </Sidebar>
-    </div>
+            )}
+          </>
+        ) : (
+          <>
+            <MenuItem
+              icon={<LayoutDashboard />}
+              component={<NavLink to='/dashboard' />}
+            >
+              Dashboard
+            </MenuItem>
+            <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
+              Books
+            </MenuItem>
+          </>
+        )}
+      </Menu>
+    </Sidebar>
   );
 };
 

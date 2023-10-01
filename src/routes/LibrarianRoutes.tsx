@@ -8,6 +8,7 @@ import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
 import LibrarianProfile from '@/pages/LibrarianProfile';
+import StudentHistory from '@/pages/StudentHistory';
 
 const LibrarianRoutes = () => {
   return {
@@ -45,6 +46,10 @@ const LibrarianRoutes = () => {
       {
         path: 'students',
         element: <Students />,
+      },
+      {
+        path: 'student/history/:id',
+        element: <StudentHistory />,
       },
       {
         path: 'profile',
