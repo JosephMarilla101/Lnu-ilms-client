@@ -9,6 +9,7 @@ import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
 import Librarians from '@/pages/Librarians';
 import AdminProfile from '@/pages/AdminProfile';
+import StudentHistory from '@/pages/StudentHistory';
 
 const AdminRoutes = () => {
   return {
@@ -46,6 +47,10 @@ const AdminRoutes = () => {
       {
         path: 'students',
         element: <Students />,
+      },
+      {
+        path: 'student/history/:id',
+        element: <StudentHistory />,
       },
       {
         path: 'librarians',

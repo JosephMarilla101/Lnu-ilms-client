@@ -38,12 +38,52 @@ export type Student = {
   updatedAt: Date;
 };
 
+type Book = {
+  id: number;
+  isbn: string;
+  name: string;
+  bookCover?: string;
+  copies: number;
+  author: { id: number; name: string };
+  category: { id: number; name: string }[];
+};
+
+export type IssuedBook = {
+  id: number;
+  isbn: string;
+  bookName: string;
+  bookCover?: string;
+  studentId: string;
+  dueDate: string;
+  returnedDate: Date;
+  isReturn: boolean;
+  lateFee: number;
+  createdAt: Date;
+  updatedAt: Date;
+  book: Book;
+};
+
+type StudentWithBorrowedBook = Student & {
+  borrowedBooks: IssuedBook[];
+};
+
 const getALLStudents = () => request({ url: '/student/all' });
 
 export const useGetALLStudents = (): UseQueryResult<Student[]> =>
   useQuery(['student', 'all'], getALLStudents, {
     onError: (error: ErrorResponse) => error,
   });
+
+export const useGetStudentBorrowedBooks = (
+  id?: string
+): UseQueryResult<StudentWithBorrowedBook> => {
+  const getStudentBorrowedBooks = () =>
+    request({ url: `/student/borrowed_books/${id}` });
+
+  return useQuery(['student', 'borrowed', 'books'], getStudentBorrowedBooks, {
+    onError: (error: ErrorResponse) => error,
+  });
+};
 
 const suspendStudent = (data: { id: number }) =>
   request({ url: '/student/suspend', method: 'post', data });

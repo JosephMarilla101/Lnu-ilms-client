@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useToast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal, ShieldAlert, ShieldCheck } from 'lucide-react';
+import { Info, MoreHorizontal, ShieldAlert, ShieldCheck } from 'lucide-react';
 import {
   Student,
   useSuspendStudent,
@@ -17,12 +17,14 @@ import {
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 // import useTableDialog from '@/context/useTableDialog';
 
 const ColumnsFunction = () => {
   // const { setId, setAction } = useTableDialog();
   const suspendStudent = useSuspendStudent();
   const unsuspendStudent = useUnsuspendStudent();
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -114,16 +116,15 @@ const ColumnsFunction = () => {
               <DropdownMenuContent align='end'>
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-
-                {/* <DropdownMenuItem
-                  onClick={() => {
-                    console.log(row.original.id);
-                  }}
+                <DropdownMenuItem
+                  onClick={() =>
+                    navigate(`/student/history/${row.original.id}`)
+                  }
                   className='text-primary'
                 >
-                  <GanttChartSquare size={20} className='mr-2' />
-                  Details
-                </DropdownMenuItem> */}
+                  <ShieldAlert size={20} className='mr-2' />
+                  Veiw Details
+                </DropdownMenuItem>
 
                 {row.original.status ? (
                   <DropdownMenuItem
@@ -132,7 +133,7 @@ const ColumnsFunction = () => {
                     }}
                     className='text-red-600'
                   >
-                    <ShieldAlert size={20} className='mr-2' />
+                    <Info size={20} className='mr-2' />
                     Suspend
                   </DropdownMenuItem>
                 ) : (
