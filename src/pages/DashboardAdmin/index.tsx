@@ -14,11 +14,13 @@ import {
   useTotalBooks,
   useTotalUnreturnedBooks,
   useTotalRequestedBooks,
+  useMyTotalRequestedBooks,
   useTotalAuthors,
   useTotalCatoegories,
   useTotalStudents,
   useTotalLibrarians,
-  useTotalBorrowedBooks,
+  useMyTotalBorrowedBooks,
+  useMyTotalUnreturnedBooks,
 } from '@/hooks/useDashboard';
 import { useAuthenticateUser } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -28,11 +30,13 @@ const DashboardAdmin = () => {
   const totalBooks = useTotalBooks();
   const totalUnreturnedBooks = useTotalUnreturnedBooks();
   const totalRequestedBooks = useTotalRequestedBooks();
+  const myTotalRequestedBooks = useMyTotalRequestedBooks();
   const totalAuthors = useTotalAuthors();
   const totalCatoegories = useTotalCatoegories();
   const totalStudents = useTotalStudents();
   const totalLibrarians = useTotalLibrarians();
-  const totalBorrowedBooks = useTotalBorrowedBooks();
+  const myTotalBorrowedBooks = useMyTotalBorrowedBooks();
+  const myTotalUnreturnedBooks = useMyTotalUnreturnedBooks();
   const navigate = useNavigate();
 
   const Card = ({
@@ -85,21 +89,41 @@ const DashboardAdmin = () => {
           url='/books'
         />
 
-        <Card
-          icon={History}
-          color='text-red-700'
-          title='Unreturned Books'
-          count={totalUnreturnedBooks.data}
-          url='/book/issued'
-        />
+        {auth.data?.role === 'STUDENT' ? (
+          <Card
+            icon={History}
+            color='text-red-700'
+            title='Unreturned Books'
+            count={myTotalUnreturnedBooks.data}
+            url='/book/issued'
+          />
+        ) : (
+          <Card
+            icon={History}
+            color='text-red-700'
+            title='Unreturned Books'
+            count={totalUnreturnedBooks.data}
+            url='/book/issued'
+          />
+        )}
 
-        <Card
-          icon={BookUp}
-          color='text-blue-600'
-          title='Pending Requests'
-          count={totalRequestedBooks.data}
-          url='/book/requests'
-        />
+        {auth.data?.role === 'STUDENT' ? (
+          <Card
+            icon={BookUp}
+            color='text-blue-600'
+            title='Pending Requests'
+            count={myTotalRequestedBooks.data}
+            url='/book/requests'
+          />
+        ) : (
+          <Card
+            icon={BookUp}
+            color='text-blue-600'
+            title='Pending Requests'
+            count={totalRequestedBooks.data}
+            url='/book/requests'
+          />
+        )}
         {(auth.data?.role === 'ADMIN' || auth.data?.role === 'LIBRARIAN') && (
           <>
             <Card
@@ -133,7 +157,7 @@ const DashboardAdmin = () => {
             icon={CalendarX}
             color='text-secondary'
             title='Borrowed Books'
-            count={totalBorrowedBooks.data}
+            count={myTotalBorrowedBooks.data}
             url='/books'
           />
         )}
