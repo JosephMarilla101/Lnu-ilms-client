@@ -123,7 +123,7 @@ const ColumnsFunction = () => {
                   className='text-primary'
                 >
                   <ShieldAlert size={20} className='mr-2' />
-                  Veiw Details
+                  View Details
                 </DropdownMenuItem>
 
                 {row.original.status ? (
