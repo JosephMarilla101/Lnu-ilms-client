@@ -63,12 +63,12 @@ export const useLibrarianLogin = () => {
   });
 };
 
-const studentLogin = (data: { email: string; password: string }) =>
-  request({ url: '/auth/login/student', method: 'post', data });
+const userLogin = (data: { email: string; password: string }) =>
+  request({ url: '/auth/login/user', method: 'post', data });
 
-export const useStudentLogin = () => {
+export const useUserLogin = () => {
   const queryClient = useQueryClient();
-  return useMutation(studentLogin, {
+  return useMutation(userLogin, {
     onSuccess: async (data) => {
       localStorage.setItem('token', data.token);
       const user = data.user;

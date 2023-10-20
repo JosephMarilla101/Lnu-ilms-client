@@ -42,6 +42,7 @@ const teacherRegistration = (data: {
   employeeId: string;
   email: string;
   fullname: string;
+  department: string;
   mobile: string;
   password: string;
   password_confirmation: string;

@@ -1,4 +1,11 @@
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   Form,
   FormControl,
   FormField,
@@ -24,6 +31,7 @@ const FormSchema = z.object({
     })
     .max(8, { message: 'Employee ID must not exceed 8 characters.' }),
   fullname: z.string().min(1, 'Full Name is required.'),
+  department: z.string().min(1, 'Department is required.'),
   mobile: z.string().min(1, 'Mobile number is required.'),
   email: z.string().email().min(1, 'Email is required.'),
   password: z.string().min(6).min(1, 'Password is required.'),
@@ -33,6 +41,8 @@ const FormSchema = z.object({
     .min(1, 'Password confirmation is required.'),
 });
 
+const departmenteSelection = ['CAS', 'CME', 'COE'];
+
 const SignupForm = () => {
   const register = useTeacherRegistration();
   const navigate = useNavigate();
@@ -41,6 +51,7 @@ const SignupForm = () => {
     defaultValues: {
       employeeId: '',
       fullname: '',
+      department: '',
       mobile: '',
       email: '',
       password: '',
@@ -90,6 +101,37 @@ const SignupForm = () => {
                   <Input placeholder='Enter Full Name' {...field} />
                 </FormControl>
                 <FormMessage></FormMessage>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name='department'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Department</FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      {field.value ? (
+                        <SelectValue placeholder='Select Department' />
+                      ) : (
+                        'Select Department'
+                      )}
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {departmenteSelection.map((department, i) => {
+                      return (
+                        <SelectItem value={department} key={i}>
+                          {department}
+                        </SelectItem>
+                      );
+                    })}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
               </FormItem>
             )}
           />

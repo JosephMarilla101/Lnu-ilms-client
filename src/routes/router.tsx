@@ -10,6 +10,8 @@ import StudentRoutes from './StudentRoutes';
 
 const Home = lazy(() => import('@/pages/Home'));
 const StudentLogin = lazy(() => import('@/pages/Logins/StudentLogin'));
+const GraduateLogin = lazy(() => import('@/pages/Logins/GraduateLogin'));
+const TeacherLogin = lazy(() => import('@/pages/Logins/TeacherLogin'));
 const LibrarianLogin = lazy(() => import('@/pages/Logins/LibrarianLogin'));
 const AdminLogin = lazy(() => import('@/pages/Logins/AdminLogin'));
 const RegisterStudent = lazy(() => import('@/pages/RegisterStudent'));
@@ -31,16 +33,29 @@ const Router = () => {
           element: <Home />,
         },
         {
-          path: 'student-login',
-          element: <StudentLogin />,
-        },
-        {
-          path: 'librarian-login',
-          element: <LibrarianLogin />,
-        },
-        {
-          path: 'admin-login',
-          element: <AdminLogin />,
+          path: 'login',
+          children: [
+            {
+              path: 'admin',
+              element: <AdminLogin />,
+            },
+            {
+              path: 'librarian',
+              element: <LibrarianLogin />,
+            },
+            {
+              path: 'student',
+              element: <StudentLogin />,
+            },
+            {
+              path: 'graduate',
+              element: <GraduateLogin />,
+            },
+            {
+              path: 'teacher',
+              element: <TeacherLogin />,
+            },
+          ],
         },
         {
           path: 'register',

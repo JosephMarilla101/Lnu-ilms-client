@@ -29,7 +29,7 @@ const FormSchema = z.object({
   }),
 });
 
-const StudentForm = () => {
+const GraduateForm = () => {
   const login = useUserLogin();
   const navigate = useNavigate();
   const [passwordShown, setPasswordShown] = useState(false);
@@ -123,4 +123,4 @@ const StudentForm = () => {
   );
 };
 
-export default StudentForm;
+export default GraduateForm;
