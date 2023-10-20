@@ -7,7 +7,7 @@ import UpdateDialog from './UpdateDialog';
 import ChangePasswordDialog from './ChangePasswordDialog';
 import { useToast } from '@/components/ui/use-toast';
 import { useImageUpload } from '@/hooks/useImageUpload';
-import { useUpdateProfilePhoto } from '@/hooks/useStudent';
+import { useUpdateProfilePhoto } from '@/hooks/useUser';
 import { Camera } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 

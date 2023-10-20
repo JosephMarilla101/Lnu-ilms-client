@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { IssuedBook } from '@/hooks/useStudent';
+import { IssuedBook } from '@/hooks/useUser';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { differenceInDays, format, isAfter, parseISO } from 'date-fns';
 import { BadgeX } from 'lucide-react';

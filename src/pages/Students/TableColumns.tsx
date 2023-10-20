@@ -13,7 +13,7 @@ import {
   Student,
   useSuspendStudent,
   useUnsuspendStudent,
-} from '@/hooks/useStudent';
+} from '@/hooks/useUser';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';

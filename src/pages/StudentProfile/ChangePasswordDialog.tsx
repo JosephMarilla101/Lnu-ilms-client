@@ -12,7 +12,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
-import { useChangePassword } from '@/hooks/useStudent';
+import { useChangePassword } from '@/hooks/useUser';
 
 type ChangePasswordDialogProps = {
   children: React.ReactNode;

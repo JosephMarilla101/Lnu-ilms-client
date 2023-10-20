@@ -15,10 +15,40 @@ const studentRegistration = (data: {
   mobile: string;
   password: string;
   password_confirmation: string;
-}) => request({ url: '/student/register', method: 'post', data });
+}) => request({ url: '/user/register/student', method: 'post', data });
 
 export const useStudentRegistration = () => {
   return useMutation(studentRegistration, {
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const graduateRegistration = (data: {
+  studentId: string;
+  email: string;
+  fullname: string;
+  mobile: string;
+  password: string;
+  password_confirmation: string;
+}) => request({ url: '/user/register/graduate', method: 'post', data });
+
+export const useGraduateRegistration = () => {
+  return useMutation(graduateRegistration, {
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const teacherRegistration = (data: {
+  employeeId: string;
+  email: string;
+  fullname: string;
+  mobile: string;
+  password: string;
+  password_confirmation: string;
+}) => request({ url: '/user/register/teacher', method: 'post', data });
+
+export const useTeacherRegistration = () => {
+  return useMutation(teacherRegistration, {
     onError: (error: ErrorResponse) => error,
   });
 };
@@ -67,7 +97,7 @@ type StudentWithBorrowedBook = Student & {
   borrowedBooks: IssuedBook[];
 };
 
-const getALLStudents = () => request({ url: '/student/all' });
+const getALLStudents = () => request({ url: '/user/all' });
 
 export const useGetALLStudents = (): UseQueryResult<Student[]> =>
   useQuery(['student', 'all'], getALLStudents, {
@@ -78,7 +108,7 @@ export const useGetStudentBorrowedBooks = (
   id?: string
 ): UseQueryResult<StudentWithBorrowedBook> => {
   const getStudentBorrowedBooks = () =>
-    request({ url: `/student/borrowed_books/${id}` });
+    request({ url: `/user/borrowed_books/${id}` });
 
   return useQuery(['student', 'borrowed', 'books'], getStudentBorrowedBooks, {
     onError: (error: ErrorResponse) => error,
@@ -86,7 +116,7 @@ export const useGetStudentBorrowedBooks = (
 };
 
 const suspendStudent = (data: { id: number }) =>
-  request({ url: '/student/suspend', method: 'post', data });
+  request({ url: '/user/suspend', method: 'post', data });
 
 export const useSuspendStudent = () => {
   const queryClient = useQueryClient();
@@ -99,7 +129,7 @@ export const useSuspendStudent = () => {
 };
 
 const unsuspendStudent = (data: { id: number }) =>
-  request({ url: '/student/unsuspend', method: 'post', data });
+  request({ url: '/user/unsuspend', method: 'post', data });
 
 export const useUnsuspendStudent = () => {
   const queryClient = useQueryClient();
@@ -117,7 +147,7 @@ const updateProfile = (data: {
   course: string;
   college: string;
   mobile: string;
-}) => request({ url: '/student', method: 'put', data });
+}) => request({ url: '/user', method: 'put', data });
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
@@ -132,7 +162,7 @@ export const useUpdateProfile = () => {
 const updateProfilePhoto = (data: {
   profilePhoto: string;
   profilePhotoId: string;
-}) => request({ url: '/student/profile_photo', method: 'put', data });
+}) => request({ url: '/user/profile_photo', method: 'put', data });
 
 export const useUpdateProfilePhoto = () => {
   const queryClient = useQueryClient();
@@ -148,7 +178,7 @@ const changePassword = (data: {
   current_password: string;
   new_password: string;
   password_confirmation: string;
-}) => request({ url: '/student/change_password', method: 'put', data });
+}) => request({ url: '/user/change_password', method: 'put', data });
 
 export const useChangePassword = () =>
   useMutation(changePassword, {

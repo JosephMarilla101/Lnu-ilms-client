@@ -1,7 +1,7 @@
 import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
 import { useParams } from 'react-router-dom';
-import { useGetStudentBorrowedBooks } from '@/hooks/useStudent';
+import { useGetStudentBorrowedBooks } from '@/hooks/useUser';
 
 export default function StudentHistory() {
   const { id } = useParams();

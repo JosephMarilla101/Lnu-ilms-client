@@ -1,11 +1,4 @@
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import {
   Form,
   FormControl,
   FormField,
@@ -19,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useStudentRegistration } from '@/hooks/useStudent';
+import { useGraduateRegistration } from '@/hooks/useUser';
 import { AlertTriangle } from 'lucide-react';
 import { useEffect } from 'react';
 
@@ -31,8 +24,6 @@ const FormSchema = z.object({
     })
     .max(8, { message: 'Student ID must not exceed 8 characters.' }),
   fullname: z.string().min(1, 'Full Name is required.'),
-  course: z.string().min(1, 'Course is required.'),
-  college: z.string().min(1, 'College is required.'),
   mobile: z.string().min(1, 'Mobile number is required.'),
   email: z.string().email().min(1, 'Email is required.'),
   password: z.string().min(6).min(1, 'Password is required.'),
@@ -42,32 +33,14 @@ const FormSchema = z.object({
     .min(1, 'Password confirmation is required.'),
 });
 
-const courseSelection = [
-  'BSIT',
-  'BSTM',
-  'BSED',
-  'BPED',
-  'BSBio',
-  'BSHM',
-  'BECED',
-  'BAEL',
-  'TCP',
-  'BACOM',
-  'POLCI',
-];
-
-const collegeSelection = ['CAS', 'CME', 'COE'];
-
 const SignupForm = () => {
-  const register = useStudentRegistration();
+  const register = useGraduateRegistration();
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       studentId: '',
       fullname: '',
-      course: '',
-      college: '',
       mobile: '',
       email: '',
       password: '',
@@ -123,70 +96,6 @@ const SignupForm = () => {
 
           <FormField
             control={form.control}
-            name='course'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Course</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      {field.value ? (
-                        <SelectValue placeholder='Select Course' />
-                      ) : (
-                        'Select Course'
-                      )}
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {courseSelection.map((course, i) => {
-                      return (
-                        <SelectItem value={course} key={i}>
-                          {course}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name='college'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>College</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger>
-                      {field.value ? (
-                        <SelectValue placeholder='Select College' />
-                      ) : (
-                        'Select College'
-                      )}
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {collegeSelection.map((college, i) => {
-                      return (
-                        <SelectItem value={college} key={i}>
-                          {college}
-                        </SelectItem>
-                      );
-                    })}
-                  </SelectContent>
-                </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className='col-span-12 md:col-span-6 space-y-4'>
-          <FormField
-            control={form.control}
             name='mobile'
             render={({ field }) => (
               <FormItem>
@@ -198,7 +107,9 @@ const SignupForm = () => {
               </FormItem>
             )}
           />
+        </div>
 
+        <div className='col-span-12 md:col-span-6 space-y-4'>
           <FormField
             control={form.control}
             name='email'
