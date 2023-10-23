@@ -7,7 +7,7 @@ import BookEdit from '@/pages/BookEdit';
 import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
-import LibrarianProfile from '@/pages/LibrarianProfile';
+import LibrarianProfile from '@/pages/UserProfile/LibrarianProfile';
 import StudentHistory from '@/pages/StudentHistory';
 
 const LibrarianRoutes = () => {

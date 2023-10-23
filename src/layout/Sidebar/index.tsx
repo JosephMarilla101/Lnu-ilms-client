@@ -39,7 +39,7 @@ const SidebarLayout = () => {
           },
         }}
       >
-        {auth.data?.role !== 'STUDENT' ? (
+        {auth.data?.role === 'ADMIN' || auth.data?.role === 'LIBRARIAN' ? (
           <>
             <MenuItem
               icon={<LayoutDashboard />}

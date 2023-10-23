@@ -144,10 +144,12 @@ export const useUnsuspendStudent = () => {
 
 const updateProfile = (data: {
   email: string;
-  fullname: string;
-  course: string;
-  college: string;
-  mobile: string;
+  username?: string;
+  fullname?: string;
+  course?: string;
+  college?: string;
+  department?: string;
+  mobile?: string;
 }) => request({ url: '/user', method: 'put', data });
 
 export const useUpdateProfile = () => {

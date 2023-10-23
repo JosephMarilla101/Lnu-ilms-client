@@ -8,20 +8,25 @@ import { request } from '@/lib/axios-interceptor';
 
 type AuthenticateUserRes = {
   id: number;
-  role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT';
-  studentId?: number;
-  employeeId?: number;
+  role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT' | 'TEACHER' | 'GRADUATE';
   email: string;
-  fullname?: string;
-  profilePhoto?: string | null;
-  course?: string;
-  college?: string;
-  mobile?: string;
-  username: string;
-  password: string;
+  username?: string;
+  profile?: Profile;
   status: boolean;
   createdAt: Date;
   updatedAt: Date;
+};
+
+type Profile = {
+  id: number;
+  fullname?: string;
+  profilePhoto?: string;
+  profilePhotoId?: string;
+  department?: string;
+  course?: string;
+  college?: string;
+  mobile?: string;
+  userId: number;
 };
 
 const authenticateUser = () => request({ url: '/auth' });

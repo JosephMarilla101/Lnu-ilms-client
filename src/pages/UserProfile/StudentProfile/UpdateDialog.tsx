@@ -50,11 +50,11 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
   const auth = useAuthenticateUser();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    fullname: auth.data?.fullname ?? '',
+    fullname: auth.data?.profile?.fullname ?? '',
     email: auth.data?.email ?? '',
-    mobile: auth.data?.mobile ?? '',
-    course: auth.data?.course ?? '',
-    college: auth.data?.college ?? '',
+    mobile: auth.data?.profile?.mobile ?? '',
+    course: auth.data?.profile?.course ?? '',
+    college: auth.data?.profile?.college ?? '',
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

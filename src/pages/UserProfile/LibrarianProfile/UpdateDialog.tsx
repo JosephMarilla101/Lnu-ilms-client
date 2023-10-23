@@ -26,9 +26,9 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
   const auth = useAuthenticateUser();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    fullname: auth.data?.fullname ?? '',
+    fullname: auth.data?.profile?.fullname ?? '',
     email: auth.data?.email ?? '',
-    mobile: auth.data?.mobile ?? '',
+    mobile: auth.data?.profile?.mobile ?? '',
     username: auth.data?.username ?? '',
   });
 

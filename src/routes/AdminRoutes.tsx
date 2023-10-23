@@ -8,7 +8,7 @@ import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
 import Librarians from '@/pages/Librarians';
-import AdminProfile from '@/pages/AdminProfile';
+import AdminProfile from '@/pages/UserProfile/AdminProfile';
 import StudentHistory from '@/pages/StudentHistory';
 
 const AdminRoutes = () => {

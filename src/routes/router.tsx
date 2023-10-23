@@ -14,9 +14,15 @@ const GraduateLogin = lazy(() => import('@/pages/Logins/GraduateLogin'));
 const TeacherLogin = lazy(() => import('@/pages/Logins/TeacherLogin'));
 const LibrarianLogin = lazy(() => import('@/pages/Logins/LibrarianLogin'));
 const AdminLogin = lazy(() => import('@/pages/Logins/AdminLogin'));
-const RegisterStudent = lazy(() => import('@/pages/RegisterStudent'));
-const RegisterGraduate = lazy(() => import('@/pages/RegisterGraduate'));
-const RegisterTeacher = lazy(() => import('@/pages/RegisterTeacher'));
+const RegisterStudent = lazy(
+  () => import('@/pages/Registration/RegisterStudent')
+);
+const RegisterGraduate = lazy(
+  () => import('@/pages/Registration/RegisterGraduate')
+);
+const RegisterTeacher = lazy(
+  () => import('@/pages/Registration/RegisterTeacher')
+);
 
 const Router = () => {
   const auth = useAuthenticateUser();
@@ -78,7 +84,11 @@ const Router = () => {
     },
     auth.data?.role === 'ADMIN' ? adminRoutes : {},
     auth.data?.role === 'LIBRARIAN' ? librarianRoutes : {},
-    auth.data?.role === 'STUDENT' ? studentRoutes : {},
+    auth.data?.role === 'STUDENT' ||
+    auth.data?.role === 'GRADUATE' ||
+    auth.data?.role === 'TEACHER'
+      ? studentRoutes
+      : {},
     {
       path: '*',
       element: <NotFound />,

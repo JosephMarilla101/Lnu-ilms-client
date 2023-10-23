@@ -7,11 +7,11 @@ import UpdateDialog from './UpdateDialog';
 import ChangePasswordDialog from './ChangePasswordDialog';
 import { useToast } from '@/components/ui/use-toast';
 import { useImageUpload } from '@/hooks/useImageUpload';
-import { useUpdateProfilePhoto } from '@/hooks/useAdmin';
+import { useUpdateProfilePhoto } from '@/hooks/useUser';
 import { Camera } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
-const LibrarianProfile = () => {
+const StudentProfile = () => {
   const auth = useAuthenticateUser();
   const imageUploader = useImageUpload();
   const updateProfilePhoto = useUpdateProfilePhoto();
@@ -98,7 +98,7 @@ const LibrarianProfile = () => {
         <div className='relative w-fit p-1 bg-secondary rounded-full'>
           <Avatar className='w-[150px] h-[150px]'>
             <AvatarImage
-              src={auth.data?.profilePhoto ?? ''}
+              src={auth.data?.profile?.profilePhoto ?? ''}
               alt='Profile Photo'
             />
             <AvatarFallback className='bg-slate-300'>DP</AvatarFallback>
@@ -139,9 +139,16 @@ const LibrarianProfile = () => {
 
         <div className='flex flex-col justify-center gap-1 pl-4'>
           <h1 className='font-semibold text-slate-700 text-3xl'>
-            {auth.data?.username}
+            {auth.data?.profile?.fullname}
           </h1>
-          <span>{`(${auth.data?.email})`}</span>
+          <span>
+            {auth.data?.profile?.id}{' '}
+            {auth.data?.role === 'TEACHER'
+              ? `(${auth.data?.profile?.department})`
+              : auth.data?.role === 'GRADUATE'
+              ? `(graduate)`
+              : `(${auth.data?.profile?.course})`}
+          </span>
 
           <div className='flex flex-row gap-2 mt-1'>
             <UpdateDialog>
@@ -166,11 +173,37 @@ const LibrarianProfile = () => {
       <div className='grid grid-cols-12 gap-x-4 gap-y-2 w-full mt-6 text-lg font-medium'>
         <h2 className='col-span-12 text-xl mb-3'>Profile Information</h2>
 
-        <div className='col-span-4'>Username:</div>
-        <div className='col-span-8 text-primary'>{auth.data?.username}</div>
+        <div className='col-span-4'>
+          {auth.data?.role === 'TEACHER' ? 'Employee ID' : 'Student ID'}
+        </div>
+        <div className='col-span-8 text-primary'>{auth.data?.profile?.id}</div>
+
+        <div className='col-span-4'>Full Name:</div>
+        <div className='col-span-8 text-primary'>
+          {auth.data?.profile?.fullname}
+        </div>
+
+        {auth.data?.role === 'STUDENT' && (
+          <>
+            <div className='col-span-4'>College:</div>
+            <div className='col-span-8 text-primary'>
+              {auth.data?.profile?.college}
+            </div>
+
+            <div className='col-span-4'>Course:</div>
+            <div className='col-span-8 text-primary'>
+              {auth.data?.profile?.course}
+            </div>
+          </>
+        )}
 
         <div className='col-span-4'>Email:</div>
         <div className='col-span-8 text-primary'>{auth.data?.email}</div>
+
+        <div className='col-span-4'>Mobile:</div>
+        <div className='col-span-8 text-primary'>
+          {auth.data?.profile?.mobile}
+        </div>
 
         <div className='col-span-4'>Reg Date:</div>
         <div className='col-span-8 text-primary'>
@@ -186,4 +219,4 @@ const LibrarianProfile = () => {
   );
 };
 
-export default LibrarianProfile;
+export default StudentProfile;
