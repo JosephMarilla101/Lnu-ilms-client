@@ -18,11 +18,60 @@ type Book = {
   category: { id: number; name: string }[];
 };
 
+type LateFee = {
+  initialFee: number;
+  followingDateFee: number;
+};
+
+type UnreturnedBook = {
+  book: Book;
+  isReturn: true;
+  dueDate: Date;
+};
+
+type BookRequestResponse = {
+  book: Book;
+  isApproved: boolean;
+  requestDate: Date;
+  updatedAt: Date;
+};
+
+type InfiniteQueryBookList = [{ id: number }];
+
+export type IssuedBooks = {
+  id: number;
+  isbn: string;
+  bookName: string;
+  bookCover?: string;
+  studentId: string;
+  dueDate: string;
+  returnedDate: Date;
+  isReturn: boolean;
+  lateFee: number;
+};
+
+type ErrorResponse = {
+  message?: string;
+};
+
 export const useGetBook = (id: number): UseQueryResult<Book> => {
   const getBook = () => request({ url: `/book/?id=${id}` });
   return useQuery(['book', id], getBook, {
     onError: (error: ErrorResponse) => error,
   });
+};
+
+export type RequestedBook = {
+  id: number;
+  bookId: number;
+  bookName: string;
+  bookCover?: string;
+  copies: number;
+  isbn: string;
+  studentId: string;
+  borrowerId: number;
+  isApproved: boolean;
+  requestDate: Date;
 };
 
 const createBook = (data: {
@@ -132,34 +181,12 @@ export const useDeleteBorrowedBook = () => {
   });
 };
 
-type LateFee = {
-  initialFee: number;
-  followingDateFee: number;
-};
-
 const getBookLateFee = () => request({ url: '/book/late_fee' });
 
 export const useGetBookLateFee = (): UseQueryResult<LateFee> =>
   useQuery(['book', 'latefee'], getBookLateFee, {
     onError: (error: ErrorResponse) => error,
   });
-
-type ErrorResponse = {
-  message?: string;
-};
-
-export type RequestedBook = {
-  id: number;
-  bookId: number;
-  bookName: string;
-  bookCover?: string;
-  copies: number;
-  isbn: string;
-  studentId: string;
-  borrowerId: number;
-  isApproved: boolean;
-  requestDate: Date;
-};
 
 const getALLRequestedBooks = () => request({ url: '/book/requested/all' });
 
@@ -168,26 +195,12 @@ export const useGetALLRequestedBooks = (): UseQueryResult<RequestedBook[]> =>
     onError: (error: ErrorResponse) => error,
   });
 
-export type IssuedBooks = {
-  id: number;
-  isbn: string;
-  bookName: string;
-  bookCover?: string;
-  studentId: string;
-  dueDate: string;
-  returnedDate: Date;
-  isReturn: boolean;
-  lateFee: number;
-};
-
 const getAllIssuedBooks = () => request({ url: '/book/issued/all' });
 
 export const useGetAllIssuedBooks = (): UseQueryResult<IssuedBooks[]> =>
   useQuery(['books', 'issued', 'all'], getAllIssuedBooks, {
     onError: (error: ErrorResponse) => error,
   });
-
-type InfiniteQueryBookList = [{ id: number }];
 
 const fetchBookList = ({
   pageParam = undefined,
@@ -228,23 +241,11 @@ export const useRequestBook = () => {
     onError: (error: ErrorResponse) => error,
   });
 };
-type BookRequestResponse = {
-  book: Book;
-  isApproved: boolean;
-  requestDate: Date;
-  updatedAt: Date;
-};
 
 const getRequestedBook = () => request({ url: '/book/requested' });
 
 export const useGetRequestedBook = (): UseQueryResult<BookRequestResponse> =>
   useQuery(['book', 'requested'], getRequestedBook);
-
-type UnreturnedBook = {
-  book: Book;
-  isReturn: true;
-  dueDate: Date;
-};
 
 const getUnreturnedBook = () => request({ url: '/book/unreturned' });
 

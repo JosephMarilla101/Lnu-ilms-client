@@ -6,6 +6,58 @@ import {
 } from '@tanstack/react-query';
 import { request } from '@/lib/axios-interceptor';
 
+export type User = {
+  id: number;
+  role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT' | 'TEACHER' | 'GRADUATE';
+  email: string;
+  username?: string;
+  profile?: Profile;
+  status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+type Profile = {
+  id: number;
+  fullname?: string;
+  profilePhoto?: string;
+  profilePhotoId?: string;
+  department?: string;
+  course?: string;
+  college?: string;
+  mobile?: string;
+  userId: number;
+};
+
+type Book = {
+  id: number;
+  isbn: string;
+  name: string;
+  bookCover?: string;
+  copies: number;
+  author: { id: number; name: string };
+  category: { id: number; name: string }[];
+};
+
+export type IssuedBook = {
+  id: number;
+  isbn: string;
+  bookName: string;
+  bookCover?: string;
+  studentId: string;
+  dueDate: string;
+  returnedDate: Date;
+  isReturn: boolean;
+  lateFee: number;
+  createdAt: Date;
+  updatedAt: Date;
+  book: Book;
+};
+
+type StudentWithBorrowedBook = User & {
+  borrowedBooks: IssuedBook[];
+};
+
 const studentRegistration = (data: {
   studentId: string;
   email: string;
@@ -54,54 +106,37 @@ export const useTeacherRegistration = () => {
   });
 };
 
-export type Student = {
-  id: number;
-  studentId: number;
+const librarianRegistration = (data: {
+  id: string;
   email: string;
+  username: string;
   fullname: string;
-  profilePhoto: string | null;
-  profilePhotoId: string | null;
-  course: string;
-  college: string;
   mobile: string;
-  status: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
+  password: string;
+  password_confirmation: string;
+}) => request({ url: '/user/register/librarian', method: 'post', data });
 
-type Book = {
-  id: number;
-  isbn: string;
-  name: string;
-  bookCover?: string;
-  copies: number;
-  author: { id: number; name: string };
-  category: { id: number; name: string }[];
-};
-
-export type IssuedBook = {
-  id: number;
-  isbn: string;
-  bookName: string;
-  bookCover?: string;
-  studentId: string;
-  dueDate: string;
-  returnedDate: Date;
-  isReturn: boolean;
-  lateFee: number;
-  createdAt: Date;
-  updatedAt: Date;
-  book: Book;
-};
-
-type StudentWithBorrowedBook = Student & {
-  borrowedBooks: IssuedBook[];
+export const useLibrarianRegistration = () => {
+  const queryClient = useQueryClient();
+  return useMutation(librarianRegistration, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['librarian', 'all']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
 };
 
 const getALLStudents = () => request({ url: '/user/all' });
 
-export const useGetALLStudents = (): UseQueryResult<Student[]> =>
+export const useGetALLStudents = (): UseQueryResult<User[]> =>
   useQuery(['student', 'all'], getALLStudents, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const getALLLibrarians = () => request({ url: '/librarian/all' });
+
+export const useGetALLLibrarians = (): UseQueryResult<User[]> =>
+  useQuery(['librarian', 'all'], getALLLibrarians, {
     onError: (error: ErrorResponse) => error,
   });
 
@@ -116,12 +151,12 @@ export const useGetStudentBorrowedBooks = (
   });
 };
 
-const suspendStudent = (data: { id: number }) =>
+const suspendUser = (data: { id: number }) =>
   request({ url: '/user/suspend', method: 'post', data });
 
-export const useSuspendStudent = () => {
+export const useSuspendUser = () => {
   const queryClient = useQueryClient();
-  return useMutation(suspendStudent, {
+  return useMutation(suspendUser, {
     onSuccess: () => {
       queryClient.invalidateQueries(['student', 'all']);
     },
@@ -129,12 +164,12 @@ export const useSuspendStudent = () => {
   });
 };
 
-const unsuspendStudent = (data: { id: number }) =>
+const unsuspendUser = (data: { id: number }) =>
   request({ url: '/user/unsuspend', method: 'post', data });
 
-export const useUnsuspendStudent = () => {
+export const useUnsuspendUser = () => {
   const queryClient = useQueryClient();
-  return useMutation(unsuspendStudent, {
+  return useMutation(unsuspendUser, {
     onSuccess: () => {
       queryClient.invalidateQueries(['student', 'all']);
     },

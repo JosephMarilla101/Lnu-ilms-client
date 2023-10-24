@@ -12,7 +12,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
-import { useUpdateProfile } from '@/hooks/useLibrarian';
+import { useUpdateProfile } from '@/hooks/useUser';
 import { useAuthenticateUser } from '@/hooks/useAuth';
 
 type UpdateDialogProps = {

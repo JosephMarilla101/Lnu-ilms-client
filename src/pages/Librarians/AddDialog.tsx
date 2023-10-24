@@ -12,7 +12,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
-import { useLibrarianRegistration } from '@/hooks/useLibrarian';
+import { useLibrarianRegistration } from '@/hooks/useUser';
 import { AlertTriangle } from 'lucide-react';
 
 type AddDialogProps = {
@@ -24,7 +24,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
-    employeeId: '',
+    id: '',
     email: '',
     username: '',
     fullname: '',
@@ -44,7 +44,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
       registerLibrarian.reset();
       setOpen(false);
       setFormData({
-        employeeId: '',
+        id: '',
         email: '',
         username: '',
         fullname: '',
@@ -85,7 +85,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                   }));
                 }}
                 placeholder='Enter Employee ID'
-                value={formData.employeeId}
+                value={formData.id}
                 name='employeeId'
               />
             </div>

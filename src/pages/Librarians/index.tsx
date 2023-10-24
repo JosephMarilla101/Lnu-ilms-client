@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/select';
 import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
-import { useGetALLLibrarians } from '@/hooks/useLibrarian';
+import { useGetALLLibrarians } from '@/hooks/useUser';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';

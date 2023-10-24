@@ -9,43 +9,39 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal, ShieldAlert, ShieldCheck } from 'lucide-react';
-import {
-  Librarian,
-  useSuspendLibrarian,
-  useUnsuspendLibrarian,
-} from '@/hooks/useLibrarian';
+import { User, useSuspendUser, useUnsuspendUser } from '@/hooks/useUser';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
 
 const ColumnsFunction = () => {
-  const suspendLibrarian = useSuspendLibrarian();
-  const unsuspendLibrarian = useUnsuspendLibrarian();
+  const suspendUser = useSuspendUser();
+  const unsuspendUser = useUnsuspendUser();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (suspendLibrarian.isSuccess) {
-      suspendLibrarian.reset();
+    if (suspendUser.isSuccess) {
+      suspendUser.reset();
       toast({
         variant: 'default',
         title: 'Success!',
         description: 'Librarian suspended successfully.',
       });
     }
-  }, [suspendLibrarian, suspendLibrarian.isSuccess, toast]);
+  }, [suspendUser, suspendUser.isSuccess, toast]);
 
   useEffect(() => {
-    if (unsuspendLibrarian.isSuccess) {
-      unsuspendLibrarian.reset();
+    if (unsuspendUser.isSuccess) {
+      unsuspendUser.reset();
       toast({
         variant: 'default',
         title: 'Success!',
         description: 'Librarian unsuspended successfully.',
       });
     }
-  }, [unsuspendLibrarian, unsuspendLibrarian.isSuccess, toast]);
+  }, [unsuspendUser, unsuspendUser.isSuccess, toast]);
 
-  const columns: ColumnDef<Librarian>[] = [
+  const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'employeeId',
       header: ({ column }) => (
@@ -112,7 +108,7 @@ const ColumnsFunction = () => {
                 {row.original.status ? (
                   <DropdownMenuItem
                     onClick={() => {
-                      suspendLibrarian.mutate({ id: row.original.id });
+                      suspendUser.mutate({ id: row.original.id });
                     }}
                     className='text-red-600'
                   >
@@ -122,7 +118,7 @@ const ColumnsFunction = () => {
                 ) : (
                   <DropdownMenuItem
                     onClick={() => {
-                      unsuspendLibrarian.mutate({ id: row.original.id });
+                      unsuspendUser.mutate({ id: row.original.id });
                     }}
                     className='text-green-600'
                   >
