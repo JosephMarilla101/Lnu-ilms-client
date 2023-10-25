@@ -33,6 +33,10 @@ const LibrarianForm = () => {
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+    },
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
