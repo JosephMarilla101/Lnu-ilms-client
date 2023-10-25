@@ -17,7 +17,7 @@ import { AlertTriangle } from 'lucide-react';
 import { useEffect } from 'react';
 
 const FormSchema = z.object({
-  studentId: z
+  id: z
     .string()
     .min(4, {
       message: 'Student ID must be at least 4 characters.',
@@ -39,7 +39,7 @@ const SignupForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      studentId: '',
+      id: '',
       fullname: '',
       mobile: '',
       email: '',
@@ -68,7 +68,7 @@ const SignupForm = () => {
         <div className='col-span-12 md:col-span-6 space-y-4'>
           <FormField
             control={form.control}
-            name='studentId'
+            name='id'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Student ID</FormLabel>

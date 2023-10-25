@@ -24,7 +24,7 @@ import { AlertTriangle } from 'lucide-react';
 import { useEffect } from 'react';
 
 const FormSchema = z.object({
-  employeeId: z
+  id: z
     .string()
     .min(4, {
       message: 'Employee ID must be at least 4 characters.',
@@ -41,7 +41,19 @@ const FormSchema = z.object({
     .min(1, 'Password confirmation is required.'),
 });
 
-const departmenteSelection = ['CAS', 'CME', 'COE'];
+const departmentSelection = [
+  'English Unit',
+  'Filipino Unit',
+  'HAE Unit',
+  'HRM & THRM Unit',
+  'IT UNIT',
+  'MAPEH UNIT',
+  'MATH UNIT',
+  'PROFED UNIT',
+  'SCIENCE UNIT',
+  'SOCIAL SCIENCE UNIT',
+  'SOCIAL WORK UNIT',
+];
 
 const SignupForm = () => {
   const register = useTeacherRegistration();
@@ -49,7 +61,7 @@ const SignupForm = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      employeeId: '',
+      id: '',
       fullname: '',
       department: '',
       mobile: '',
@@ -60,6 +72,7 @@ const SignupForm = () => {
   });
 
   const onSubmit = (data: z.infer<typeof FormSchema>) => {
+    console.log(data);
     register.mutate(data);
   };
 
@@ -79,7 +92,7 @@ const SignupForm = () => {
         <div className='col-span-12 md:col-span-6 space-y-4'>
           <FormField
             control={form.control}
-            name='employeeId'
+            name='id'
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Employee ID</FormLabel>
@@ -122,7 +135,7 @@ const SignupForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {departmenteSelection.map((department, i) => {
+                    {departmentSelection.map((department, i) => {
                       return (
                         <SelectItem value={department} key={i}>
                           {department}

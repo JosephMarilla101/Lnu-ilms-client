@@ -59,7 +59,7 @@ type StudentWithBorrowedBook = User & {
 };
 
 const studentRegistration = (data: {
-  studentId: string;
+  id: string;
   email: string;
   fullname: string;
   course: string;
@@ -76,7 +76,7 @@ export const useStudentRegistration = () => {
 };
 
 const graduateRegistration = (data: {
-  studentId: string;
+  id: string;
   email: string;
   fullname: string;
   mobile: string;
@@ -91,7 +91,7 @@ export const useGraduateRegistration = () => {
 };
 
 const teacherRegistration = (data: {
-  employeeId: string;
+  id: string;
   email: string;
   fullname: string;
   department: string;
@@ -126,17 +126,17 @@ export const useLibrarianRegistration = () => {
   });
 };
 
-const getALLStudents = () => request({ url: '/user/all' });
+const getALLStudents = () => request({ url: '/user/all_students' });
 
 export const useGetALLStudents = (): UseQueryResult<User[]> =>
-  useQuery(['student', 'all'], getALLStudents, {
+  useQuery(['user', 'all'], getALLStudents, {
     onError: (error: ErrorResponse) => error,
   });
 
-const getALLLibrarians = () => request({ url: '/librarian/all' });
+const getALLLibrarians = () => request({ url: '/user/all_librarians' });
 
 export const useGetALLLibrarians = (): UseQueryResult<User[]> =>
-  useQuery(['librarian', 'all'], getALLLibrarians, {
+  useQuery(['user', 'all'], getALLLibrarians, {
     onError: (error: ErrorResponse) => error,
   });
 
@@ -158,7 +158,7 @@ export const useSuspendUser = () => {
   const queryClient = useQueryClient();
   return useMutation(suspendUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['student', 'all']);
+      queryClient.invalidateQueries(['user', 'all']);
     },
     onError: (error: ErrorResponse) => error,
   });
@@ -171,7 +171,7 @@ export const useUnsuspendUser = () => {
   const queryClient = useQueryClient();
   return useMutation(unsuspendUser, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['student', 'all']);
+      queryClient.invalidateQueries(['user', 'all']);
     },
     onError: (error: ErrorResponse) => error,
   });

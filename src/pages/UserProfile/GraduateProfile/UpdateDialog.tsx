@@ -29,7 +29,6 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
     fullname: auth.data?.profile?.fullname ?? '',
     email: auth.data?.email ?? '',
     mobile: auth.data?.profile?.mobile ?? '',
-    username: auth.data?.username ?? '',
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -73,7 +72,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
             </DialogDescription>
           </DialogHeader>
           <div className='my-3 mt-5 grid grid-cols-12 gap-2'>
-            <div className='col-span-12 sm:col-span-6'>
+            <div className='col-span-12'>
               <Label
                 htmlFor='fulllname'
                 className='text-sm col-span-3 text-gray-700'
@@ -89,28 +88,6 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
                   setFormData((prev) => ({
                     ...prev,
                     fullname: e.target.value,
-                  }));
-                }}
-                className='mt-1'
-              />
-            </div>
-
-            <div className='col-span-12 sm:col-span-6'>
-              <Label
-                htmlFor='username'
-                className='text-sm col-span-3 text-gray-700'
-              >
-                Username:
-              </Label>
-
-              <Input
-                placeholder='Enter Username'
-                name='username'
-                value={formData.username}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    username: e.target.value,
                   }));
                 }}
                 className='mt-1'

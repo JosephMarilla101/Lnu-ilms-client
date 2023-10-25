@@ -75,6 +75,14 @@ const SidebarLayout = () => {
             <MenuItem icon={<Users2 />} component={<NavLink to='/students' />}>
               Students
             </MenuItem>
+
+            <MenuItem icon={<Users2 />} component={<NavLink to='/graduates' />}>
+              Graduates
+            </MenuItem>
+
+            <MenuItem icon={<Users2 />} component={<NavLink to='/teacher' />}>
+              Teacher
+            </MenuItem>
             {auth.data?.role === 'ADMIN' && (
               <MenuItem
                 icon={<Users2 />}

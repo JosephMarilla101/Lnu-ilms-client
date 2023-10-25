@@ -94,9 +94,9 @@ const LibrarianProfile = () => {
 
   return (
     <div className='container max-w-3xl mx-auto py-5 flex flex-col justify-center items-center'>
-      <div className='w-full flex flex-row'>
+      <div className='w-full flex flex-col items-center sm:flex-row'>
         <div className='relative w-fit p-1 bg-secondary rounded-full'>
-          <Avatar className='w-[150px] h-[150px]'>
+          <Avatar className='w-[120px] h-[120px] sm:w-[150px] sm:h-[150px]'>
             <AvatarImage
               src={auth.data?.profile?.profilePhoto ?? ''}
               alt='Profile Photo'
@@ -137,13 +137,13 @@ const LibrarianProfile = () => {
           />
         </div>
 
-        <div className='flex flex-col justify-center gap-1 pl-4'>
+        <div className='flex flex-col justify-center text-center sm:text-left gap-1 pl-4'>
           <h1 className='font-semibold text-slate-700 text-3xl'>
             {auth.data?.username}
           </h1>
           <span>{`(${auth.data?.email})`}</span>
 
-          <div className='flex flex-row gap-2 mt-1'>
+          <div className='flex flex-col sm:flex-row gap-2 mt-1'>
             <UpdateDialog>
               <Button size={'sm'} className='w-[150px]'>
                 Edit Profile

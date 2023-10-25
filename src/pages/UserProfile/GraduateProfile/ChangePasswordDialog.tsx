@@ -12,149 +12,129 @@ import { useToast } from '@/components/ui/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
-import { useUpdateProfile } from '@/hooks/useUser';
-import { useAuthenticateUser } from '@/hooks/useAuth';
+import { useChangePassword } from '@/hooks/useUser';
 
-type UpdateDialogProps = {
+type ChangePasswordDialogProps = {
   children: React.ReactNode;
 };
 
-const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
+const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
+  children,
+}) => {
   const [open, setOpen] = useState(false);
 
-  const updateProfile = useUpdateProfile();
-  const auth = useAuthenticateUser();
+  const changePassword = useChangePassword();
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    fullname: auth.data?.profile?.fullname ?? '',
-    email: auth.data?.email ?? '',
-    mobile: auth.data?.profile?.mobile ?? '',
-    username: auth.data?.username ?? '',
+    current_password: '',
+    new_password: '',
+    password_confirmation: '',
   });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    updateProfile.mutate(formData);
+    changePassword.mutate(formData);
   };
 
   useEffect(() => {
-    if (updateProfile.isSuccess) {
-      updateProfile.reset();
+    if (changePassword.isSuccess) {
+      changePassword.reset();
 
       setOpen(false);
       toast({
         variant: 'default',
         title: 'Success!',
-        description: 'Profile updated successfully.',
+        description: 'Password change successfully.',
       });
     }
 
-    if (updateProfile.isError) {
-      updateProfile.reset();
+    if (changePassword.isError) {
+      changePassword.reset();
 
       toast({
         variant: 'destructive',
         title: 'Error!',
-        description: updateProfile.error.message,
+        description: changePassword.error.message,
       });
     }
-  }, [toast, updateProfile]);
+  }, [toast, changePassword]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className=''>
+      <DialogContent className='max-w-sm'>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Update Profile</DialogTitle>
+            <DialogTitle>Change Account Password</DialogTitle>
             <DialogDescription>
-              Update your profile information here. Click save when you're done.
+              Change your account password here. Click save when you're done.
             </DialogDescription>
           </DialogHeader>
           <div className='my-3 mt-5 grid grid-cols-12 gap-2'>
-            <div className='col-span-12 sm:col-span-6'>
+            <div className='col-span-12'>
               <Label
-                htmlFor='fulllname'
+                htmlFor='current_password'
                 className='text-sm col-span-3 text-gray-700'
               >
-                Full Name:
+                Current Password:
               </Label>
 
               <Input
-                placeholder='Enter Full Name'
-                name='fulllname'
-                value={formData.fullname}
+                placeholder='Enter Current Password'
+                name='current_password'
+                autoComplete='off'
+                value={formData.current_password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setFormData((prev) => ({
                     ...prev,
-                    fullname: e.target.value,
+                    current_password: e.target.value,
                   }));
                 }}
                 className='mt-1'
               />
             </div>
 
-            <div className='col-span-12 sm:col-span-6'>
+            <div className='col-span-12'>
               <Label
-                htmlFor='username'
+                htmlFor='new_password'
                 className='text-sm col-span-3 text-gray-700'
               >
-                Username:
+                New Password:
               </Label>
 
               <Input
-                placeholder='Enter Username'
-                name='username'
-                value={formData.username}
+                placeholder='Enter New Password'
+                name='new_password'
+                autoComplete='off'
+                value={formData.new_password}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setFormData((prev) => ({
                     ...prev,
-                    username: e.target.value,
+                    new_password: e.target.value,
                   }));
                 }}
                 className='mt-1'
               />
             </div>
 
-            <div className='col-span-12 sm:col-span-6'>
+            <div className='col-span-12'>
               <Label
-                htmlFor='email'
+                htmlFor='password_confirmation'
                 className='text-sm col-span-3 text-gray-700'
               >
-                Email:
+                Confirm Password:
               </Label>
 
               <Input
-                placeholder='Enter Email Address'
-                name='email'
-                value={formData.email}
+                placeholder='Confirm Password'
+                name='password_confirmation'
+                autoComplete='off'
+                value={formData.password_confirmation}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                   setFormData((prev) => ({
                     ...prev,
-                    email: e.target.value,
-                  }));
-                }}
-                className='mt-1'
-              />
-            </div>
-
-            <div className='col-span-12 sm:col-span-6'>
-              <Label
-                htmlFor='mobile'
-                className='text-sm col-span-3 text-gray-700'
-              >
-                Mobile #:
-              </Label>
-
-              <Input
-                placeholder='Enter Mobile #'
-                name='mobile'
-                value={formData.mobile}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    mobile: e.target.value,
+                    password_confirmation: e.target.value,
                   }));
                 }}
                 className='mt-1'
@@ -163,7 +143,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
           </div>
 
           <DialogFooter>
-            <Button type='submit' loading={updateProfile.isLoading}>
+            <Button type='submit' loading={changePassword.isLoading}>
               Save changes
             </Button>
           </DialogFooter>
@@ -173,4 +153,4 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
   );
 };
 
-export default UpdateDialog;
+export default ChangePasswordDialog;

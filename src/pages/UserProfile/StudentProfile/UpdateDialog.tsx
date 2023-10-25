@@ -98,7 +98,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
             </DialogDescription>
           </DialogHeader>
           <div className='my-3 mt-5 grid grid-cols-12 gap-2'>
-            <div className='col-span-6'>
+            <div className='col-span-12'>
               <Label
                 htmlFor='fulllname'
                 className='text-sm col-span-3 text-gray-700'
@@ -120,9 +120,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
               />
             </div>
 
-            <div className='col-span-6'></div>
-
-            <div className='col-span-6'>
+            <div className='col-span-12 sm:col-span-6'>
               <Label
                 htmlFor='email'
                 className='text-sm col-span-3 text-gray-700'
@@ -144,7 +142,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
               />
             </div>
 
-            <div className='col-span-6'>
+            <div className='col-span-12 sm:col-span-6'>
               <Label
                 htmlFor='course'
                 className='text-sm col-span-3 text-gray-700'
@@ -176,7 +174,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
               </Select>
             </div>
 
-            <div className='col-span-6'>
+            <div className='col-span-12 sm:col-span-6'>
               <Label
                 htmlFor='mobile'
                 className='text-sm col-span-3 text-gray-700'
@@ -198,7 +196,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
               />
             </div>
 
-            <div className='col-span-6'>
+            <div className='col-span-12 sm:col-span-6'>
               <Label
                 htmlFor='college'
                 className='text-sm col-span-3 text-gray-700'

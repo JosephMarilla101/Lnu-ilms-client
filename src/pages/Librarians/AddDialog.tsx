@@ -81,7 +81,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                 onChange={(e) => {
                   setFormData((prev) => ({
                     ...prev,
-                    employeeId: e.target.value,
+                    id: e.target.value,
                   }));
                 }}
                 placeholder='Enter Employee ID'
