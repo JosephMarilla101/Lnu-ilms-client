@@ -7,8 +7,12 @@ import BookEdit from '@/pages/BookEdit';
 import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
+import Graduates from '@/pages/Graduates';
+import Teachers from '@/pages/Teachers';
 import LibrarianProfile from '@/pages/UserProfile/LibrarianProfile';
 import StudentHistory from '@/pages/StudentHistory';
+import GraduateHistory from '@/pages/GraduateHistory';
+import TeacherHistory from '@/pages/TeacherHistory';
 
 const LibrarianRoutes = () => {
   return {
@@ -48,8 +52,24 @@ const LibrarianRoutes = () => {
         element: <Students />,
       },
       {
+        path: 'graduates',
+        element: <Graduates />,
+      },
+      {
+        path: 'teachers',
+        element: <Teachers />,
+      },
+      {
         path: 'student/history/:id',
         element: <StudentHistory />,
+      },
+      {
+        path: 'graduate/history/:id',
+        element: <GraduateHistory />,
+      },
+      {
+        path: 'teacher/history/:id',
+        element: <TeacherHistory />,
       },
       {
         path: 'profile',
