@@ -17,7 +17,7 @@ const SidebarLayout = () => {
 
   return (
     <Sidebar
-      className='h-full text-white'
+      className='h-full max-h-[calc(100vh - 5rem)]max-h-screen text-white'
       breakPoint='md'
       onBackdropClick={() => setToggled(false)}
       toggled={toggled}
@@ -80,8 +80,8 @@ const SidebarLayout = () => {
               Graduates
             </MenuItem>
 
-            <MenuItem icon={<Users2 />} component={<NavLink to='/teacher' />}>
-              Teacher
+            <MenuItem icon={<Users2 />} component={<NavLink to='/teachers' />}>
+              Teachers
             </MenuItem>
             {auth.data?.role === 'ADMIN' && (
               <MenuItem

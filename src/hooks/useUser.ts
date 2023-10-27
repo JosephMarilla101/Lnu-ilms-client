@@ -133,6 +133,20 @@ export const useGetALLStudents = (): UseQueryResult<User[]> =>
     onError: (error: ErrorResponse) => error,
   });
 
+const getAllGraduates = () => request({ url: '/user/all_graduates' });
+
+export const useGetAllGraduates = (): UseQueryResult<User[]> =>
+  useQuery(['user', 'all'], getAllGraduates, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const getAllTeachers = () => request({ url: '/user/all_teachers' });
+
+export const useGetAllTeachers = (): UseQueryResult<User[]> =>
+  useQuery(['user', 'all'], getAllTeachers, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 const getALLLibrarians = () => request({ url: '/user/all_librarians' });
 
 export const useGetALLLibrarians = (): UseQueryResult<User[]> =>

@@ -3,7 +3,7 @@ import DataTable from '@/components/DataTable';
 import { useParams } from 'react-router-dom';
 import { useGetStudentBorrowedBooks } from '@/hooks/useUser';
 
-export default function StudentHistory() {
+export default function GraduateHistory() {
   const { id } = useParams();
   const borrowedBooks = useGetStudentBorrowedBooks(id);
   const columns = ColumnsFunction();
@@ -17,7 +17,7 @@ export default function StudentHistory() {
       </h1>
       <span className='block text-center text-secondary mb-4'>
         #{borrowedBooks.data?.profile?.id} {borrowedBooks.data?.profile?.course}
-        ({borrowedBooks.data?.profile?.college})
+        (GRADUATE)
       </span>
 
       <h2 className='hidden md:block -mb-14 text-primary text-lg'>
