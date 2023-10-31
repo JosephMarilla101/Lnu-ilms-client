@@ -1,7 +1,7 @@
 import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
 import { useParams } from 'react-router-dom';
-import { useGetStudentBorrowedBooks } from '@/hooks/useStudent';
+import { useGetStudentBorrowedBooks } from '@/hooks/useUser';
 
 export default function StudentHistory() {
   const { id } = useParams();
@@ -13,15 +13,15 @@ export default function StudentHistory() {
   return (
     <div className='container mx-auto py-10'>
       <h1 className='text-primary text-2xl font-medium text-center'>
-        {borrowedBooks.data?.fullname}
+        {borrowedBooks.data?.profile?.fullname}
       </h1>
       <span className='block text-center text-secondary mb-4'>
-        #{borrowedBooks.data?.studentId} {borrowedBooks.data?.course}(
-        {borrowedBooks.data?.college})
+        #{borrowedBooks.data?.profile?.id} {borrowedBooks.data?.profile?.course}
+        ({borrowedBooks.data?.profile?.college})
       </span>
 
       <h2 className='hidden md:block -mb-14 text-primary text-lg'>
-        #{borrowedBooks.data?.studentId} BOOK ISSUED HISTORY
+        #{borrowedBooks.data?.profile?.id} BOOK ISSUED HISTORY
       </h2>
 
       <DataTable

@@ -52,7 +52,7 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
           <DropdownMenuTrigger asChild>
             <div className='bg-secondary p-[2px] rounded-full cursor-pointer'>
               <Avatar className='text-sm h-[47px] w-[47px] text-black'>
-                <AvatarImage src={auth.data?.profilePhoto ?? ''} />
+                <AvatarImage src={auth.data?.profile?.profilePhoto ?? ''} />
                 <AvatarFallback>DP</AvatarFallback>
               </Avatar>
             </div>
@@ -62,12 +62,13 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
             className='w-[220px] absolute -right-5'
           >
             <DropdownMenuLabel>
-              {auth.data?.role !== 'STUDENT' ? (
+              {auth.data?.role === 'ADMIN' ||
+              auth.data?.role === 'LIBRARIAN' ? (
                 <p className='truncate'>{`${'(' + auth.data?.username + ')'} ${
                   auth.data?.email
                 }`}</p>
               ) : (
-                <p className='truncate'>{auth.data.email}</p>
+                <p className='truncate'>{auth?.data?.email}</p>
               )}
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

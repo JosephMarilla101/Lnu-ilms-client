@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/select';
 import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
-import { useGetALLStudents } from '@/hooks/useStudent';
+import { useGetALLStudents } from '@/hooks/useUser';
 import { useState } from 'react';
 import useTableDialog from '@/context/useTableDialog';
 import ApproveDialog from './ApproveDialog';

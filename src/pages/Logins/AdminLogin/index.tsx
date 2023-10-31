@@ -11,7 +11,7 @@ const AdminLogin = () => {
 
       <div className='col-span-12 md:col-span-6 flex flex-col items-center justify-center px-2'>
         <img src={ilmslogo} alt='ILMS logo' className='w-[200px]' />
-        <h1 className='font-semibold text-xl text-slate-700 my-3'>
+        <h1 className='font-semibold text-xl text-secondary my-3'>
           Admin Login
         </h1>
 

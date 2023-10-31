@@ -2,6 +2,7 @@ import headerlogo from '@/assets/headerlogo.png';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import RoleDialog from './RoleDialog';
 
 type NavbarProps = {
   className?: string;
@@ -30,15 +31,12 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
         >
           Home
         </Button>
-        <Button
-          onClick={() => {
-            navigate('/signup');
-          }}
-          variant={'link'}
-          className='text-white'
-        >
-          Create Account
-        </Button>
+
+        <RoleDialog>
+          <Button variant={'link'} className='text-white'>
+            Create Account
+          </Button>
+        </RoleDialog>
       </div>
     </div>
   );

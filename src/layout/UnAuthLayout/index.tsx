@@ -6,7 +6,7 @@ const UnAuthLayout = () => {
     <>
       <Navbar className='h-20' />
 
-      <div className='h-[calc(100vh-5rem)] overflow-y-auto'>
+      <div className='h-[calc(100vh-5rem)]'>
         <Outlet />
       </div>
     </>

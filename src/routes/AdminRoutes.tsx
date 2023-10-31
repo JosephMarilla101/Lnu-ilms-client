@@ -7,9 +7,13 @@ import BookEdit from '@/pages/BookEdit';
 import BookRequest from '@/pages/BookRequest';
 import IssuedBooks from '@/pages/IssuedBooks';
 import Students from '@/pages/Students';
+import Graduates from '@/pages/Graduates';
+import Teachers from '@/pages/Teachers';
 import Librarians from '@/pages/Librarians';
-import AdminProfile from '@/pages/AdminProfile';
+import AdminProfile from '@/pages/UserProfile/AdminProfile';
 import StudentHistory from '@/pages/StudentHistory';
+import GraduateHistory from '@/pages/GraduateHistory';
+import TeacherHistory from '@/pages/TeacherHistory';
 
 const AdminRoutes = () => {
   return {
@@ -49,8 +53,24 @@ const AdminRoutes = () => {
         element: <Students />,
       },
       {
+        path: 'graduates',
+        element: <Graduates />,
+      },
+      {
+        path: 'teachers',
+        element: <Teachers />,
+      },
+      {
         path: 'student/history/:id',
         element: <StudentHistory />,
+      },
+      {
+        path: 'graduate/history/:id',
+        element: <GraduateHistory />,
+      },
+      {
+        path: 'teacher/history/:id',
+        element: <TeacherHistory />,
       },
       {
         path: 'librarians',

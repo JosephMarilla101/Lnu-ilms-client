@@ -9,7 +9,7 @@ const BaseLayout = () => {
   return (
     <>
       <Navbar className='h-20' />
-      <div className='relative flex min-h-screen bg-[#F2F3F6]'>
+      <div className='relative flex'>
         <div className='md:fixed h-full'>
           <Sidebar />
         </div>
@@ -17,7 +17,7 @@ const BaseLayout = () => {
         <div
           className={`flex-1 ${
             collapsed ? 'md:ml-[80px]' : 'md:ml-[250px]'
-          } transition-all duration-300 ease-in-out `}
+          } transition-all duration-300 ease-in-out`}
         >
           <Suspense fallback={<>Please wait....</>}>
             <Outlet />

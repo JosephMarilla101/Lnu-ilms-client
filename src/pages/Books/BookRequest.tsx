@@ -12,7 +12,7 @@ import {
 } from '@/hooks/useBook';
 import { useAuthenticateUser } from '@/hooks/useAuth';
 import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
-import { X } from 'lucide-react';
+import { X, ImageOff } from 'lucide-react';
 
 const BookRequest = () => {
   const getRequestedBook = useGetRequestedBook();
@@ -84,6 +84,9 @@ const BookRequest = () => {
               alt=''
               className='absolute rounded-sm w-full h-full inset-0 object-cover'
             />
+            {!getUnreturnedBook.data?.book.bookCover && (
+              <ImageOff className='text-primary absolute right-[75px] top-[100px]' />
+            )}
           </div>
 
           <div className='flex-1 mt-1 flex flex-col'>
@@ -172,6 +175,9 @@ const BookRequest = () => {
             alt=''
             className='absolute rounded-sm w-full h-full inset-0 object-cover'
           />
+          {!getRequestedBook.data?.book.bookCover && (
+            <ImageOff className='text-primary absolute right-[75px] top-[100px]' />
+          )}
         </div>
 
         <div className='flex-1 mt-1 flex flex-col'>

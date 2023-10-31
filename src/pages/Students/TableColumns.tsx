@@ -9,11 +9,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { ColumnDef } from '@tanstack/react-table';
 import { Info, MoreHorizontal, ShieldAlert, ShieldCheck } from 'lucide-react';
-import {
-  Student,
-  useSuspendStudent,
-  useUnsuspendStudent,
-} from '@/hooks/useStudent';
+import { User, useSuspendUser, useUnsuspendUser } from '@/hooks/useUser';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
@@ -22,34 +18,34 @@ import { useNavigate } from 'react-router-dom';
 
 const ColumnsFunction = () => {
   // const { setId, setAction } = useTableDialog();
-  const suspendStudent = useSuspendStudent();
-  const unsuspendStudent = useUnsuspendStudent();
+  const suspendUser = useSuspendUser();
+  const unsuspendUser = useUnsuspendUser();
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    if (suspendStudent.isSuccess) {
-      suspendStudent.reset();
+    if (suspendUser.isSuccess) {
+      suspendUser.reset();
       toast({
         variant: 'default',
         title: 'Success!',
         description: 'Student suspended successfully.',
       });
     }
-  }, [suspendStudent, suspendStudent.isSuccess, toast]);
+  }, [suspendUser, suspendUser.isSuccess, toast]);
 
   useEffect(() => {
-    if (unsuspendStudent.isSuccess) {
-      unsuspendStudent.reset();
+    if (unsuspendUser.isSuccess) {
+      unsuspendUser.reset();
       toast({
         variant: 'default',
         title: 'Success!',
         description: 'Student unsuspended successfully.',
       });
     }
-  }, [unsuspendStudent, unsuspendStudent.isSuccess, toast]);
+  }, [unsuspendUser, unsuspendUser.isSuccess, toast]);
 
-  const columns: ColumnDef<Student>[] = [
+  const columns: ColumnDef<User>[] = [
     {
       accessorKey: 'studentId',
       header: ({ column }) => (
@@ -129,7 +125,7 @@ const ColumnsFunction = () => {
                 {row.original.status ? (
                   <DropdownMenuItem
                     onClick={() => {
-                      suspendStudent.mutate({ id: row.original.id });
+                      suspendUser.mutate({ id: row.original.id });
                     }}
                     className='text-red-600'
                   >
@@ -139,7 +135,7 @@ const ColumnsFunction = () => {
                 ) : (
                   <DropdownMenuItem
                     onClick={() => {
-                      unsuspendStudent.mutate({ id: row.original.id });
+                      unsuspendUser.mutate({ id: row.original.id });
                     }}
                     className='text-green-600'
                   >

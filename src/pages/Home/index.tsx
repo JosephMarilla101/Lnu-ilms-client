@@ -5,6 +5,11 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const navigate = useNavigate();
+
+  const handleClick = (url: string) => {
+    navigate(`/login/${url}`);
+  };
+
   return (
     <>
       <div
@@ -29,19 +34,15 @@ const Home = () => {
 
         <div className='mt-8 flex flex-col md:flex-row pb-6 space-y-6 md:space-y-0 md:space-x-4'>
           <Button
-            onClick={() => {
-              navigate('/student-login');
-            }}
+            onClick={() => handleClick('user')}
             variant={'outline'}
             className='h-14 w-44 rounded-3xl bg-transparent border-2 border-secondary hover:bg-blue-700 hover:text-white'
           >
-            Student Login
+            User Login
           </Button>
 
           <Button
-            onClick={() => {
-              navigate('/librarian-login');
-            }}
+            onClick={() => handleClick('librarian')}
             variant={'outline'}
             className='h-14 w-44 rounded-3xl bg-transparent border-2 border-secondary hover:bg-secondary hover:text-white'
           >
@@ -49,9 +50,7 @@ const Home = () => {
           </Button>
 
           <Button
-            onClick={() => {
-              navigate('/admin-login');
-            }}
+            onClick={() => handleClick('admin')}
             type='button'
             variant={'outline'}
             className='h-14 w-44 rounded-3xl bg-transparent border-2 border-secondary hover:bg-[#c9302c] hover:text-white'

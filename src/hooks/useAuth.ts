@@ -8,20 +8,25 @@ import { request } from '@/lib/axios-interceptor';
 
 type AuthenticateUserRes = {
   id: number;
-  role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT';
-  studentId?: number;
-  employeeId?: number;
+  role: 'ADMIN' | 'LIBRARIAN' | 'STUDENT' | 'TEACHER' | 'GRADUATE';
   email: string;
-  fullname?: string;
-  profilePhoto?: string | null;
-  course?: string;
-  college?: string;
-  mobile?: string;
-  username: string;
-  password: string;
+  username?: string;
+  profile?: Profile;
   status: boolean;
   createdAt: Date;
   updatedAt: Date;
+};
+
+type Profile = {
+  id: number;
+  fullname?: string;
+  profilePhoto?: string;
+  profilePhotoId?: string;
+  department?: string;
+  course?: string;
+  college?: string;
+  mobile?: string;
+  userId: number;
 };
 
 const authenticateUser = () => request({ url: '/auth' });
@@ -63,12 +68,12 @@ export const useLibrarianLogin = () => {
   });
 };
 
-const studentLogin = (data: { email: string; password: string }) =>
-  request({ url: '/auth/login/student', method: 'post', data });
+const userLogin = (data: { email: string; password: string }) =>
+  request({ url: '/auth/login/user', method: 'post', data });
 
-export const useStudentLogin = () => {
+export const useUserLogin = () => {
   const queryClient = useQueryClient();
-  return useMutation(studentLogin, {
+  return useMutation(userLogin, {
     onSuccess: async (data) => {
       localStorage.setItem('token', data.token);
       const user = data.user;

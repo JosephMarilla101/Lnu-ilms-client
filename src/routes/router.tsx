@@ -6,19 +6,27 @@ import UnAuthLayout from '@/layout/UnAuthLayout';
 import { useAuthenticateUser } from '@/hooks/useAuth';
 import AdminRoutes from './AdminRoutes';
 import LibrarianRoutes from './LibrarianRoutes';
-import StudentRoutes from './StudentRoutes';
+import UserRoutes from './UserRoutes';
 
 const Home = lazy(() => import('@/pages/Home'));
-const StudentLogin = lazy(() => import('@/pages/Logins/StudentLogin'));
+const UserLogin = lazy(() => import('@/pages/Logins/UserLogin'));
 const LibrarianLogin = lazy(() => import('@/pages/Logins/LibrarianLogin'));
 const AdminLogin = lazy(() => import('@/pages/Logins/AdminLogin'));
-const Signup = lazy(() => import('@/pages/Signup'));
+const RegisterStudent = lazy(
+  () => import('@/pages/Registration/RegisterStudent')
+);
+const RegisterGraduate = lazy(
+  () => import('@/pages/Registration/RegisterGraduate')
+);
+const RegisterTeacher = lazy(
+  () => import('@/pages/Registration/RegisterTeacher')
+);
 
 const Router = () => {
   const auth = useAuthenticateUser();
   const adminRoutes = AdminRoutes();
   const librarianRoutes = LibrarianRoutes();
-  const studentRoutes = StudentRoutes();
+  const userRoutes = UserRoutes({ role: auth.data?.role });
   const routes = useRoutes([
     {
       path: '/',
@@ -29,26 +37,48 @@ const Router = () => {
           element: <Home />,
         },
         {
-          path: 'student-login',
-          element: <StudentLogin />,
+          path: 'login',
+          children: [
+            {
+              path: 'admin',
+              element: <AdminLogin />,
+            },
+            {
+              path: 'librarian',
+              element: <LibrarianLogin />,
+            },
+            {
+              path: 'user',
+              element: <UserLogin />,
+            },
+          ],
         },
         {
-          path: 'librarian-login',
-          element: <LibrarianLogin />,
-        },
-        {
-          path: 'admin-login',
-          element: <AdminLogin />,
-        },
-        {
-          path: 'signup',
-          element: <Signup />,
+          path: 'register',
+          children: [
+            {
+              path: 'student',
+              element: <RegisterStudent />,
+            },
+            {
+              path: 'graduate',
+              element: <RegisterGraduate />,
+            },
+            {
+              path: 'teacher',
+              element: <RegisterTeacher />,
+            },
+          ],
         },
       ],
     },
     auth.data?.role === 'ADMIN' ? adminRoutes : {},
     auth.data?.role === 'LIBRARIAN' ? librarianRoutes : {},
-    auth.data?.role === 'STUDENT' ? studentRoutes : {},
+    auth.data?.role === 'STUDENT' ||
+    auth.data?.role === 'GRADUATE' ||
+    auth.data?.role === 'TEACHER'
+      ? userRoutes
+      : {},
     {
       path: '*',
       element: <NotFound />,
