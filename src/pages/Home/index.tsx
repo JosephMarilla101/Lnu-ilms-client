@@ -34,27 +34,11 @@ const Home = () => {
 
         <div className='mt-8 flex flex-col md:flex-row pb-6 space-y-6 md:space-y-0 md:space-x-4'>
           <Button
-            onClick={() => handleClick('student')}
+            onClick={() => handleClick('user')}
             variant={'outline'}
             className='h-14 w-44 rounded-3xl bg-transparent border-2 border-secondary hover:bg-blue-700 hover:text-white'
           >
-            Student Login
-          </Button>
-
-          <Button
-            onClick={() => handleClick('graduate')}
-            variant={'outline'}
-            className='h-14 w-44 rounded-3xl bg-transparent border-2 border-secondary hover:bg-blue-700 hover:text-white'
-          >
-            Graduate Login
-          </Button>
-
-          <Button
-            onClick={() => handleClick('teacher')}
-            variant={'outline'}
-            className='h-14 w-44 rounded-3xl bg-transparent border-2 border-secondary hover:bg-blue-700 hover:text-white'
-          >
-            Teacher Login
+            User Login
           </Button>
 
           <Button
