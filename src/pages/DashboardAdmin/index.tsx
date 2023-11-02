@@ -1,86 +1,91 @@
-import { Separator } from '@/components/ui/separator';
-import {
-  Book,
-  BookUp,
-  History,
-  ScrollText,
-  UserSquare,
-  Users,
-  Users2,
-  LucideIcon,
-  CalendarX,
-} from 'lucide-react';
-import {
-  useTotalBooks,
-  useTotalUnreturnedBooks,
-  useTotalRequestedBooks,
-  useMyTotalRequestedBooks,
-  useTotalAuthors,
-  useTotalCatoegories,
-  useTotalStudents,
-  useTotalLibrarians,
-  useMyTotalBorrowedBooks,
-  useMyTotalUnreturnedBooks,
-} from '@/hooks/useDashboard';
-import { useAuthenticateUser } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+// import { Separator } from '@/components/ui/separator';
+// import {
+// Book,
+// BookUp,
+// History,
+// ScrollText,
+// UserSquare,
+// Users,
+// Users2,
+// LucideIcon,
+// CalendarX,
+// } from 'lucide-react';
+// import {
+//   useTotalBooks,
+//   useTotalUnreturnedBooks,
+//   useTotalRequestedBooks,
+//   useMyTotalRequestedBooks,
+//   useTotalAuthors,
+//   useTotalCatoegories,
+//   useTotalStudents,
+//   useTotalLibrarians,
+//   useMyTotalBorrowedBooks,
+//   useMyTotalUnreturnedBooks,
+// } from '@/hooks/useDashboard';
+// import { useAuthenticateUser } from '@/hooks/useAuth';
+// import { useNavigate } from 'react-router-dom';
+import BarChart from '@/components/BarChart';
 
 const DashboardAdmin = () => {
-  const auth = useAuthenticateUser();
-  const totalBooks = useTotalBooks();
-  const totalUnreturnedBooks = useTotalUnreturnedBooks();
-  const totalRequestedBooks = useTotalRequestedBooks();
-  const myTotalRequestedBooks = useMyTotalRequestedBooks();
-  const totalAuthors = useTotalAuthors();
-  const totalCatoegories = useTotalCatoegories();
-  const totalStudents = useTotalStudents();
-  const totalLibrarians = useTotalLibrarians();
-  const myTotalBorrowedBooks = useMyTotalBorrowedBooks();
-  const myTotalUnreturnedBooks = useMyTotalUnreturnedBooks();
-  const navigate = useNavigate();
+  // const auth = useAuthenticateUser();
+  // const totalBooks = useTotalBooks();
+  // const totalUnreturnedBooks = useTotalUnreturnedBooks();
+  // const totalRequestedBooks = useTotalRequestedBooks();
+  // const myTotalRequestedBooks = useMyTotalRequestedBooks();
+  // const totalAuthors = useTotalAuthors();
+  // const totalCatoegories = useTotalCatoegories();
+  // const totalStudents = useTotalStudents();
+  // const totalLibrarians = useTotalLibrarians();
+  // const myTotalBorrowedBooks = useMyTotalBorrowedBooks();
+  // const myTotalUnreturnedBooks = useMyTotalUnreturnedBooks();
+  // const navigate = useNavigate();
 
-  const Card = ({
-    icon: Icon,
-    title,
-    count,
-    color,
-    url,
-  }: {
-    icon: LucideIcon;
-    title: string;
-    count?: number;
-    color: string;
-    url: string;
-  }) => {
-    return (
-      <div
-        onClick={() => {
-          if (url === '/book/issued' || url === '/book/requests') {
-            if (auth.data?.role === 'STUDENT') return;
-          }
+  // const Card = ({
+  //   icon: Icon,
+  //   title,
+  //   count,
+  //   color,
+  //   url,
+  // }: {
+  //   icon: LucideIcon;
+  //   title: string;
+  //   count?: number;
+  //   color: string;
+  //   url: string;
+  // }) => {
+  //   return (
+  //     <div
+  //       onClick={() => {
+  //         if (url === '/book/issued' || url === '/book/requests') {
+  //           if (auth.data?.role === 'STUDENT') return;
+  //         }
 
-          navigate(`${url}`);
-        }}
-        className='w-[180px] h-[200px] px-3 text-center bg-[#FFFFF7] rounded-xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer flex flex-col  hover:scale-105 transition duration-300 ease-in-out'
-      >
-        <span
-          className={`text-base font-semibold text-center pt-3 pb-2 ${color}`}
-        >
-          {title}
-        </span>
-        <Separator />
+  //         navigate(`${url}`);
+  //       }}
+  //       className='w-[180px] h-[200px] px-3 text-center bg-[#FFFFF7] rounded-xl overflow-hidden shadow-lg hover:shadow-xl cursor-pointer flex flex-col  hover:scale-105 transition duration-300 ease-in-out'
+  //     >
+  //       <span
+  //         className={`text-base font-semibold text-center pt-3 pb-2 ${color}`}
+  //       >
+  //         {title}
+  //       </span>
+  //       <Separator />
 
-        <div className='h-full flex flex-col items-center justify-center gap-5'>
-          <Icon size={60} className={color} />
+  //       <div className='h-full flex flex-col items-center justify-center gap-5'>
+  //         <Icon size={60} className={color} />
 
-          <span className={`text-xl ${color} font-semibold`}>{count}</span>
-        </div>
-      </div>
-    );
-  };
+  //         <span className={`text-xl ${color} font-semibold`}>{count}</span>
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
   return (
-    <div className='container mx-auto py-10 '>
-      <div className='flex flex-row gap-6 gap-x-12 flex-wrap justify-center'>
+    <div className='container mx-auto py-6 '>
+      <div className='max-w-[95%] mx-auto'>
+        <BarChart title='Top borrowed book category' />
+      </div>
+      {/* <div className='flex flex-row gap-6 gap-x-12 flex-wrap justify-center'>
         <Card
           icon={Book}
           color='text-green-700'
@@ -171,7 +176,7 @@ const DashboardAdmin = () => {
             url='/librarians'
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
