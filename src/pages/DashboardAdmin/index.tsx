@@ -10,21 +10,24 @@
 // LucideIcon,
 // CalendarX,
 // } from 'lucide-react';
-// import {
-//   useTotalBooks,
-//   useTotalUnreturnedBooks,
-//   useTotalRequestedBooks,
-//   useMyTotalRequestedBooks,
-//   useTotalAuthors,
-//   useTotalCatoegories,
-//   useTotalStudents,
-//   useTotalLibrarians,
-//   useMyTotalBorrowedBooks,
-//   useMyTotalUnreturnedBooks,
-// } from '@/hooks/useDashboard';
+import {
+  // useTotalBooks,
+  // useTotalUnreturnedBooks,
+  // useTotalRequestedBooks,
+  // useMyTotalRequestedBooks,
+  // useTotalAuthors,
+  // useTotalCatoegories,
+  // useTotalStudents,
+  // useTotalLibrarians,
+  // useMyTotalBorrowedBooks,
+  // useMyTotalUnreturnedBooks,
+  useTopCategories,
+  useUserBorrowCount,
+} from '@/hooks/useDashboard';
 // import { useAuthenticateUser } from '@/hooks/useAuth';
 // import { useNavigate } from 'react-router-dom';
 import BarChart from '@/components/BarChart';
+import PieChart from '@/components/PieChart';
 
 const DashboardAdmin = () => {
   // const auth = useAuthenticateUser();
@@ -39,6 +42,8 @@ const DashboardAdmin = () => {
   // const myTotalBorrowedBooks = useMyTotalBorrowedBooks();
   // const myTotalUnreturnedBooks = useMyTotalUnreturnedBooks();
   // const navigate = useNavigate();
+  const topCategories = useTopCategories();
+  const userBorrowCount = useUserBorrowCount();
 
   // const Card = ({
   //   icon: Icon,
@@ -81,10 +86,42 @@ const DashboardAdmin = () => {
   // };
 
   return (
-    <div className='container mx-auto py-6 '>
-      <div className='max-w-[95%] mx-auto'>
-        <BarChart title='Top borrowed book category' />
+    <div className='mx-2 md:mx-4 py-6 '>
+      {/* <div className='grid grid-cols-12 gap-4'>
+        <div className='col-span-8'>
+          <div className='max-w-[100%] bg-blue-100'>
+            <BarChart
+              title='Top Borrowed Book Category'
+              label='Borrow Count'
+              dataset={topCategories.data}
+            />
+          </div>
+        </div>
+
+        <div className='col-span-4'>
+          <div className='max-w-[100%] bg-green-100'>
+            <PieChart dataset={userBorrowCount.data ?? []} />
+          </div>
+        </div>
+      </div> */}
+      <div className='flex items-center md:items-start flex-col md:flex-row gap-6'>
+        <div className='max-w-[100%] flex-1'>
+          <BarChart
+            title='Top Borrowed Book Category'
+            label='Borrow Count'
+            dataset={topCategories.data}
+          />
+        </div>
+
+        <div className='max-w-[80%]'>
+          <PieChart
+            title='User Borrow Count'
+            label='Borrow Count'
+            dataset={userBorrowCount.data ?? []}
+          />
+        </div>
       </div>
+
       {/* <div className='flex flex-row gap-6 gap-x-12 flex-wrap justify-center'>
         <Card
           icon={Book}

@@ -15,7 +15,7 @@ export default function Books() {
 
   return (
     <div className='container mx-auto py-10'>
-      {(auth.data?.role === 'ADMIN' || auth.data?.role === 'LIBRARIAN') && (
+      {auth.data?.role === 'ADMIN' || auth.data?.role === 'LIBRARIAN' ? (
         <div className='flex justify-end mb-8'>
           <AddDialog>
             <Button variant={'default'} className='ml-auto w-[160px]'>
@@ -23,9 +23,9 @@ export default function Books() {
             </Button>
           </AddDialog>
         </div>
+      ) : (
+        <BookRequest />
       )}
-
-      {auth.data?.role === 'STUDENT' && <BookRequest />}
 
       <div className='flex flex-row gap-3 gap-x-6 flex-wrap justify-items-start'>
         <BookList />

@@ -3,6 +3,25 @@ import { request } from '@/lib/axios-interceptor';
 
 export type ResponseType = number;
 
+export type ChartDataType = {
+  name: string;
+  count: number;
+}[];
+
+const topCategories = () => request({ url: '/dashboard/top_categories' });
+
+export const useTopCategories = (): UseQueryResult<ChartDataType> =>
+  useQuery(['top_categories'], topCategories, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const userBorrowCount = () => request({ url: '/dashboard/user_borrow_count' });
+
+export const useUserBorrowCount = (): UseQueryResult<ChartDataType> =>
+  useQuery(['user_borrow_count'], userBorrowCount, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 const totalBooks = () => request({ url: '/dashboard/total_books' });
 
 export const useTotalBooks = (): UseQueryResult<ResponseType> =>
