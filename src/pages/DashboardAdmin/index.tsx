@@ -5,8 +5,6 @@ import {
   History,
   ScrollText,
   UserSquare,
-  Users,
-  Users2,
   LucideIcon,
   CalendarX,
 } from 'lucide-react';
@@ -17,8 +15,6 @@ import {
   useMyTotalRequestedBooks,
   useTotalAuthors,
   useTotalCatoegories,
-  useTotalStudents,
-  useTotalLibrarians,
   useMyTotalBorrowedBooks,
   useMyTotalUnreturnedBooks,
 } from '@/hooks/useDashboard';
@@ -33,8 +29,6 @@ const DashboardAdmin = () => {
   const myTotalRequestedBooks = useMyTotalRequestedBooks();
   const totalAuthors = useTotalAuthors();
   const totalCatoegories = useTotalCatoegories();
-  const totalStudents = useTotalStudents();
-  const totalLibrarians = useTotalLibrarians();
   const myTotalBorrowedBooks = useMyTotalBorrowedBooks();
   const myTotalUnreturnedBooks = useMyTotalUnreturnedBooks();
   const navigate = useNavigate();
@@ -78,8 +72,9 @@ const DashboardAdmin = () => {
       </div>
     );
   };
+
   return (
-    <div className='container mx-auto py-10 '>
+    <div className='mx-2 md:mx-4 py-6 '>
       <div className='flex flex-row gap-6 gap-x-12 flex-wrap justify-center'>
         <Card
           icon={Book}
@@ -89,7 +84,9 @@ const DashboardAdmin = () => {
           url='/books'
         />
 
-        {auth.data?.role === 'STUDENT' ? (
+        {auth.data?.role === 'STUDENT' ||
+        auth.data?.role === 'GRADUATE' ||
+        auth.data?.role === 'TEACHER' ? (
           <Card
             icon={History}
             color='text-red-700'
@@ -107,7 +104,9 @@ const DashboardAdmin = () => {
           />
         )}
 
-        {auth.data?.role === 'STUDENT' ? (
+        {auth.data?.role === 'STUDENT' ||
+        auth.data?.role === 'GRADUATE' ||
+        auth.data?.role === 'TEACHER' ? (
           <Card
             icon={BookUp}
             color='text-blue-600'
@@ -141,34 +140,18 @@ const DashboardAdmin = () => {
               count={totalCatoegories.data}
               url='/categories'
             />
-
-            <Card
-              icon={Users}
-              color='text-primary'
-              title='Students'
-              count={totalStudents.data}
-              url='/students'
-            />
           </>
         )}
 
-        {auth.data?.role === 'STUDENT' && (
+        {(auth.data?.role === 'STUDENT' ||
+          auth.data?.role === 'GRADUATE' ||
+          auth.data?.role === 'TEACHER') && (
           <Card
             icon={CalendarX}
             color='text-secondary'
             title='Borrowed Books'
             count={myTotalBorrowedBooks.data}
             url='/books'
-          />
-        )}
-
-        {auth.data?.role === 'ADMIN' && (
-          <Card
-            icon={Users2}
-            color='text-secondary'
-            title='Librarians'
-            count={totalLibrarians.data}
-            url='/librarians'
           />
         )}
       </div>

@@ -3,6 +3,32 @@ import { request } from '@/lib/axios-interceptor';
 
 export type ResponseType = number;
 
+export type ChartDataType = {
+  name: string;
+  count: number;
+}[];
+
+const topCategories = () => request({ url: '/dashboard/top_categories' });
+
+export const useTopCategories = (): UseQueryResult<ChartDataType> =>
+  useQuery(['top_categories'], topCategories, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const userBorrowCount = () => request({ url: '/dashboard/user_borrow_count' });
+
+export const useUserBorrowCount = (): UseQueryResult<ChartDataType> =>
+  useQuery(['user_borrow_count'], userBorrowCount, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const userCountData = () => request({ url: '/dashboard/user_count_data' });
+
+export const useUserCountData = (): UseQueryResult<ChartDataType> =>
+  useQuery(['user_count_data'], userCountData, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 const totalBooks = () => request({ url: '/dashboard/total_books' });
 
 export const useTotalBooks = (): UseQueryResult<ResponseType> =>
@@ -60,6 +86,20 @@ const totalStudents = () => request({ url: '/dashboard/total_students' });
 
 export const useTotalStudents = (): UseQueryResult<ResponseType> =>
   useQuery(['total_students'], totalStudents, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const totalGraduates = () => request({ url: '/dashboard/total_graduates' });
+
+export const useTotalGraduates = (): UseQueryResult<ResponseType> =>
+  useQuery(['total_graduates'], totalGraduates, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const totalTeachers = () => request({ url: '/dashboard/total_teachers' });
+
+export const useTotalTeachers = (): UseQueryResult<ResponseType> =>
+  useQuery(['total_teachers'], totalTeachers, {
     onError: (error: ErrorResponse) => error,
   });
 

@@ -47,9 +47,9 @@ const ColumnsFunction = () => {
 
   const columns: ColumnDef<User>[] = [
     {
-      accessorKey: 'studentId',
+      accessorKey: 'employeeId',
       header: ({ column }) => (
-        <ColumnHeader column={column} title='Student ID' />
+        <ColumnHeader column={column} title='Employee ID' />
       ),
     },
     {

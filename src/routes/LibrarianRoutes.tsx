@@ -13,6 +13,7 @@ import LibrarianProfile from '@/pages/UserProfile/LibrarianProfile';
 import StudentHistory from '@/pages/StudentHistory';
 import GraduateHistory from '@/pages/GraduateHistory';
 import TeacherHistory from '@/pages/TeacherHistory';
+import Statistics from '@/pages/Statistics';
 
 const LibrarianRoutes = () => {
   return {
@@ -22,6 +23,10 @@ const LibrarianRoutes = () => {
       {
         path: 'dashboard',
         element: <DashboardAdmin />,
+      },
+      {
+        path: 'statistics',
+        element: <Statistics />,
       },
       {
         path: 'authors',
