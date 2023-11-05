@@ -16,8 +16,8 @@ import DeleteDialog from './DeleteDialog';
 
 const searchSelection = [
   {
-    searchable: 'studentId',
-    searchableText: 'Student ID',
+    searchable: 'graduateId',
+    searchableText: 'Graduate ID',
   },
   {
     searchable: 'fullname',

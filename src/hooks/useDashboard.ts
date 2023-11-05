@@ -22,6 +22,13 @@ export const useUserBorrowCount = (): UseQueryResult<ChartDataType> =>
     onError: (error: ErrorResponse) => error,
   });
 
+const userCountData = () => request({ url: '/dashboard/user_count_data' });
+
+export const useUserCountData = (): UseQueryResult<ChartDataType> =>
+  useQuery(['user_count_data'], userCountData, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 const totalBooks = () => request({ url: '/dashboard/total_books' });
 
 export const useTotalBooks = (): UseQueryResult<ResponseType> =>
@@ -79,6 +86,20 @@ const totalStudents = () => request({ url: '/dashboard/total_students' });
 
 export const useTotalStudents = (): UseQueryResult<ResponseType> =>
   useQuery(['total_students'], totalStudents, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const totalGraduates = () => request({ url: '/dashboard/total_graduates' });
+
+export const useTotalGraduates = (): UseQueryResult<ResponseType> =>
+  useQuery(['total_graduates'], totalGraduates, {
+    onError: (error: ErrorResponse) => error,
+  });
+
+const totalTeachers = () => request({ url: '/dashboard/total_teachers' });
+
+export const useTotalTeachers = (): UseQueryResult<ResponseType> =>
+  useQuery(['total_teachers'], totalTeachers, {
     onError: (error: ErrorResponse) => error,
   });
 
