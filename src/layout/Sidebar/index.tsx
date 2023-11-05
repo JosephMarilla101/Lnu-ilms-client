@@ -24,7 +24,7 @@ const SidebarLayout = () => {
 
   return (
     <Sidebar
-      className='h-full h-[calc(100vh - 5rem)] text-white overflow-auto'
+      className='h-full max-h-[calc(100vh - 5rem)] pt-[5rem] text-white'
       breakPoint='md'
       onBackdropClick={() => setToggled(false)}
       toggled={toggled}
@@ -54,6 +54,7 @@ const SidebarLayout = () => {
             >
               Dashboard
             </MenuItem>
+
             <MenuItem
               icon={<BarChart3 />}
               component={<NavLink to='/statistics' />}
@@ -100,7 +101,6 @@ const SidebarLayout = () => {
               }}
             >
               <SubMenu
-                defaultOpen
                 icon={<Users2 />}
                 label='Users'
                 rootStyles={{

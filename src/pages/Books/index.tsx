@@ -27,9 +27,9 @@ export default function Books() {
         <BookRequest />
       )}
 
-      <div className='flex flex-row gap-3 gap-x-6 flex-wrap justify-items-start'>
-        <BookList />
-      </div>
+      {/* <div className='flex flex-row gap-3 gap-x-6 flex-wrap md:justify-items-center'> */}
+      <BookList />
+      {/* </div> */}
 
       {/* Dialogs */}
       {action === 'update' && <RequestDialog />}

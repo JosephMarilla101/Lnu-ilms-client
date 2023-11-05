@@ -32,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
   return (
     <div
       className={cn(
-        'flex items-center shadow-md bg-primary text-white p-3 h-20 sticky top-0 z-20',
+        'flex items-center shadow-md bg-primary text-white p-3 h-20 fixed w-full top-0 z-20',
         className
       )}
     >
