@@ -168,7 +168,7 @@ const TeacherProfile = () => {
       <div className='grid grid-cols-12 gap-x-4 gap-y-2 w-full mt-6 text-lg font-medium'>
         <h2 className='col-span-12 text-xl mb-3'>Profile Information</h2>
 
-        <div className='col-span-4'>Employee ID</div>
+        <div className='col-span-4'>Employee ID:</div>
         <div className='col-span-8 text-primary'>{auth.data?.profile?.id}</div>
 
         <div className='col-span-4'>Full Name:</div>

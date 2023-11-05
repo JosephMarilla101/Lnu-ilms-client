@@ -24,7 +24,7 @@ const SidebarLayout = () => {
 
   return (
     <Sidebar
-      className='h-full max-h-[calc(100vh - 5rem)]max-h-screen text-white'
+      className='h-full h-[calc(100vh - 5rem)] text-white overflow-auto'
       breakPoint='md'
       onBackdropClick={() => setToggled(false)}
       toggled={toggled}

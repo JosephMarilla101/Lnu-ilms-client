@@ -144,7 +144,7 @@ const UpdateDialog: React.FC<UpdateDialogProps> = ({ children }) => {
                 htmlFor='department'
                 className='text-sm col-span-3 text-gray-700'
               >
-                Deparment:
+                Unit:
               </Label>
 
               <Select

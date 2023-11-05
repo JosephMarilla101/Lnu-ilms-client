@@ -179,7 +179,7 @@ const SignupForm = () => {
 
           <Button
             onClick={() => {
-              navigate('/student-login');
+              navigate('/login/user');
             }}
             type='button'
             variant={'link'}

@@ -234,7 +234,7 @@ const SignupForm = () => {
 
           <Button
             onClick={() => {
-              navigate('/employee-login');
+              navigate('/login/user');
             }}
             type='button'
             variant={'link'}
