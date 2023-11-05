@@ -104,7 +104,7 @@ const BookList: React.FC<BookListProps> = ({ className }) => {
             return (
               <div
                 key={i}
-                className='flex flex-row gap-3 gap-x-6 flex-wrap justify-items-start'
+                className='flex flex-row gap-3 gap-x-6 flex-wrap justify-center md:justify-start'
               >
                 {group.map((book) => {
                   return (

@@ -7,7 +7,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import { MoreHorizontal, BadgeX, BadgeCheck, Trash2 } from 'lucide-react';
+import {
+  MoreHorizontal,
+  BadgeX,
+  BadgeCheck,
+  Trash2,
+  ImageOff,
+} from 'lucide-react';
 import {
   IssuedBooks,
   useGetBookLateFee,
@@ -17,7 +23,6 @@ import {
 import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
-import { Skeleton } from '@/components/ui/skeleton';
 import useTableDialog from '@/context/useTableDialog';
 
 const ColumnsFunction = () => {
@@ -57,7 +62,9 @@ const ColumnsFunction = () => {
         return (
           <div className='relative h-[100px] w-[70px]'>
             {!bookCover ? (
-              <Skeleton className='w-full h-full rounded-sm bg-slate-200' />
+              <div className='absolute inset-0 flex flex-row items-center justify-center bg-[gainsboro] pointer-events-none'>
+                <ImageOff size={15} className='text-primary' />
+              </div>
             ) : (
               <img
                 className='absolute rounded-sm w-full h-full inset-0 object-cover pointer-events-none'
