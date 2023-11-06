@@ -128,9 +128,9 @@ const SignupForm = () => {
                   <FormControl>
                     <SelectTrigger>
                       {field.value ? (
-                        <SelectValue placeholder='Select Department' />
+                        <SelectValue placeholder='Select Unit' />
                       ) : (
-                        'Select Department'
+                        'Select Unit'
                       )}
                     </SelectTrigger>
                   </FormControl>
