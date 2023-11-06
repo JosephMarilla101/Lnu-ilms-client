@@ -71,9 +71,9 @@ const SignupForm = () => {
             name='id'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Student ID</FormLabel>
+                <FormLabel>Graduate ID</FormLabel>
                 <FormControl>
-                  <Input placeholder='Enter Student ID' {...field} />
+                  <Input placeholder='Enter Graduate ID' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
