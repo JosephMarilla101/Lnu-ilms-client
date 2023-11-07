@@ -24,8 +24,8 @@ const searchSelection = [
     searchableText: 'Book Name',
   },
   {
-    searchable: 'studentId',
-    searchableText: 'Student ID',
+    searchable: 'borrowerId',
+    searchableText: 'Borrower ID',
   },
 ];
 
