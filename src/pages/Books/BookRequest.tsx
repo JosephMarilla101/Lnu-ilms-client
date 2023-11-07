@@ -22,7 +22,7 @@ const BookRequest = () => {
   const auth = useAuthenticateUser();
 
   const handleCancelRequest = (bookId: number) => {
-    cancelRequest.mutate({ bookId, studentId: auth.data?.id ?? 0 });
+    cancelRequest.mutate({ bookId, userId: auth.data?.id ?? 0 });
   };
 
   const formatDate = (date?: Date) => {
