@@ -150,7 +150,7 @@ const ColumnsFunction = () => {
                   onClick={() => {
                     cancelRequest.mutate({
                       bookId: rowData.bookId,
-                      studentId: rowData.borrowerId,
+                      userId: rowData.borrowerId,
                     });
                   }}
                   className='text-red-600'

@@ -88,14 +88,14 @@ const ColumnsFunction = () => {
       ),
     },
     {
-      accessorKey: 'studentId',
+      accessorKey: 'borrowerId',
       header: ({ column }) => (
-        <ColumnHeader column={column} title='Student ID' />
+        <ColumnHeader column={column} title='Borrower ID' />
       ),
       cell: ({ row }) => {
-        const studentId = row.getValue('studentId') as string;
+        const borrowerId = row.getValue('borrowerId') as string;
 
-        return <div>{studentId}</div>;
+        return <div>{borrowerId}</div>;
       },
     },
     {
