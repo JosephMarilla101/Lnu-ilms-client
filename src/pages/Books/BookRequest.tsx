@@ -94,7 +94,7 @@ const BookRequest = () => {
               {getUnreturnedBook.data?.book.name}
             </h1>
 
-            <h2 className='mt-2 text-secondary text-lg font-semibold italic leading-4 break-normal'>{`(Stephanie Garber)`}</h2>
+            <h2 className='mt-2 text-secondary text-lg font-semibold italic leading-4 break-normal'>{`(${getUnreturnedBook.data.book.author.name})`}</h2>
 
             <span className='mt-3 block text-gray-700 italic'>
               ISBN: {getUnreturnedBook.data?.book.isbn}
@@ -185,7 +185,7 @@ const BookRequest = () => {
             {getRequestedBook.data?.book.name}
           </h1>
 
-          <h2 className='mt-2 text-secondary text-lg font-semibold italic leading-4 break-normal'>{`(Stephanie Garber)`}</h2>
+          <h2 className='mt-2 text-secondary text-lg font-semibold italic leading-4 break-normal'>{`(${getRequestedBook.data?.book.author.name})`}</h2>
 
           <span className='mt-3 block text-gray-700 italic'>
             ISBN: {getRequestedBook.data?.book.isbn}
