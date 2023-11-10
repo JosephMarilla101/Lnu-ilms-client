@@ -31,7 +31,7 @@ const FormSchema = z.object({
     })
     .max(8, { message: 'Employee ID must not exceed 8 characters.' }),
   fullname: z.string().min(1, 'Full Name is required.'),
-  department: z.string().min(1, 'Department is required.'),
+  department: z.string().min(1, 'Unit is required.'),
   mobile: z.string().min(1, 'Mobile number is required.'),
   email: z.string().email().min(1, 'Email is required.'),
   password: z.string().min(6).min(1, 'Password is required.'),
