@@ -103,6 +103,8 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
 
   const [formData, setFormData] = useState<formDataType>(formDataInitialValue);
 
+  const [hasSubmit, setHasSubmit] = useState(false);
+
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     let data2 = {
       ...data,
@@ -371,7 +373,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                         </DropdownMenuContent>
                       </DropdownMenu>
 
-                      {formData.categoryIds.length < 1 && (
+                      {formData.categoryIds.length < 1 && hasSubmit && (
                         <span className='text-sm text-[#ff0000]'>
                           Please select at least 1 book category.
                         </span>
@@ -408,6 +410,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
 
             <DialogFooter>
               <Button
+                onClick={() => setHasSubmit(true)}
                 type='submit'
                 className='w-full sm:w-[160px] mt-2'
                 loading={createBook.isLoading || imageUploader.isLoading}
