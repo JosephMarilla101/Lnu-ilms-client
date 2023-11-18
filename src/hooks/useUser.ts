@@ -54,7 +54,7 @@ export type IssuedBook = {
   book: Book;
 };
 
-type StudentWithBorrowedBook = User & {
+export type StudentWithBorrowedBook = User & {
   borrowedBooks: IssuedBook[];
 };
 
