@@ -2,6 +2,7 @@ import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
 import { useParams } from 'react-router-dom';
 import { useGetStudentBorrowedBooks } from '@/hooks/useUser';
+import PrintBtn from '@/components/PrintBtn';
 
 export default function GraduateHistory() {
   const { id } = useParams();
@@ -23,6 +24,8 @@ export default function GraduateHistory() {
       <h2 className='hidden md:block -mb-14 text-primary text-lg'>
         #{borrowedBooks.data?.profile?.id} BOOK ISSUED HISTORY
       </h2>
+
+      <PrintBtn data={borrowedBooks.data} />
 
       <DataTable
         columns={columns}

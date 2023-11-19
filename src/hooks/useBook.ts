@@ -18,7 +18,7 @@ type Book = {
   category: { id: number; name: string }[];
 };
 
-type LateFee = {
+export type LateFee = {
   initialFee: number;
   followingDateFee: number;
 };
