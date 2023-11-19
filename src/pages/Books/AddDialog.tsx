@@ -36,10 +36,31 @@ import { useImageUpload } from '@/hooks/useImageUpload';
 import { ChevronDown } from 'lucide-react';
 import BookCoverUploader from '@/components/BookCoverUploader';
 import { Input } from '@/components/ui/input';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 
 type AddDialogProps = {
   children: React.ReactNode;
 };
+
+const FormSchema = z.object({
+  isbn: z.string().min(1, 'ISBN # is required.'),
+  authorId: z
+    .number({ required_error: 'Book author is required.' })
+    .min(1, 'Book author is required.'),
+  name: z.string().min(1, 'Book title is required.'),
+  copies: z
+    .number({ invalid_type_error: 'Copies must be a valid number.' })
+    .min(1, 'Copies must be a valid number.'),
+});
 
 type formDataType = {
   isbn: string;
@@ -70,27 +91,37 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
   const [categoryList, setCategoryList] = useState<Category[]>([]);
   const { toast } = useToast();
 
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      isbn: '',
+      authorId: undefined,
+      name: '',
+      copies: 1,
+    },
+  });
+
   const [formData, setFormData] = useState<formDataType>(formDataInitialValue);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [hasSubmit, setHasSubmit] = useState(false);
 
-    let data = { ...formData };
-
+  const onSubmit = async (data: z.infer<typeof FormSchema>) => {
+    let data2 = {
+      ...data,
+      bookCover: formData.bookCover,
+      bookCoverId: formData.bookCoverId,
+      categoryIds: formData.categoryIds,
+    };
     if (formData.bookCover) {
       const response = await imageUploader.mutateAsync(formData.bookCover);
 
       if (response.status === 200) {
-        data = { ...data, bookCover: response.data.secure_url };
-        data = { ...data, bookCoverId: response.data.public_id };
+        data2 = { ...data2, bookCover: response.data.secure_url };
+        data2 = { ...data2, bookCoverId: response.data.public_id };
       }
     }
 
-    createBook.mutate(data);
-  };
-
-  const selectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, authorId: parseInt(value) }));
+    createBook.mutate(data2);
   };
 
   const bookCoverChangeHandler = (value: string | undefined) => {
@@ -153,102 +184,55 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className='sm:max-w-[580px]'>
-        <form onSubmit={handleSubmit}>
-          <DialogHeader>
-            <DialogTitle>Add new book</DialogTitle>
-            <DialogDescription>
-              Add new book here. Click save when you're done.
-            </DialogDescription>
-          </DialogHeader>
-          <div className='mb-3 mt-4'>
-            <div className='grid grid-cols-12 gap-4'>
-              <div className='col-span-12 sm:col-span-4 items-center flex flex-col'>
-                <BookCoverUploader
-                  className='h-[200px] w-[170px]'
-                  value={formData.bookCover}
-                  changeHandler={bookCoverChangeHandler}
-                />
-
-                {imageUploader.isLoading && (
-                  <Progress
-                    value={imageUploader.progress}
-                    className='mt-2 h-3 bg-gray-300 '
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle>Add new book</DialogTitle>
+              <DialogDescription>
+                Add new book here. Click save when you're done.
+              </DialogDescription>
+            </DialogHeader>
+            <div className='mb-3 mt-4'>
+              <div className='grid grid-cols-12 gap-4'>
+                <div className='col-span-12 sm:col-span-4 items-center flex flex-col'>
+                  <BookCoverUploader
+                    className='h-[200px] w-[170px]'
+                    value={formData.bookCover}
+                    changeHandler={bookCoverChangeHandler}
                   />
-                )}
 
-                <Input
-                  placeholder='ISBN'
-                  value={formData.isbn}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    setFormData((prev) => ({ ...prev, isbn: e.target.value }));
-                  }}
-                  className='mt-3 max-w-[170px]'
-                />
-              </div>
-
-              <div className='col-span-12 sm:col-span-8'>
-                <div className='grid grid-cols-12 gap-2 items-center'>
-                  <Label
-                    htmlFor='bookName'
-                    className='text-sm col-span-3 text-gray-600'
-                  >
-                    Title:
-                  </Label>
-
-                  <div className='col-span-9'>
-                    <Input
-                      name='bookName'
-                      placeholder='Enter Book Title'
-                      value={formData.name}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        setFormData((prev) => ({
-                          ...prev,
-                          name: e.target.value,
-                        }));
-                      }}
+                  {imageUploader.isLoading && (
+                    <Progress
+                      value={imageUploader.progress}
+                      className='mt-2 h-3 bg-gray-300 '
                     />
-                  </div>
+                  )}
+
+                  <FormField
+                    control={form.control}
+                    name='isbn'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            placeholder='ISBN #'
+                            {...field}
+                            className='mt-3 max-w-[170px]'
+                          />
+                        </FormControl>
+                        <FormMessage></FormMessage>
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
-                <div className='grid grid-cols-12 gap-2 mt-2 items-center'>
-                  <Label
-                    htmlFor='copies'
-                    className='text-sm col-span-3 text-gray-600'
-                  >
-                    Copies:
-                  </Label>
-
-                  <div className='col-span-9'>
-                    <Input
-                      name='copies'
-                      type='number'
-                      value={formData.copies}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        if (parseInt(e.target.value) >= 0) {
-                          setFormData((prev) => ({
-                            ...prev,
-                            copies: parseInt(e.target.value),
-                          }));
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className='grid grid-cols-12 gap-2 mt-2 items-center'>
-                  <Label
-                    htmlFor='author'
-                    className='text-sm col-span-3 text-gray-600'
-                  >
-                    Author:
-                  </Label>
-
-                  <div className='col-span-9'>
-                    <Select
-                      name='author'
-                      value={formData.authorId?.toString()}
-                      onValueChange={selectChange}
+                <div className='col-span-12 sm:col-span-8'>
+                  <div className='grid grid-cols-12 gap-2 items-start'>
+                    <Label
+                      htmlFor='bookName'
+                      className='text-sm col-span-3 mt-3 text-gray-600'
                     >
+<<<<<<< HEAD
                       <SelectTrigger className='w-full'>
                         <SelectValue placeholder='Select Author' />
                       </SelectTrigger>
@@ -268,17 +252,39 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                         </SelectGroup>
                       </SelectContent>
                     </Select>
+=======
+                      Title:
+                    </Label>
+
+                    <div className='col-span-9'>
+                      <FormField
+                        control={form.control}
+                        name='name'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                placeholder='Enter Book Title'
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage></FormMessage>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+>>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
                   </div>
-                </div>
 
-                <div className='grid grid-cols-12 gap-2 mt-2 items-center'>
-                  <Label
-                    htmlFor='category'
-                    className='text-sm col-span-3 text-gray-600'
-                  >
-                    Category:
-                  </Label>
+                  <div className='grid grid-cols-12 gap-2 mt-2 items-start'>
+                    <Label
+                      htmlFor='copies'
+                      className='text-sm col-span-3 mt-3 text-gray-600'
+                    >
+                      Copies:
+                    </Label>
 
+<<<<<<< HEAD
                   <div className='col-span-9'>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -288,11 +294,107 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                         </div>
                       </DropdownMenuTrigger>
                         <DropdownMenuContent className='w-56 max-h-[300px] overflow-auto'>
+=======
+                    <div className='col-span-9'>
+                      <FormField
+                        control={form.control}
+                        name='copies'
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <Input
+                                placeholder='Book Copies'
+                                {...field}
+                                type='number'
+                                value={field.value || ''}
+                                onChange={(e) =>
+                                  field.onChange(parseInt(e.target.value, 10))
+                                }
+                              />
+                            </FormControl>
+                            <FormMessage></FormMessage>
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  <div className='grid grid-cols-12 gap-2 mt-2 items-start'>
+                    <Label
+                      htmlFor='author'
+                      className='text-sm col-span-3 mt-3 text-gray-600'
+                    >
+                      Author:
+                    </Label>
+
+                    <div className='col-span-9'>
+                      <FormField
+                        control={form.control}
+                        name='authorId'
+                        render={({ field }) => (
+                          <FormItem>
+                            <Select
+                              onValueChange={(value) =>
+                                field.onChange(Number(value))
+                              }
+                              value={field.value?.toString()}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  {field.value ? (
+                                    <SelectValue placeholder='Select Author' />
+                                  ) : (
+                                    'Select Author'
+                                  )}
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {activeAuthors.isSuccess &&
+                                    activeAuthors.data.map((author) => {
+                                      return (
+                                        <SelectItem
+                                          value={author.id?.toString()}
+                                          key={author.id}
+                                        >
+                                          {author.name}
+                                        </SelectItem>
+                                      );
+                                    })}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+
+                  <div className='grid grid-cols-12 gap-2 mt-2 items-start'>
+                    <Label
+                      htmlFor='category'
+                      className='text-sm col-span-3 mt-3 text-gray-600'
+                    >
+                      Category:
+                    </Label>
+
+                    <div className='col-span-9'>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <div className='w-full flex justify-between items-center border rounded-sm px-3 py-[9px] cursor-pointer border-gray-200'>
+                            <span className='text-sm'>Select Categories</span>
+                            <ChevronDown size={16} className='text-slate-500' />
+                          </div>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className='w-56'>
+>>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
                           <DropdownMenuLabel>Categories</DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           {categoryList.map((category) => {
                             return (
                               <DropdownMenuCheckboxItem
+<<<<<<< HEAD
                               checked={!category.status}
                               onCheckedChange={() => {
                                 onCategoryCheckChange(category);
@@ -323,18 +425,57 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                           </Badge>
                         );
                       })}
+=======
+                                checked={!category.status}
+                                onCheckedChange={() => {
+                                  onCategoryCheckChange(category);
+                                }}
+                                key={category.id}
+                              >
+                                {category.name}
+                              </DropdownMenuCheckboxItem>
+                            );
+                          })}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+
+                      {formData.categoryIds.length < 1 && hasSubmit && (
+                        <span className='text-sm text-[#ff0000]'>
+                          Please select at least 1 book category.
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className='grid grid-cols-12 gap-2 mt-4 items-center'>
+                    <div className='col-span-12 flex flex-row flex-wrap gap-1'>
+                      {categoryList
+                        .filter((category) => category.status === false)
+                        .map((category) => {
+                          return (
+                            <Badge
+                              variant={'default'}
+                              className='px-4 py-2'
+                              key={category.id}
+                            >
+                              {category.name}
+                            </Badge>
+                          );
+                        })}
+                    </div>
+>>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {createBook.isError && (
-            <p className='text-center italic text-red-600'>
-              {createBook.error?.message}
-            </p>
-          )}
+            {createBook.isError && (
+              <p className='text-center italic text-red-600'>
+                {createBook.error?.message}
+              </p>
+            )}
 
+<<<<<<< HEAD
           <DialogFooter>
             <Button
               type='submit'
@@ -345,6 +486,20 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
             </Button>
           </DialogFooter>
         </form>
+=======
+            <DialogFooter>
+              <Button
+                onClick={() => setHasSubmit(true)}
+                type='submit'
+                className='w-full sm:w-[160px] mt-2'
+                loading={createBook.isLoading || imageUploader.isLoading}
+              >
+                Save changes
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+>>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
       </DialogContent>
     </Dialog>
   );

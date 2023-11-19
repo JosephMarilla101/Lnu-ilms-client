@@ -25,9 +25,11 @@ import { Label } from '@/components/ui/label';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { useGetActiveAuthors } from '@/hooks/useAuthor';
 import { useGetActiveCategories, Category } from '@/hooks/useCategory';
+import useTableDialog from '@/context/useTableDialog';
 import { useToast } from '@/components/ui/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import DeleteDialog from './DeleteDialog';
 
 type formDataType = {
   authorId: number | undefined;
@@ -61,6 +63,7 @@ const BookEdit = () => {
   const [formData, setFormData] = useState<formDataType>(formDataInitialValue);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { action, setId, setAction } = useTableDialog();
 
   const handleBookUpdate = async () => {
     const bookId = parseInt(id ?? '');
@@ -82,8 +85,9 @@ const BookEdit = () => {
   };
 
   const handleBookDelete = () => {
-    const bookId = parseInt(id ?? '');
-    deleteBook.mutate({ id: bookId });
+    if (!id) return;
+    setAction('delete');
+    setId(parseInt(id));
   };
 
   const bookCoverChangeHandler = (value: string | undefined) => {
@@ -406,6 +410,8 @@ const BookEdit = () => {
           Update Book
         </Button>
       </div>
+
+      {action === 'delete' && <DeleteDialog deleteBook={deleteBook} />}
     </div>
   );
 };

@@ -18,7 +18,7 @@ type Book = {
   category: { id: number; name: string }[];
 };
 
-type LateFee = {
+export type LateFee = {
   initialFee: number;
   followingDateFee: number;
 };
@@ -79,7 +79,7 @@ const createBook = (data: {
   name: string;
   bookCover?: string;
   bookCoverId?: string;
-  authorId?: number;
+  authorId: number | null;
   categoryIds: number[];
   copies: number;
 }) => request({ url: '/book', method: 'post', data });
