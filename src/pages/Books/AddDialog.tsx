@@ -232,27 +232,6 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                       htmlFor='bookName'
                       className='text-sm col-span-3 mt-3 text-gray-600'
                     >
-<<<<<<< HEAD
-                      <SelectTrigger className='w-full'>
-                        <SelectValue placeholder='Select Author' />
-                      </SelectTrigger>
-                      <SelectContent className='max-h-[250px] overflox-x-auto'>
-                        <SelectGroup>
-                          {activeAuthors.isSuccess &&
-                            activeAuthors.data.map((author) => {
-                              return (
-                                <SelectItem
-                                  value={author.id.toString()}
-                                  key={author.id}
-                                >
-                                  {author.name}
-                                </SelectItem>
-                              );
-                            })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-=======
                       Title:
                     </Label>
 
@@ -273,7 +252,6 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                         )}
                       />
                     </div>
->>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
                   </div>
 
                   <div className='grid grid-cols-12 gap-2 mt-2 items-start'>
@@ -284,17 +262,6 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                       Copies:
                     </Label>
 
-<<<<<<< HEAD
-                  <div className='col-span-9'>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <div className='w-full flex justify-between items-center border rounded-sm px-3 py-[9px] cursor-pointer border-gray-200'>
-                          <span className='text-sm'>Select Categories</span>
-                          <ChevronDown size={16} className='text-slate-500' />
-                        </div>
-                      </DropdownMenuTrigger>
-                        <DropdownMenuContent className='w-56 max-h-[300px] overflow-auto'>
-=======
                     <div className='col-span-9'>
                       <FormField
                         control={form.control}
@@ -388,44 +355,11 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                           </div>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className='w-56'>
->>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
                           <DropdownMenuLabel>Categories</DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           {categoryList.map((category) => {
                             return (
                               <DropdownMenuCheckboxItem
-<<<<<<< HEAD
-                              checked={!category.status}
-                              onCheckedChange={() => {
-                                onCategoryCheckChange(category);
-                              }}
-                              key={category.id}
-                              >
-                                {category.name}
-                              </DropdownMenuCheckboxItem>
-                            );
-                          })}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
-                </div>
-
-                <div className='grid grid-cols-12 gap-2 mt-4 items-center'>
-                  <div className='col-span-12 flex flex-row flex-wrap gap-1'>
-                    {categoryList
-                      .filter((category) => category.status === false)
-                      .map((category) => {
-                        return (
-                          <Badge
-                            variant={'default'}
-                            className='px-4 py-2'
-                            key={category.id}
-                          >
-                            {category.name}
-                          </Badge>
-                        );
-                      })}
-=======
                                 checked={!category.status}
                                 onCheckedChange={() => {
                                   onCategoryCheckChange(category);
@@ -463,7 +397,6 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                           );
                         })}
                     </div>
->>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
                   </div>
                 </div>
               </div>
@@ -475,18 +408,6 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
               </p>
             )}
 
-<<<<<<< HEAD
-          <DialogFooter>
-            <Button
-              type='submit'
-              className='w-full sm:w-[160px] mt-2'
-              loading={createBook.isLoading || imageUploader.isLoading}
-            >
-              Save
-            </Button>
-          </DialogFooter>
-        </form>
-=======
             <DialogFooter>
               <Button
                 onClick={() => setHasSubmit(true)}
@@ -499,7 +420,6 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
             </DialogFooter>
           </form>
         </Form>
->>>>>>> c77d3772f18cb21ac2de3f8f9cf02b7baaa4ceb4
       </DialogContent>
     </Dialog>
   );
