@@ -150,7 +150,7 @@ const MyDocument = ({
       return `${fee.toFixed(2)}`;
     }
 
-    return `${lateFee.toFixed(2)} ${lateFee > 0 && '(Paid)'}`;
+    return `${lateFee.toFixed(2)} ${lateFee > 0 ? '(Paid)' : ''}`;
   };
   return (
     <Document>
