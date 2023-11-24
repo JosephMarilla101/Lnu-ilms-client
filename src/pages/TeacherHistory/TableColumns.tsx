@@ -103,14 +103,19 @@ const ColumnsFunction = () => {
             getBookLateFee.data?.initialFee,
             getBookLateFee.data?.followingDateFee
           );
-          return <div>{`₱ ${fee.toFixed(2)}`}</div>;
+          return <div>{`₱ ${fee.toFixed(2)}`}</div>
         }
 
-        return <div>{`₱ ${row.original.lateFee.toFixed(2)}`}
-        <div className='flex flex-row items-center text-green-600'>
+        return (
+        <div>
+          {`₱ ${row.original.lateFee.toFixed(2)}`}
+            {row.original.lateFee > 0 && (
+          <div className='flex flex-row items-center text-green-600'>
             <span className='ml-1'>Paid</span>
             </div>
-        </div>;
+            )}
+        </div>
+        )
       },
     },
   ];
