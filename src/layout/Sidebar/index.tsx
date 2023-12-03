@@ -14,6 +14,7 @@ import {
   BookUp,
   LayoutDashboard,
   BarChart3,
+  BookOpenCheckIcon,
 } from 'lucide-react';
 import useSidebar from '@/context/useSidebar';
 import { useAuthenticateUser } from '@/hooks/useAuth';
@@ -145,6 +146,13 @@ const SidebarLayout = () => {
             </MenuItem>
             <MenuItem icon={<BookCopy />} component={<NavLink to='/books' />}>
               Books
+            </MenuItem>
+
+            <MenuItem
+              icon={<BookOpenCheckIcon />}
+              component={<NavLink to='/borrowed-history' />}
+            >
+              Borrowed Books
             </MenuItem>
           </>
         )}
