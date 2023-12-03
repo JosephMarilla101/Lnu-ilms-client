@@ -4,6 +4,7 @@ import Books from '@/pages/Books';
 import StudentProfile from '@/pages/UserProfile/StudentProfile';
 import GraduateProfile from '@/pages/UserProfile/GraduateProfile';
 import TeacherProfile from '@/pages/UserProfile/TeacherProfile';
+import UserBorrowedBooks from '@/pages/UserBorrowedBooks';
 
 type StudentRoutesProps = {
   role?: 'ADMIN' | 'LIBRARIAN' | 'STUDENT' | 'TEACHER' | 'GRADUATE';
@@ -21,6 +22,10 @@ const StudentRoutes = ({ role }: StudentRoutesProps) => {
       {
         path: 'books',
         element: <Books />,
+      },
+      {
+        path: 'borrowed-history',
+        element: <UserBorrowedBooks />,
       },
       {
         path: 'profile',
