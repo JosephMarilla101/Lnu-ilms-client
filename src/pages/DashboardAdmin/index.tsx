@@ -151,7 +151,7 @@ const DashboardAdmin = () => {
             color='text-secondary'
             title='Borrowed Books'
             count={myTotalBorrowedBooks.data}
-            url='/books'
+            url='/borrowed-history'
           />
         )}
       </div>
