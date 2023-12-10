@@ -72,7 +72,7 @@ const UpdateDialog = () => {
       toast({
         variant: 'default',
         title: 'Success!',
-        description: 'Author updated successfully',
+        description: 'Category updated successfully',
       });
       updateCategory.reset();
     }
@@ -83,7 +83,7 @@ const UpdateDialog = () => {
       <DialogContent className='sm:max-w-[400px]'>
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>Update Author</DialogTitle>
+            <DialogTitle>Update Category</DialogTitle>
             <DialogDescription>
               Update category name or status here. Click save when you're done.
             </DialogDescription>
