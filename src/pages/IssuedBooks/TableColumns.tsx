@@ -7,29 +7,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ColumnDef } from '@tanstack/react-table';
-import {
-  MoreHorizontal,
-  BadgeX,
-  BadgeCheck,
-  Trash2,
-  ImageOff,
-} from 'lucide-react';
+import { MoreHorizontal, BadgeX, BadgeCheck, ImageOff } from 'lucide-react';
 import {
   IssuedBooks,
   useGetBookLateFee,
   useReturnBorrowedBook,
-  useDeleteBorrowedBook,
 } from '@/hooks/useBook';
 import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
-import useTableDialog from '@/context/useTableDialog';
 
 const ColumnsFunction = () => {
-  const { setId, setAction } = useTableDialog();
   const returnBook = useReturnBorrowedBook();
   const getBookLateFee = useGetBookLateFee();
-  const deleteBorrowedBook = useDeleteBorrowedBook();
 
   const calculateLateFee = (
     dueDate: Date,
@@ -185,21 +175,6 @@ const ColumnsFunction = () => {
                 >
                   <BadgeCheck size={20} className='mr-2' />
                   Mark as Returned
-                </DropdownMenuItem>
-
-                <DropdownMenuItem
-                  onClick={() => {
-                    if (row.original.isReturn) {
-                      deleteBorrowedBook.mutate({ issuedId: row.original.id });
-                    } else {
-                      setAction('delete');
-                      setId(row.original.id);
-                    }
-                  }}
-                  className='text-red-600'
-                >
-                  <Trash2 size={20} className='mr-2' />
-                  Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

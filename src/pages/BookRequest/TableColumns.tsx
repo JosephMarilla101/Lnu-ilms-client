@@ -13,6 +13,7 @@ import {
   MoreHorizontal,
   Trash2,
   ImageOff,
+  BadgeX,
 } from 'lucide-react';
 import { RequestedBook, useCancelRequest } from '@/hooks/useBook';
 import { format, parseISO } from 'date-fns';
@@ -155,8 +156,17 @@ const ColumnsFunction = () => {
                   }}
                   className='text-red-600'
                 >
-                  <Trash2 size={20} className='mr-2' />
-                  Delete
+                  {rowData.isApproved ? (
+                    <>
+                      <Trash2 size={20} className='mr-2' />
+                      Delete
+                    </>
+                  ) : (
+                    <>
+                      <BadgeX size={20} className='mr-2' />
+                      Disapprove
+                    </>
+                  )}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
