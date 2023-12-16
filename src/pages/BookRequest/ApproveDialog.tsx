@@ -18,17 +18,17 @@ import {
 } from '@/components/ui/popover';
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect, useState } from 'react';
-import useTableDialog from '@/context/useTableDialog';
-import { useBorrowBook } from '@/hooks/useBook';
+import useBookRequest from '@/context/useBookRequest';
+import { useChangeRequestStatus } from '@/hooks/useBook';
 
 const ApproveDialog = () => {
   const [date, setDate] = useState<Date>();
-  const borrowBook = useBorrowBook();
+  const changeRequestStatus = useChangeRequestStatus();
   const [open, setOpen] = useState(true);
-  const { resetState, id } = useTableDialog();
+  const { resetState, bookId, userId, id } = useBookRequest();
   const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // set dueDate to selected date and 11:59 pm
@@ -36,20 +36,28 @@ const ApproveDialog = () => {
       ? new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59)
       : undefined;
 
-    borrowBook.mutate({ dueDate: newDate, requestId: id ?? 0 });
+    changeRequestStatus.mutate({
+      id: id ?? 0,
+      bookId: bookId ?? 0,
+      userId: userId ?? 0,
+      status: 'FORPICKUP',
+      dueDate: newDate,
+    });
+
+    // borrowBook.mutate({ dueDate: newDate, requestId: id ?? 0 });
   };
 
   useEffect(() => {
-    if (borrowBook.isSuccess) {
+    if (changeRequestStatus.isSuccess) {
       setOpen(false);
-      borrowBook.reset();
+      changeRequestStatus.reset();
       toast({
         variant: 'default',
         title: 'Success!',
         description: 'Book request approved.',
       });
     }
-  }, [borrowBook, toast]);
+  }, [changeRequestStatus, toast]);
 
   useEffect(() => {
     if (!open) {
@@ -91,17 +99,17 @@ const ApproveDialog = () => {
               </PopoverContent>
             </Popover>
 
-            {borrowBook.isError && (
+            {changeRequestStatus.isError && (
               <p className='mt-3 pl-2 text-left text-sm text-rose-600 flex items-center'>
                 <AlertTriangle className='mr-2' size={20} />
-                {borrowBook.error.message}
+                {changeRequestStatus.error.message}
               </p>
             )}
           </div>
           <DialogFooter>
             <Button
               type='submit'
-              loading={borrowBook.isLoading}
+              loading={changeRequestStatus.isLoading}
               className='w-[140px]'
             >
               Save changes

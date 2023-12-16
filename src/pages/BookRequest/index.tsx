@@ -10,7 +10,7 @@ import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
 import { useGetALLRequestedBooks } from '@/hooks/useBook';
 import { useState } from 'react';
-import useTableDialog from '@/context/useTableDialog';
+import useBookRequest from '@/context/useBookRequest';
 import ApproveDialog from './ApproveDialog';
 
 const searchSelection = [
@@ -31,7 +31,7 @@ const searchSelection = [
 const BookRequest = () => {
   const [selected, setSelected] = useState(searchSelection[0].searchable);
   const requestedBooks = useGetALLRequestedBooks();
-  const { action } = useTableDialog();
+  const { action } = useBookRequest();
   const columns = ColumnsFunction();
 
   const selectChange = (value: string) => {
@@ -76,7 +76,7 @@ const BookRequest = () => {
       />
 
       {/* Dialogs */}
-      {action === 'update' && <ApproveDialog />}
+      {action === 'FORPICKUP' && <ApproveDialog />}
     </div>
   );
 };

@@ -10,9 +10,6 @@ import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
 import { useGetAllIssuedBooks } from '@/hooks/useBook';
 import { useState } from 'react';
-import useTableDialog from '@/context/useTableDialog';
-import ApproveDialog from './ApproveDialog';
-import DeleteDialog from './DeleteDialog';
 
 const searchSelection = [
   {
@@ -32,7 +29,6 @@ const searchSelection = [
 const IssuedBooks = () => {
   const [selected, setSelected] = useState(searchSelection[0].searchable);
   const issuedBooks = useGetAllIssuedBooks();
-  const { action } = useTableDialog();
   const columns = ColumnsFunction();
 
   const selectChange = (value: string) => {
@@ -75,10 +71,6 @@ const IssuedBooks = () => {
         searchable={selected}
         searchableText={getSearchableText(selected)}
       />
-
-      {/* Dialogs */}
-      {action === 'update' && <ApproveDialog />}
-      {action === 'delete' && <DeleteDialog />}
     </div>
   );
 };

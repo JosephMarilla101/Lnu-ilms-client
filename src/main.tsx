@@ -11,6 +11,7 @@ import Spinner from './components/Spinner';
 import { Toaster } from '@/components/ui/toaster.tsx';
 import SidebarProvider from '@/components/Providers/SidebarProvider';
 import TableDialogProvider from '@/components/Providers/TableDialogProvider';
+import BookRequestProvider from '@/components/Providers/BookRequestProvider';
 
 const queryClient = new QueryClient();
 
@@ -22,8 +23,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <BrowserRouter>
             <SidebarProvider>
               <TableDialogProvider>
-                <App />
-                <Toaster />
+                <BookRequestProvider>
+                  <App />
+                  <Toaster />
+                </BookRequestProvider>
               </TableDialogProvider>
             </SidebarProvider>
           </BrowserRouter>
