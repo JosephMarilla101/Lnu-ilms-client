@@ -10,9 +10,9 @@ import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
 import { useGetALLStudents } from '@/hooks/useUser';
 import { useState } from 'react';
-import useTableDialog from '@/context/useTableDialog';
-import ApproveDialog from './ApproveDialog';
-import DeleteDialog from './DeleteDialog';
+// import useTableDialog from '@/context/useTableDialog';
+// import ApproveDialog from './ApproveDialog';
+// import DeleteDialog from './DeleteDialog';
 
 const searchSelection = [
   {
@@ -32,7 +32,7 @@ const searchSelection = [
 const IssuedBooks = () => {
   const [selected, setSelected] = useState(searchSelection[0].searchable);
   const students = useGetALLStudents();
-  const { action } = useTableDialog();
+  // const { action } = useTableDialog();
   const columns = ColumnsFunction();
 
   const selectChange = (value: string) => {
@@ -77,8 +77,8 @@ const IssuedBooks = () => {
       />
 
       {/* Dialogs */}
-      {action === 'update' && <ApproveDialog />}
-      {action === 'delete' && <DeleteDialog />}
+      {/* {action === 'update' && <ApproveDialog />}
+      {action === 'delete' && <DeleteDialog />} */}
     </div>
   );
 };

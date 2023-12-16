@@ -23,6 +23,13 @@ export type LateFee = {
   followingDateFee: number;
 };
 
+export type RequestStatusType =
+  | 'PENDING'
+  | 'DISAPPROVED'
+  | 'CANCELLED'
+  | 'FORPICKUP'
+  | 'RELEASED';
+
 type UnreturnedBook = {
   book: Book;
   isReturn: true;
@@ -30,8 +37,9 @@ type UnreturnedBook = {
 };
 
 type BookRequestResponse = {
+  id: number;
   book: Book;
-  isApproved: boolean;
+  status: RequestStatusType;
   requestDate: Date;
   updatedAt: Date;
 };
@@ -70,7 +78,7 @@ export type RequestedBook = {
   isbn: string;
   studentId: string;
   borrowerId: number;
-  isApproved: boolean;
+  status: RequestStatusType;
   requestDate: Date;
 };
 
@@ -128,19 +136,6 @@ export const useDeleteBook = () => {
   });
 };
 
-const borrowBook = (data: { dueDate: Date | undefined; requestId: number }) =>
-  request({ url: '/book/borrow_book', method: 'post', data });
-
-export const useBorrowBook = () => {
-  const queryClient = useQueryClient();
-  return useMutation(borrowBook, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['books', 'requested', 'all']);
-    },
-    onError: (error: ErrorResponse) => error,
-  });
-};
-
 const returnBorrowedBook = (data: { borrowedBookId: number }) =>
   request({ url: '/book/borrowed/return', method: 'put', data });
 
@@ -154,12 +149,31 @@ export const useReturnBorrowedBook = () => {
   });
 };
 
-const cancelRequest = (data: { bookId: number; userId: number }) =>
-  request({ url: '/book/cancel_request', method: 'delete', data });
+const releaseBook = (data: { id: number; bookId: number; userId: number }) =>
+  request({ url: '/book/release_book', method: 'post', data });
 
-export const useCancelRequest = () => {
+export const useReleaseBook = () => {
   const queryClient = useQueryClient();
-  return useMutation(cancelRequest, {
+  return useMutation(releaseBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['books', 'requested', 'all']);
+      queryClient.invalidateQueries(['book', 'requested']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const changeRequestStatus = (data: {
+  id: number;
+  bookId: number;
+  userId: number;
+  status: RequestStatusType;
+  dueDate?: Date;
+}) => request({ url: '/book/change_request_status', method: 'put', data });
+
+export const useChangeRequestStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation(changeRequestStatus, {
     onSuccess: () => {
       queryClient.invalidateQueries(['books', 'requested', 'all']);
       queryClient.invalidateQueries(['book', 'requested']);

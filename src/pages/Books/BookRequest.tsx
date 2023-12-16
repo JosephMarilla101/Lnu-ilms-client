@@ -8,7 +8,7 @@ import {
   useGetRequestedBook,
   useGetUnreturnedBook,
   useGetBookLateFee,
-  useCancelRequest,
+  useChangeRequestStatus,
 } from '@/hooks/useBook';
 import { useAuthenticateUser } from '@/hooks/useAuth';
 import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
@@ -18,11 +18,22 @@ const BookRequest = () => {
   const getRequestedBook = useGetRequestedBook();
   const getUnreturnedBook = useGetUnreturnedBook();
   const getBookLateFee = useGetBookLateFee();
-  const cancelRequest = useCancelRequest();
+  const cancelRequest = useChangeRequestStatus();
   const auth = useAuthenticateUser();
 
-  const handleCancelRequest = (bookId: number) => {
-    cancelRequest.mutate({ bookId, userId: auth.data?.id ?? 0 });
+  const handleCancelRequest = ({
+    id,
+    bookId,
+  }: {
+    id: number;
+    bookId: number;
+  }) => {
+    cancelRequest.mutate({
+      id,
+      bookId,
+      userId: auth.data?.id ?? 0,
+      status: 'CANCELLED',
+    });
   };
 
   const formatDate = (date?: Date) => {
@@ -154,7 +165,10 @@ const BookRequest = () => {
                 <TooltipTrigger>
                   <span
                     onClick={() =>
-                      handleCancelRequest(getRequestedBook.data?.book.id ?? 0)
+                      handleCancelRequest({
+                        id: getRequestedBook.data?.id ?? 0,
+                        bookId: getRequestedBook.data?.book.id ?? 0,
+                      })
                     }
                     className='absolute top-2 right-2 p-[6px] bg-muted rounded-lg cursor-pointer hover:bg-slate-200'
                   >
@@ -197,7 +211,17 @@ const BookRequest = () => {
           <div className='mt-auto grid grid-cols-12 gap-1'>
             <div className='col-span-5 text-gray-700 italic'>Status:</div>
             <div className='col-span-7 font-medium text-primary'>
-              Pending Request
+              {getRequestedBook.data?.status === 'DISAPPROVED' ? (
+                <span className='text-red-600'>Disapproved</span>
+              ) : getRequestedBook.data?.status === 'FORPICKUP' ? (
+                <span className='text-green-600'>
+                  Approved (Ready for pickup)
+                </span>
+              ) : getRequestedBook.data?.status === 'CANCELLED' ? (
+                <span className='text-secondary'>Cancelled</span>
+              ) : (
+                <span className='text-secondary'>Pending</span>
+              )}
             </div>
 
             <div className='col-span-5 text-gray-700 italic'>Request Date:</div>

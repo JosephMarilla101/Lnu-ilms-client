@@ -9,28 +9,56 @@ import {
 import { ColumnDef } from '@tanstack/react-table';
 import {
   BadgeCheck,
+  BadgeX,
   Loader,
   MoreHorizontal,
-  Trash2,
   ImageOff,
-  BadgeX,
+  Ban,
+  PackageCheck,
 } from 'lucide-react';
-import { RequestedBook, useCancelRequest } from '@/hooks/useBook';
+import { useToast } from '@/components/ui/use-toast';
+import {
+  RequestedBook,
+  useChangeRequestStatus,
+  useReleaseBook,
+} from '@/hooks/useBook';
 import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
-import useTableDialog from '@/context/useTableDialog';
+import useBookRequest from '@/context/useBookRequest';
 import { useEffect } from 'react';
 
 const ColumnsFunction = () => {
-  const cancelRequest = useCancelRequest();
-  const { setId, setAction } = useTableDialog();
+  const changeRequestStatus = useChangeRequestStatus();
+  const releaseBook = useReleaseBook();
+  const { setId, setBookId, setUserId, setAction } = useBookRequest();
+  const { toast } = useToast();
 
   useEffect(() => {
-    if (cancelRequest.isSuccess) {
-      cancelRequest.reset();
+    if (changeRequestStatus.isSuccess) {
+      changeRequestStatus.reset();
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Request status change.',
+      });
     }
-  }, [cancelRequest]);
+
+    if (changeRequestStatus.isError) {
+      changeRequestStatus.reset();
+
+      toast({
+        variant: 'destructive',
+        title: 'Error!',
+        description: changeRequestStatus.error.message,
+      });
+    }
+  }, [
+    changeRequestStatus.isSuccess,
+    changeRequestStatus.isError,
+    changeRequestStatus,
+    toast,
+  ]);
 
   const columns: ColumnDef<RequestedBook>[] = [
     {
@@ -95,25 +123,41 @@ const ColumnsFunction = () => {
       },
     },
     {
-      accessorKey: 'isApproved',
+      accessorKey: 'status',
       header: ({ column }) => <ColumnHeader column={column} title='Status' />,
       cell: ({ row }) => {
-        const status = row.getValue('isApproved');
+        const status = row.original.status;
 
-        if (status)
-          return (
-            <div className='flex flex-row'>
-              <BadgeCheck size={20} className='mr-1 text-green-600' />{' '}
-              <span>Approved</span>
-            </div>
-          );
-        else
-          return (
-            <div className='flex flex-row'>
-              <Loader size={20} className='mr-1 text-yellow-600' />
-              <span>Pending</span>
-            </div>
-          );
+        return (
+          <div className='flex flex-row items-center'>
+            {status === 'PENDING' ? (
+              <>
+                <Loader size={20} className='mr-1 text-yellow-700' />
+                <span>PENDING</span>
+              </>
+            ) : status === 'FORPICKUP' ? (
+              <>
+                <PackageCheck size={20} className='mr-1 text-blue-600' />
+                <span>FOR PICKUP</span>
+              </>
+            ) : status === 'DISAPPROVED' ? (
+              <>
+                <BadgeX size={20} className='mr-1 text-red-600' />
+                <span>DISAPPROVED</span>
+              </>
+            ) : status === 'CANCELLED' ? (
+              <>
+                <BadgeX size={19} className='mr-1 text-orange-600' />
+                <span>CANCELLED</span>
+              </>
+            ) : (
+              <>
+                <BadgeCheck size={20} className='mr-1 text-green-600' />
+                <span>RELEASED</span>
+              </>
+            )}
+          </div>
+        );
       },
     },
     {
@@ -125,7 +169,11 @@ const ColumnsFunction = () => {
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <div className='text-center'>
-                  <Button variant='ghost' className='h-8 w-8 p-0'>
+                  <Button
+                    variant='ghost'
+                    className='h-8 w-8 p-0'
+                    disabled={true}
+                  >
                     <span className='sr-only'>Open menu</span>
                     <MoreHorizontal className='h-4 w-4' />
                   </Button>
@@ -135,38 +183,78 @@ const ColumnsFunction = () => {
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
 
+                {/* Show only if status is PENDING */}
+                {rowData.status === 'PENDING' && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      setAction('FORPICKUP');
+                      setId(rowData.id);
+                      setBookId(rowData.bookId);
+                      setUserId(rowData.borrowerId);
+                    }}
+                    className='text-green-600
+                  '
+                  >
+                    <PackageCheck size={20} className='mr-2' />
+                    APPROVE (READY 4 PICKUP)
+                  </DropdownMenuItem>
+                )}
+
+                {/* Show only if status is FORPICKUP */}
+                {rowData.status === 'FORPICKUP' && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      releaseBook.mutate({
+                        id: rowData.id,
+                        bookId: rowData.bookId,
+                        userId: rowData.borrowerId,
+                      });
+                    }}
+                    className='text-green-600'
+                  >
+                    <BadgeCheck size={20} className='mr-2' />
+                    MARK AS RELEASED
+                  </DropdownMenuItem>
+                )}
+
                 <DropdownMenuItem
-                  disabled={rowData.isApproved}
                   onClick={() => {
-                    setAction('update');
-                    setId(rowData.id);
+                    changeRequestStatus.mutate({
+                      id: rowData.id,
+                      bookId: rowData.bookId,
+                      userId: rowData.borrowerId,
+                      status: 'DISAPPROVED',
+                    });
                   }}
-                  className='text-green-600'
+                  disabled={
+                    rowData.status === 'RELEASED' ||
+                    rowData.status === 'DISAPPROVED' ||
+                    rowData.status === 'CANCELLED'
+                  }
+                  className='text-red-600'
                 >
-                  <BadgeCheck size={20} className='mr-2' />
-                  Approve
+                  <BadgeX size={20} className='mr-2' />
+                  DISAPPROVE REQUEST
                 </DropdownMenuItem>
 
                 <DropdownMenuItem
                   onClick={() => {
-                    cancelRequest.mutate({
+                    changeRequestStatus.mutate({
+                      id: rowData.id,
                       bookId: rowData.bookId,
                       userId: rowData.borrowerId,
+                      status: 'CANCELLED',
                     });
                   }}
-                  className='text-red-600'
+                  disabled={
+                    rowData.status === 'RELEASED' ||
+                    rowData.status === 'DISAPPROVED' ||
+                    rowData.status === 'CANCELLED'
+                  }
+                  className='text-orange-600'
                 >
-                  {rowData.isApproved ? (
-                    <>
-                      <Trash2 size={20} className='mr-2' />
-                      Delete
-                    </>
-                  ) : (
-                    <>
-                      <BadgeX size={20} className='mr-2' />
-                      Disapprove
-                    </>
-                  )}
+                  <Ban size={19} className='mr-2' />
+                  CANCEL REQUEST
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
