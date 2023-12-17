@@ -8,9 +8,8 @@ import {
   useGetRequestedBook,
   useGetUnreturnedBook,
   useGetBookLateFee,
-  useChangeRequestStatus,
+  useCancelRequest,
 } from '@/hooks/useBook';
-import { useAuthenticateUser } from '@/hooks/useAuth';
 import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
 import { X, ImageOff } from 'lucide-react';
 
@@ -18,21 +17,11 @@ const BookRequest = () => {
   const getRequestedBook = useGetRequestedBook();
   const getUnreturnedBook = useGetUnreturnedBook();
   const getBookLateFee = useGetBookLateFee();
-  const cancelRequest = useChangeRequestStatus();
-  const auth = useAuthenticateUser();
+  const cancelRequest = useCancelRequest();
 
-  const handleCancelRequest = ({
-    id,
-    bookId,
-  }: {
-    id: number;
-    bookId: number;
-  }) => {
+  const handleCancelRequest = ({ requestId }: { requestId: number }) => {
     cancelRequest.mutate({
-      id,
-      bookId,
-      userId: auth.data?.id ?? 0,
-      status: 'CANCELLED',
+      requestId,
     });
   };
 
@@ -151,10 +140,18 @@ const BookRequest = () => {
     <div className='mb-4'>
       <h1
         className={`italic font-semibold text-lg ${
-          isDue() ? 'text-red-600' : 'text-primary'
+          isDue() || getRequestedBook.data?.status === 'DISAPPROVED'
+            ? 'text-red-600'
+            : getRequestedBook.data?.status === 'FORPICKUP'
+            ? 'text-green-600'
+            : 'text-primary'
         }`}
       >
-        Pending Book Request...
+        {getRequestedBook.data?.status === 'DISAPPROVED'
+          ? 'Disapproved Book Request'
+          : getRequestedBook.data?.status === 'FORPICKUP'
+          ? 'Approved (Ready for pickup)'
+          : 'Pending Book Request'}
       </h1>
 
       <div className='relative flex flex-row gap-x-3 cursor-pointer bg-[#fffff7] max-w-lg p-2 rounded-md shadow-md shadow-offset-x-1 shadow-offset-y-1 shadow-opacity-30 shadow-2'>
@@ -166,8 +163,7 @@ const BookRequest = () => {
                   <span
                     onClick={() =>
                       handleCancelRequest({
-                        id: getRequestedBook.data?.id ?? 0,
-                        bookId: getRequestedBook.data?.book.id ?? 0,
+                        requestId: getRequestedBook.data?.id ?? 0,
                       })
                     }
                     className='absolute top-2 right-2 p-[6px] bg-muted rounded-lg cursor-pointer hover:bg-slate-200'
@@ -217,8 +213,6 @@ const BookRequest = () => {
                 <span className='text-green-600'>
                   Approved (Ready for pickup)
                 </span>
-              ) : getRequestedBook.data?.status === 'CANCELLED' ? (
-                <span className='text-secondary'>Cancelled</span>
               ) : (
                 <span className='text-secondary'>Pending</span>
               )}

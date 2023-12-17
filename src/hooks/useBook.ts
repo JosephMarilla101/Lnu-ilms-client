@@ -26,7 +26,6 @@ export type LateFee = {
 export type RequestStatusType =
   | 'PENDING'
   | 'DISAPPROVED'
-  | 'CANCELLED'
   | 'FORPICKUP'
   | 'RELEASED';
 
@@ -79,6 +78,7 @@ export type RequestedBook = {
   studentId: string;
   borrowerId: number;
   status: RequestStatusType;
+  isCancelled: boolean;
   requestDate: Date;
 };
 
@@ -155,6 +155,20 @@ const releaseBook = (data: { id: number; bookId: number; userId: number }) =>
 export const useReleaseBook = () => {
   const queryClient = useQueryClient();
   return useMutation(releaseBook, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['books', 'requested', 'all']);
+      queryClient.invalidateQueries(['book', 'requested']);
+    },
+    onError: (error: ErrorResponse) => error,
+  });
+};
+
+const cancelRequest = (data: { requestId: number }) =>
+  request({ url: '/book/cancel_request', method: 'put', data });
+
+export const useCancelRequest = () => {
+  const queryClient = useQueryClient();
+  return useMutation(cancelRequest, {
     onSuccess: () => {
       queryClient.invalidateQueries(['books', 'requested', 'all']);
       queryClient.invalidateQueries(['book', 'requested']);

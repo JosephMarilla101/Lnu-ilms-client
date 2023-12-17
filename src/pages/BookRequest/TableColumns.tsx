@@ -20,6 +20,7 @@ import { useToast } from '@/components/ui/use-toast';
 import {
   RequestedBook,
   useChangeRequestStatus,
+  useCancelRequest,
   useReleaseBook,
 } from '@/hooks/useBook';
 import { format, parseISO } from 'date-fns';
@@ -30,6 +31,7 @@ import { useEffect } from 'react';
 
 const ColumnsFunction = () => {
   const changeRequestStatus = useChangeRequestStatus();
+  const cancelRequest = useCancelRequest();
   const releaseBook = useReleaseBook();
   const { setId, setBookId, setUserId, setAction } = useBookRequest();
   const { toast } = useToast();
@@ -59,6 +61,27 @@ const ColumnsFunction = () => {
     changeRequestStatus,
     toast,
   ]);
+
+  useEffect(() => {
+    if (cancelRequest.isSuccess) {
+      cancelRequest.reset();
+      toast({
+        variant: 'default',
+        title: 'Success!',
+        description: 'Request status change.',
+      });
+    }
+
+    if (cancelRequest.isError) {
+      cancelRequest.reset();
+
+      toast({
+        variant: 'destructive',
+        title: 'Error!',
+        description: cancelRequest.error.message,
+      });
+    }
+  }, [cancelRequest.isSuccess, cancelRequest.isError, cancelRequest, toast]);
 
   const columns: ColumnDef<RequestedBook>[] = [
     {
@@ -128,6 +151,15 @@ const ColumnsFunction = () => {
       cell: ({ row }) => {
         const status = row.original.status;
 
+        if (row.original.isCancelled && status !== 'DISAPPROVED') {
+          return (
+            <div className='flex flex-row items-center'>
+              <BadgeX size={19} className='mr-1 text-orange-600' />
+              <span>CANCELLED</span>
+            </div>
+          );
+        }
+
         return (
           <div className='flex flex-row items-center'>
             {status === 'PENDING' ? (
@@ -144,11 +176,6 @@ const ColumnsFunction = () => {
               <>
                 <BadgeX size={20} className='mr-1 text-red-600' />
                 <span>DISAPPROVED</span>
-              </>
-            ) : status === 'CANCELLED' ? (
-              <>
-                <BadgeX size={19} className='mr-1 text-orange-600' />
-                <span>CANCELLED</span>
               </>
             ) : (
               <>
@@ -229,7 +256,7 @@ const ColumnsFunction = () => {
                   disabled={
                     rowData.status === 'RELEASED' ||
                     rowData.status === 'DISAPPROVED' ||
-                    rowData.status === 'CANCELLED'
+                    rowData.isCancelled
                   }
                   className='text-red-600'
                 >
@@ -239,17 +266,12 @@ const ColumnsFunction = () => {
 
                 <DropdownMenuItem
                   onClick={() => {
-                    changeRequestStatus.mutate({
-                      id: rowData.id,
-                      bookId: rowData.bookId,
-                      userId: rowData.borrowerId,
-                      status: 'CANCELLED',
-                    });
+                    cancelRequest.mutate({ requestId: rowData.id });
                   }}
                   disabled={
                     rowData.status === 'RELEASED' ||
                     rowData.status === 'DISAPPROVED' ||
-                    rowData.status === 'CANCELLED'
+                    rowData.isCancelled
                   }
                   className='text-orange-600'
                 >
