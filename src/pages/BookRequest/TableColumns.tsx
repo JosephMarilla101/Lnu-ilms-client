@@ -223,7 +223,7 @@ const ColumnsFunction = () => {
                   '
                   >
                     <PackageCheck size={20} className='mr-2' />
-                    APPROVE (READY 4 PICKUP)
+                    APPROVE (READY FOR PICKUP)
                   </DropdownMenuItem>
                 )}
 
