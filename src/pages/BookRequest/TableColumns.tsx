@@ -211,7 +211,7 @@ const ColumnsFunction = () => {
                 <DropdownMenuSeparator />
 
                 {/* Show only if status is PENDING */}
-                {rowData.status === 'PENDING' && (
+                {rowData.status === 'PENDING' && !rowData.isCancelled && (
                   <DropdownMenuItem
                     onClick={() => {
                       setAction('FORPICKUP');
@@ -228,7 +228,7 @@ const ColumnsFunction = () => {
                 )}
 
                 {/* Show only if status is FORPICKUP */}
-                {rowData.status === 'FORPICKUP' && (
+                {rowData.status === 'FORPICKUP' && !rowData.isCancelled && (
                   <DropdownMenuItem
                     onClick={() => {
                       releaseBook.mutate({
