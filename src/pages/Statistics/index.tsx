@@ -24,7 +24,7 @@ export default function Statistics() {
       <div className='w-full flex items-center flex-col md:flex-row justify-evenly gap-6'>
         <div className='max-w-[80%]'>
           <PieChart
-            title='User Borrow Count'
+            title='Weekly User Borrowed Count'
             label='total'
             dataset={userBorrowCount.data ?? []}
           />
