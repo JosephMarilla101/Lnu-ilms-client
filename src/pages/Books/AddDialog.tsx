@@ -315,7 +315,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                                   )}
                                 </SelectTrigger>
                               </FormControl>
-                              <SelectContent>
+                              <SelectContent className='max-h-[200px] overflow-y-auto'>
                                 <SelectGroup>
                                   {activeAuthors.isSuccess &&
                                     activeAuthors.data.map((author) => {
@@ -354,7 +354,7 @@ const AddDialog: React.FC<AddDialogProps> = ({ children }) => {
                             <ChevronDown size={16} className='text-slate-500' />
                           </div>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className='w-56'>
+                        <DropdownMenuContent className='w-56 max-h-[200px] overflow-y-auto'>
                           <DropdownMenuLabel>Categories</DropdownMenuLabel>
                           <DropdownMenuSeparator />
                           {categoryList.map((category) => {
