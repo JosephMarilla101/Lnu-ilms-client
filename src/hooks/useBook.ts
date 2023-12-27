@@ -149,53 +149,6 @@ export const useReturnBorrowedBook = () => {
   });
 };
 
-const releaseBook = (data: { id: number; bookId: number; userId: number }) =>
-  request({ url: '/book/release_book', method: 'post', data });
-
-export const useReleaseBook = () => {
-  const queryClient = useQueryClient();
-  return useMutation(releaseBook, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['books', 'requested', 'all']);
-      queryClient.invalidateQueries(['book', 'requested']);
-    },
-    onError: (error: ErrorResponse) => error,
-  });
-};
-
-const cancelRequest = (data: { requestId: number }) =>
-  request({ url: '/book/cancel_request', method: 'put', data });
-
-export const useCancelRequest = () => {
-  const queryClient = useQueryClient();
-  return useMutation(cancelRequest, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['books', 'requested', 'all']);
-      queryClient.invalidateQueries(['book', 'requested']);
-    },
-    onError: (error: ErrorResponse) => error,
-  });
-};
-
-const changeRequestStatus = (data: {
-  id: number;
-  bookId: number;
-  userId: number;
-  status: RequestStatusType;
-  dueDate?: Date;
-}) => request({ url: '/book/change_request_status', method: 'put', data });
-
-export const useChangeRequestStatus = () => {
-  const queryClient = useQueryClient();
-  return useMutation(changeRequestStatus, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['books', 'requested', 'all']);
-      queryClient.invalidateQueries(['book', 'requested']);
-    },
-    onError: (error: ErrorResponse) => error,
-  });
-};
-
 const deleteBorrowedBook = (data: { issuedId: number }) =>
   request({ url: '/book/issued_book', method: 'delete', data });
 
@@ -216,19 +169,23 @@ export const useGetBookLateFee = (): UseQueryResult<LateFee> =>
     onError: (error: ErrorResponse) => error,
   });
 
-const getALLRequestedBooks = () => request({ url: '/book/requested/all' });
-
-export const useGetALLRequestedBooks = (): UseQueryResult<RequestedBook[]> =>
-  useQuery(['books', 'requested', 'all'], getALLRequestedBooks, {
+export const useGetAllIssuedBooks = ({
+  isReturn,
+  startDate,
+  endDate,
+}: {
+  isReturn: boolean;
+  startDate?: Date;
+  endDate?: Date;
+}): UseQueryResult<IssuedBooks[]> => {
+  const getAllIssuedBooks = () =>
+    request({
+      url: `/book/issued/all?isReturn=${isReturn}&startDate=${startDate}&endDate=${endDate}`,
+    });
+  return useQuery(['books', 'issued', 'all'], getAllIssuedBooks, {
     onError: (error: ErrorResponse) => error,
   });
-
-const getAllIssuedBooks = () => request({ url: '/book/issued/all' });
-
-export const useGetAllIssuedBooks = (): UseQueryResult<IssuedBooks[]> =>
-  useQuery(['books', 'issued', 'all'], getAllIssuedBooks, {
-    onError: (error: ErrorResponse) => error,
-  });
+};
 
 const fetchBookList = ({
   pageParam = undefined,

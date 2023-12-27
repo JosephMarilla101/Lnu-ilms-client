@@ -22,7 +22,7 @@ import {
   useChangeRequestStatus,
   useCancelRequest,
   useReleaseBook,
-} from '@/hooks/useBook';
+} from '@/hooks/useBookRequest';
 import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
@@ -191,6 +191,13 @@ const ColumnsFunction = () => {
       id: 'actions',
       cell: ({ row }) => {
         const rowData = row.original;
+
+        if (
+          rowData.status === 'RELEASED' ||
+          rowData.status === 'DISAPPROVED' ||
+          rowData.isCancelled
+        )
+          return null;
         return (
           <div>
             <DropdownMenu>
@@ -253,11 +260,6 @@ const ColumnsFunction = () => {
                       status: 'DISAPPROVED',
                     });
                   }}
-                  disabled={
-                    rowData.status === 'RELEASED' ||
-                    rowData.status === 'DISAPPROVED' ||
-                    rowData.isCancelled
-                  }
                   className='text-red-600'
                 >
                   <BadgeX size={20} className='mr-2' />
@@ -268,11 +270,6 @@ const ColumnsFunction = () => {
                   onClick={() => {
                     cancelRequest.mutate({ requestId: rowData.id });
                   }}
-                  disabled={
-                    rowData.status === 'RELEASED' ||
-                    rowData.status === 'DISAPPROVED' ||
-                    rowData.isCancelled
-                  }
                   className='text-orange-600'
                 >
                   <Ban size={19} className='mr-2' />

@@ -46,12 +46,32 @@ const AdminRoutes = () => {
         element: <BookEdit />,
       },
       {
-        path: 'book/requests',
-        element: <BookRequest />,
+        path: 'book-request/pending',
+        element: <BookRequest status='PENDING' />,
       },
       {
-        path: 'book/issued',
-        element: <IssuedBooks />,
+        path: 'book-request/for-pickup',
+        element: <BookRequest status='FORPICKUP' />,
+      },
+      {
+        path: 'book-request/released',
+        element: <BookRequest status='RELEASED' />,
+      },
+      {
+        path: 'book-request/cancelled',
+        element: <BookRequest status='CANCELLED' />,
+      },
+      {
+        path: 'book-request/disapproved',
+        element: <BookRequest status='DISAPPROVED' />,
+      },
+      {
+        path: 'issued-books/unreturn',
+        element: <IssuedBooks isReturn={false} />,
+      },
+      {
+        path: 'issued-books/returned',
+        element: <IssuedBooks isReturn={true} />,
       },
       {
         path: 'students',

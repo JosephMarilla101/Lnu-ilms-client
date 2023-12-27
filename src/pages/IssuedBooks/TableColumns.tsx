@@ -159,6 +159,8 @@ const ColumnsFunction = () => {
     {
       id: 'actions',
       cell: ({ row }) => {
+        if (row.original.isReturn) return null;
+
         return (
           <div>
             <DropdownMenu>

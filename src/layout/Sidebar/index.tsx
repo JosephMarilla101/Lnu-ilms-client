@@ -15,6 +15,10 @@ import {
   LayoutDashboard,
   BarChart3,
   BookOpenCheckIcon,
+  Loader,
+  PackageCheck,
+  BadgeCheck,
+  BadgeX,
 } from 'lucide-react';
 import useSidebar from '@/context/useSidebar';
 import { useAuthenticateUser } from '@/hooks/useAuth';
@@ -74,18 +78,113 @@ const SidebarLayout = () => {
             <MenuItem icon={<Users2 />} component={<NavLink to='/authors' />}>
               Authors
             </MenuItem>
-            <MenuItem
-              icon={<BookUp />}
-              component={<NavLink to='/book/requests' />}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: '#1e5288',
+                    color: 'primary',
+                  },
+                  [`:hover`]: {
+                    backgroundColor: '#1e5288',
+                    color: '',
+                  },
+                },
+              }}
             >
-              Book Requests
-            </MenuItem>
-            <MenuItem
-              icon={<BookOpenCheck />}
-              component={<NavLink to='/book/issued' />}
+              <SubMenu
+                icon={<BookUp />}
+                label='Book Requests'
+                rootStyles={{
+                  ['& > .' + menuClasses.button]: {
+                    backgroundColor: '#070372',
+                    color: 'primary',
+                    '&:hover': {
+                      backgroundColor: '#eecef9',
+                    },
+                  },
+                  ['.' + menuClasses.subMenuContent]: {
+                    backgroundColor: '#070372',
+                  },
+                }}
+              >
+                <MenuItem
+                  icon={<Loader className='text-yellow-700' />}
+                  component={<NavLink to='/book-request/pending' />}
+                >
+                  Pending
+                </MenuItem>
+                <MenuItem
+                  icon={<PackageCheck className='text-blue-600' />}
+                  component={<NavLink to='/book-request/for-pickup' />}
+                >
+                  For Pickup
+                </MenuItem>
+                <MenuItem
+                  icon={<BadgeCheck className='text-green-600' />}
+                  component={<NavLink to='/book-request/released' />}
+                >
+                  Released
+                </MenuItem>
+                <MenuItem
+                  icon={<BadgeX className='text-orange-600' />}
+                  component={<NavLink to='/book-request/cancelled' />}
+                >
+                  Cancelled
+                </MenuItem>
+                <MenuItem
+                  icon={<BadgeX className='text-red-700' />}
+                  component={<NavLink to='/book-request/disapproved' />}
+                >
+                  Disapproved
+                </MenuItem>
+              </SubMenu>
+            </Menu>
+
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: '#1e5288',
+                    color: 'primary',
+                  },
+                  [`:hover`]: {
+                    backgroundColor: '#1e5288',
+                    color: '',
+                  },
+                },
+              }}
             >
-              Issued Books
-            </MenuItem>
+              <SubMenu
+                icon={<BookOpenCheck />}
+                label='Issued Books'
+                rootStyles={{
+                  ['& > .' + menuClasses.button]: {
+                    backgroundColor: '#070372',
+                    color: 'primary',
+                    '&:hover': {
+                      backgroundColor: '#eecef9',
+                    },
+                  },
+                  ['.' + menuClasses.subMenuContent]: {
+                    backgroundColor: '#070372',
+                  },
+                }}
+              >
+                <MenuItem
+                  icon={<BadgeX className='text-red-600' />}
+                  component={<NavLink to='/issued-books/unreturn' />}
+                >
+                  Unreturn
+                </MenuItem>
+                <MenuItem
+                  icon={<BadgeCheck className='text-green-600' />}
+                  component={<NavLink to='/issued-books/returned' />}
+                >
+                  Returned
+                </MenuItem>
+              </SubMenu>
+            </Menu>
 
             <Menu
               menuItemStyles={{

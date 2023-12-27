@@ -8,8 +8,8 @@ import {
   useGetRequestedBook,
   useGetUnreturnedBook,
   useGetBookLateFee,
-  useCancelRequest,
 } from '@/hooks/useBook';
+import { useCancelRequest } from '@/hooks/useBookRequest';
 import { format, parseISO, differenceInDays, isAfter } from 'date-fns';
 import { X, ImageOff } from 'lucide-react';
 

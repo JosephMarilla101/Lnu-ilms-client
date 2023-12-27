@@ -8,10 +8,15 @@ import {
 } from '@/components/ui/select';
 import ColumnsFunction from './TableColumns';
 import DataTable from '@/components/DataTable';
-import { useGetALLRequestedBooks } from '@/hooks/useBook';
-import { useState } from 'react';
+import {
+  useGetALLRequestedBooks,
+  type RequestStatusType,
+} from '@/hooks/useBookRequest';
+import { useEffect, useState } from 'react';
 import useBookRequest from '@/context/useBookRequest';
-import ApproveDialog from './ApproveDialog';
+import ApproveDialog from '@/components/RequestApproveDialog';
+import RangeDatePicker from '@/components/RangeDatePicker';
+import { minDate } from '@/lib/data';
 
 const searchSelection = [
   {
@@ -28,9 +33,26 @@ const searchSelection = [
   },
 ];
 
-const BookRequest = () => {
+type BookRequestProps = {
+  status: RequestStatusType | 'CANCELLED';
+};
+
+const BookRequest = ({ status }: BookRequestProps) => {
   const [selected, setSelected] = useState(searchSelection[0].searchable);
-  const requestedBooks = useGetALLRequestedBooks();
+  const [range, setRange] = useState<{
+    startDate?: Date;
+    endDate?: Date;
+  }>({
+    startDate: minDate,
+    endDate: new Date(),
+  });
+
+  const requestedBooks = useGetALLRequestedBooks({
+    status,
+    startDate: range.startDate,
+    endDate: range.endDate,
+  });
+
   const { action } = useBookRequest();
   const columns = ColumnsFunction();
 
@@ -47,9 +69,14 @@ const BookRequest = () => {
     // Return a default value or handle the case when no match is found.
     return '';
   }
+
+  useEffect(() => {
+    requestedBooks.refetch();
+  }, [range]);
+
   return (
     <div className='container mx-auto py-10 relative'>
-      <div className='hidden sm:block max-w-[200px] absolute left-[250px] top-[55px]'>
+      <div className='hidden sm:flex absolute left-[250px] top-[55px] text-gray-500'>
         <Select name='status' value={selected} onValueChange={selectChange}>
           <SelectTrigger className='w-full'>
             <SelectValue placeholder='Author status' />
@@ -66,7 +93,12 @@ const BookRequest = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
+
+        <div className='ml-4'>
+          <RangeDatePicker onRangeChange={setRange} />
+        </div>
       </div>
+
       <DataTable
         columns={columns}
         data={requestedBooks.data ?? []}
