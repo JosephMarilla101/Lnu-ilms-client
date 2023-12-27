@@ -3,6 +3,7 @@ import { DateRangePicker, RangeKeyDict } from 'react-date-range';
 import { format } from 'date-fns';
 import { Input } from '@/components/ui/input';
 import { minDate, endOfMonth } from '@/lib/data';
+import { X } from 'lucide-react';
 
 type DateRangeCompProps = {
   onRangeChange?: React.Dispatch<
@@ -59,16 +60,36 @@ const DateRangeComp = ({ onRangeChange }: DateRangeCompProps) => {
   };
 
   return (
-    <div className='calendarWrap'>
-      <Input
-        value={`${format(range.startDate ?? 0, 'MMM dd, yyyy')} to ${format(
-          range.endDate ?? 0,
-          'MMM dd, yyyy'
-        )}`}
-        placeholder='Date Range'
-        readOnly
-        onClick={() => setOpen((open) => !open)}
-      />
+    <div className='w-[250px]'>
+      <div className='relative'>
+        <Input
+          value={
+            range.startDate === minDate
+              ? ''
+              : `${format(range.startDate ?? 0, 'MMM dd, yyyy')} to ${format(
+                  range.endDate ?? 0,
+                  'MMM dd, yyyy'
+                )}`
+          }
+          placeholder='All time data until current date'
+          readOnly
+          onClick={() => setOpen((open) => !open)}
+        />
+
+        {range.startDate !== minDate && (
+          <X
+            onClick={() => {
+              setRange({
+                startDate: minDate,
+                endDate: new Date(),
+                key: 'selection',
+              });
+            }}
+            size={18}
+            className='text-gray-500 absolute right-2.5 top-2.5 cursor-pointer'
+          />
+        )}
+      </div>
 
       <div ref={refOne}>
         {open && (

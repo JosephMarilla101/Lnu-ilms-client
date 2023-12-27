@@ -120,7 +120,7 @@ export const useLibrarianRegistration = () => {
   const queryClient = useQueryClient();
   return useMutation(librarianRegistration, {
     onSuccess: () => {
-      queryClient.invalidateQueries(['librarian', 'all']);
+      queryClient.invalidateQueries(['user', 'all']);
     },
     onError: (error: ErrorResponse) => error,
   });

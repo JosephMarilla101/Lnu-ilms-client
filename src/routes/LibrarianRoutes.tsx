@@ -65,8 +65,12 @@ const LibrarianRoutes = () => {
         element: <BookRequest status='DISAPPROVED' />,
       },
       {
-        path: 'book/issued',
-        element: <IssuedBooks />,
+        path: 'issued-books/unreturn',
+        element: <IssuedBooks isReturn={false} />,
+      },
+      {
+        path: 'issued-books/returned',
+        element: <IssuedBooks isReturn={true} />,
       },
       {
         path: 'students',

@@ -46,6 +46,7 @@ const BookRequest = ({ status }: BookRequestProps) => {
     startDate: minDate,
     endDate: new Date(),
   });
+
   const requestedBooks = useGetALLRequestedBooks({
     status,
     startDate: range.startDate,
@@ -75,7 +76,7 @@ const BookRequest = ({ status }: BookRequestProps) => {
 
   return (
     <div className='container mx-auto py-10 relative'>
-      <div className='hidden sm:block max-w-[200px] absolute left-[250px] top-[55px]'>
+      <div className='hidden sm:flex absolute left-[250px] top-[55px] text-gray-500'>
         <Select name='status' value={selected} onValueChange={selectChange}>
           <SelectTrigger className='w-full'>
             <SelectValue placeholder='Author status' />
@@ -92,10 +93,10 @@ const BookRequest = ({ status }: BookRequestProps) => {
             </SelectGroup>
           </SelectContent>
         </Select>
-      </div>
 
-      <div className='w-[240px] absolute left-[345px] top-[55px] z-10'>
-        <RangeDatePicker onRangeChange={setRange} />
+        <div className='ml-4'>
+          <RangeDatePicker onRangeChange={setRange} />
+        </div>
       </div>
 
       <DataTable

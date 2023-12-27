@@ -140,12 +140,51 @@ const SidebarLayout = () => {
                 </MenuItem>
               </SubMenu>
             </Menu>
-            <MenuItem
-              icon={<BookOpenCheck />}
-              component={<NavLink to='/book/issued' />}
+
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: '#1e5288',
+                    color: 'primary',
+                  },
+                  [`:hover`]: {
+                    backgroundColor: '#1e5288',
+                    color: '',
+                  },
+                },
+              }}
             >
-              Issued Books
-            </MenuItem>
+              <SubMenu
+                icon={<BookOpenCheck />}
+                label='Issued Books'
+                rootStyles={{
+                  ['& > .' + menuClasses.button]: {
+                    backgroundColor: '#070372',
+                    color: 'primary',
+                    '&:hover': {
+                      backgroundColor: '#eecef9',
+                    },
+                  },
+                  ['.' + menuClasses.subMenuContent]: {
+                    backgroundColor: '#070372',
+                  },
+                }}
+              >
+                <MenuItem
+                  icon={<BadgeX className='text-red-600' />}
+                  component={<NavLink to='/issued-books/unreturn' />}
+                >
+                  Unreturn
+                </MenuItem>
+                <MenuItem
+                  icon={<BadgeCheck className='text-green-600' />}
+                  component={<NavLink to='/issued-books/returned' />}
+                >
+                  Returned
+                </MenuItem>
+              </SubMenu>
+            </Menu>
 
             <Menu
               menuItemStyles={{

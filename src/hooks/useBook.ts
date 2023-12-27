@@ -169,19 +169,23 @@ export const useGetBookLateFee = (): UseQueryResult<LateFee> =>
     onError: (error: ErrorResponse) => error,
   });
 
-const getALLRequestedBooks = () => request({ url: '/book/requested/all' });
-
-export const useGetALLRequestedBooks = (): UseQueryResult<RequestedBook[]> =>
-  useQuery(['books', 'requested', 'all'], getALLRequestedBooks, {
+export const useGetAllIssuedBooks = ({
+  isReturn,
+  startDate,
+  endDate,
+}: {
+  isReturn: boolean;
+  startDate?: Date;
+  endDate?: Date;
+}): UseQueryResult<IssuedBooks[]> => {
+  const getAllIssuedBooks = () =>
+    request({
+      url: `/book/issued/all?isReturn=${isReturn}&startDate=${startDate}&endDate=${endDate}`,
+    });
+  return useQuery(['books', 'issued', 'all'], getAllIssuedBooks, {
     onError: (error: ErrorResponse) => error,
   });
-
-const getAllIssuedBooks = () => request({ url: '/book/issued/all' });
-
-export const useGetAllIssuedBooks = (): UseQueryResult<IssuedBooks[]> =>
-  useQuery(['books', 'issued', 'all'], getAllIssuedBooks, {
-    onError: (error: ErrorResponse) => error,
-  });
+};
 
 const fetchBookList = ({
   pageParam = undefined,
