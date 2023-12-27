@@ -15,6 +15,10 @@ import {
   LayoutDashboard,
   BarChart3,
   BookOpenCheckIcon,
+  Loader,
+  PackageCheck,
+  BadgeCheck,
+  BadgeX,
 } from 'lucide-react';
 import useSidebar from '@/context/useSidebar';
 import { useAuthenticateUser } from '@/hooks/useAuth';
@@ -104,19 +108,32 @@ const SidebarLayout = () => {
                   },
                 }}
               >
-                <MenuItem component={<NavLink to='/book-request/pending' />}>
+                <MenuItem
+                  icon={<Loader className='text-yellow-700' />}
+                  component={<NavLink to='/book-request/pending' />}
+                >
                   Pending
                 </MenuItem>
-                <MenuItem component={<NavLink to='/book-request/for-pickup' />}>
+                <MenuItem
+                  icon={<PackageCheck className='text-blue-600' />}
+                  component={<NavLink to='/book-request/for-pickup' />}
+                >
                   For Pickup
                 </MenuItem>
-                <MenuItem component={<NavLink to='/book-request/released' />}>
+                <MenuItem
+                  icon={<BadgeCheck className='text-green-600' />}
+                  component={<NavLink to='/book-request/released' />}
+                >
                   Released
                 </MenuItem>
-                <MenuItem component={<NavLink to='/book-request/cancelled' />}>
+                <MenuItem
+                  icon={<BadgeX className='text-orange-600' />}
+                  component={<NavLink to='/book-request/cancelled' />}
+                >
                   Cancelled
                 </MenuItem>
                 <MenuItem
+                  icon={<BadgeX className='text-red-700' />}
                   component={<NavLink to='/book-request/disapproved' />}
                 >
                   Disapproved
