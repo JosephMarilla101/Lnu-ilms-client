@@ -19,7 +19,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useEffect, useState } from 'react';
 import useBookRequest from '@/context/useBookRequest';
-import { useChangeRequestStatus } from '@/hooks/useBook';
+import { useChangeRequestStatus } from '@/hooks/useBookRequest';
 
 const ApproveDialog = () => {
   const [date, setDate] = useState<Date>();

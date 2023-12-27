@@ -74,12 +74,55 @@ const SidebarLayout = () => {
             <MenuItem icon={<Users2 />} component={<NavLink to='/authors' />}>
               Authors
             </MenuItem>
-            <MenuItem
-              icon={<BookUp />}
-              component={<NavLink to='/book/requests' />}
+            <Menu
+              menuItemStyles={{
+                button: {
+                  [`&.active`]: {
+                    backgroundColor: '#1e5288',
+                    color: 'primary',
+                  },
+                  [`:hover`]: {
+                    backgroundColor: '#1e5288',
+                    color: '',
+                  },
+                },
+              }}
             >
-              Book Requests
-            </MenuItem>
+              <SubMenu
+                icon={<BookUp />}
+                label='Book Requests'
+                rootStyles={{
+                  ['& > .' + menuClasses.button]: {
+                    backgroundColor: '#070372',
+                    color: 'primary',
+                    '&:hover': {
+                      backgroundColor: '#eecef9',
+                    },
+                  },
+                  ['.' + menuClasses.subMenuContent]: {
+                    backgroundColor: '#070372',
+                  },
+                }}
+              >
+                <MenuItem component={<NavLink to='/book-request/pending' />}>
+                  Pending
+                </MenuItem>
+                <MenuItem component={<NavLink to='/book-request/for-pickup' />}>
+                  For Pickup
+                </MenuItem>
+                <MenuItem component={<NavLink to='/book-request/released' />}>
+                  Released
+                </MenuItem>
+                <MenuItem component={<NavLink to='/book-request/cancelled' />}>
+                  Cancelled
+                </MenuItem>
+                <MenuItem
+                  component={<NavLink to='/book-request/disapproved' />}
+                >
+                  Disapproved
+                </MenuItem>
+              </SubMenu>
+            </Menu>
             <MenuItem
               icon={<BookOpenCheck />}
               component={<NavLink to='/book/issued' />}
