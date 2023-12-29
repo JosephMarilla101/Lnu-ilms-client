@@ -8,6 +8,14 @@ export type ChartDataType = {
   count: number;
 }[];
 
+const borrowedBookByMonth = () =>
+  request({ url: '/dashboard/borrowed_book_by_month' });
+
+export const useBorrowedBookByMonth = (): UseQueryResult<ChartDataType> =>
+  useQuery(['borrowed_book_by_month'], borrowedBookByMonth, {
+    onError: (error: ErrorResponse) => error,
+  });
+
 const topCategories = () => request({ url: '/dashboard/top_categories' });
 
 export const useTopCategories = (): UseQueryResult<ChartDataType> =>
