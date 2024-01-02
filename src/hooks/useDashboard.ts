@@ -8,20 +8,26 @@ export type ChartDataType = {
   count: number;
 }[];
 
-const borrowedBookByMonth = () =>
-  request({ url: '/dashboard/borrowed_book_by_month' });
+export const useBorrowedBookByMonth = (
+  year: string
+): UseQueryResult<ChartDataType> => {
+  const borrowedBookByMonth = () =>
+    request({ url: `/dashboard/borrowed_book_by_month?year=${year}` });
 
-export const useBorrowedBookByMonth = (): UseQueryResult<ChartDataType> =>
-  useQuery(['borrowed_book_by_month'], borrowedBookByMonth, {
+  return useQuery(['borrowed_book_by_month'], borrowedBookByMonth, {
     onError: (error: ErrorResponse) => error,
   });
+};
 
-const topCategories = () => request({ url: '/dashboard/top_categories' });
-
-export const useTopCategories = (): UseQueryResult<ChartDataType> =>
-  useQuery(['top_categories'], topCategories, {
+export const useTopCategories = (
+  year: string
+): UseQueryResult<ChartDataType> => {
+  const topCategories = () =>
+    request({ url: `/dashboard/top_categories?year=${year}` });
+  return useQuery(['top_categories'], topCategories, {
     onError: (error: ErrorResponse) => error,
   });
+};
 
 const userBorrowCount = () => request({ url: '/dashboard/user_borrow_count' });
 

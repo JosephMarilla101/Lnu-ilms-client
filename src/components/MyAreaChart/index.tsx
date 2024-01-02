@@ -45,7 +45,7 @@ export default function MyAreaChart({
           <XAxis dataKey='name' tickFormatter={formatMonth} />
           <YAxis />
           <Tooltip />
-          <Area type='monotoneX' dataKey='count' stroke='#82ca9d' fill='blue' />
+          <Area type='monotoneX' dataKey='count' stroke='blue' fill='blue' />
         </AreaChart>
       </ResponsiveContainer>
     </div>

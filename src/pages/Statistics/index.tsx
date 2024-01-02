@@ -15,22 +15,31 @@ import {
 } from '@/components/ui/select';
 import MyAreaChart from '@/components/MyAreaChart';
 import MyBarChart from '@/components/MyBarChart';
+import MyPieChart from '@/components/MyPieChart';
 // import RangeDatePicker from '@/components/RangeDatePicker';
 import { useBorrowedBookByMonth, useTopCategories } from '@/hooks/useDashboard';
 import { generateYearStrings } from '@/lib/utils';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Statistics() {
-  const borrowedBookByMonth = useBorrowedBookByMonth();
-  const topCategories = useTopCategories();
-  // const userBorrowCount = useUserBorrowCount();
-  // const userCountData = useUserCountData();
   const [chartFilters, setChartFilters] = useState({
     categoryYear: new Date().getFullYear().toString(),
     requestYear: new Date().getFullYear().toString(),
   });
+  const borrowedBookByMonth = useBorrowedBookByMonth(chartFilters.requestYear);
+  const topCategories = useTopCategories(chartFilters.categoryYear);
+  // const userBorrowCount = useUserBorrowCount();
+  // const userCountData = useUserCountData();
 
   const years = generateYearStrings();
+
+  useEffect(() => {
+    borrowedBookByMonth.refetch();
+  }, [chartFilters.requestYear]);
+
+  useEffect(() => {
+    topCategories.refetch();
+  }, [chartFilters.categoryYear]);
 
   const AreaChartHeader = (): React.ReactNode => {
     return (
@@ -106,6 +115,10 @@ export default function Statistics() {
           data={topCategories.data}
           header={<BarChartHeader />}
         />
+      </div>
+
+      <div className='w-full flex'>
+        <MyPieChart />
       </div>
 
       {/* <div className='max-w-[60%] mx-auto mb-8'>

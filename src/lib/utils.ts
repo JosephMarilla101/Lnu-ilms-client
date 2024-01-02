@@ -7,10 +7,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export const generateYearStrings = (): string[] => {
   const currentYear = new Date().getFullYear();
-  const startYear = 2000;
+  const startYear = 2020;
   const years: string[] = [];
 
-  for (let year = startYear; year <= currentYear; year++) {
+  for (let year = currentYear; year >= startYear; year--) {
     years.push(year.toString());
   }
 
