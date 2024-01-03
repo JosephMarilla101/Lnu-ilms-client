@@ -1,4 +1,4 @@
-export const minDate = new Date(2000, 0, 1);
+export const minDate = new Date(2020, 0, 1);
 
 export const endOfMonth = new Date(
   new Date().getFullYear(),

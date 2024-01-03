@@ -8,19 +8,42 @@ export type ChartDataType = {
   count: number;
 }[];
 
-const topCategories = () => request({ url: '/dashboard/top_categories' });
+export const useBorrowedBookByMonth = (
+  year: string
+): UseQueryResult<ChartDataType> => {
+  const borrowedBookByMonth = () =>
+    request({ url: `/dashboard/borrowed_book_by_month?year=${year}` });
 
-export const useTopCategories = (): UseQueryResult<ChartDataType> =>
-  useQuery(['top_categories'], topCategories, {
+  return useQuery(['borrowed_book_by_month'], borrowedBookByMonth, {
     onError: (error: ErrorResponse) => error,
   });
+};
 
-const userBorrowCount = () => request({ url: '/dashboard/user_borrow_count' });
-
-export const useUserBorrowCount = (): UseQueryResult<ChartDataType> =>
-  useQuery(['user_borrow_count'], userBorrowCount, {
+export const useTopCategories = (
+  year: string
+): UseQueryResult<ChartDataType> => {
+  const topCategories = () =>
+    request({ url: `/dashboard/top_categories?year=${year}` });
+  return useQuery(['top_categories'], topCategories, {
     onError: (error: ErrorResponse) => error,
   });
+};
+
+export const useUserBorrowCount = ({
+  startDate,
+  endDate,
+}: {
+  startDate?: Date;
+  endDate?: Date;
+}): UseQueryResult<ChartDataType> => {
+  const userBorrowCount = () =>
+    request({
+      url: `/dashboard/user_borrow_count?startDate=${startDate}&endDate=${endDate}`,
+    });
+  return useQuery(['user_borrow_count'], userBorrowCount, {
+    onError: (error: ErrorResponse) => error,
+  });
+};
 
 const userCountData = () => request({ url: '/dashboard/user_count_data' });
 
