@@ -125,6 +125,10 @@ export default function Statistics() {
     );
   };
 
+  const PieChartHeader = (): React.ReactNode => {
+    return <h2 className='relative mb-2'>Total User Count</h2>;
+  };
+
   return (
     <div className='mx-2 md:mx-4 py-6 '>
       <div className='w-full flex flex-col md:flex-row'>
@@ -152,8 +156,9 @@ export default function Statistics() {
           />
         </div>
         <MyPieChart
-          classname='h-80 w-[95%] md:w-[40%] mt-[130px] md:mt-10'
+          classname='h-80 w-[95%] md:w-[40%] mt-[130px] md:mt-16'
           data={userCountData.data}
+          header={<PieChartHeader />}
         />
       </div>
     </div>
