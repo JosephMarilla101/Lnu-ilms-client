@@ -1,10 +1,3 @@
-// import {
-//   useTopCategories,
-//   useUserBorrowCount,
-//   useUserCountData,
-// } from '@/hooks/useDashboard';
-// import BarChart from '@/components/BarChart';
-// import PieChart from '@/components/PieChart';
 import {
   Select,
   SelectContent,
@@ -16,20 +9,40 @@ import {
 import MyAreaChart from '@/components/MyAreaChart';
 import MyBarChart from '@/components/MyBarChart';
 import MyPieChart from '@/components/MyPieChart';
-// import RangeDatePicker from '@/components/RangeDatePicker';
-import { useBorrowedBookByMonth, useTopCategories } from '@/hooks/useDashboard';
+import RangeDatePicker from '@/components/RangeDatePicker';
+import {
+  useBorrowedBookByMonth,
+  useTopCategories,
+  useUserBorrowCount,
+  useUserCountData,
+} from '@/hooks/useDashboard';
 import { generateYearStrings } from '@/lib/utils';
 import { useEffect, useState } from 'react';
+import { minDate } from '@/lib/data';
 
 export default function Statistics() {
   const [chartFilters, setChartFilters] = useState({
     categoryYear: new Date().getFullYear().toString(),
     requestYear: new Date().getFullYear().toString(),
   });
+  const [range, setRange] = useState<{
+    startDate?: Date;
+    endDate?: Date;
+    key?: string;
+  }>({
+    startDate: minDate,
+    endDate: new Date(),
+    key: 'selection',
+  });
+
   const borrowedBookByMonth = useBorrowedBookByMonth(chartFilters.requestYear);
   const topCategories = useTopCategories(chartFilters.categoryYear);
-  // const userBorrowCount = useUserBorrowCount();
-  // const userCountData = useUserCountData();
+
+  const userBorrowCount = useUserBorrowCount({
+    startDate: range.startDate,
+    endDate: range.endDate,
+  });
+  const userCountData = useUserCountData();
 
   const years = generateYearStrings();
 
@@ -40,6 +53,10 @@ export default function Statistics() {
   useEffect(() => {
     topCategories.refetch();
   }, [chartFilters.categoryYear]);
+
+  useEffect(() => {
+    userBorrowCount.refetch();
+  }, [range]);
 
   const AreaChartHeader = (): React.ReactNode => {
     return (
@@ -53,7 +70,7 @@ export default function Statistics() {
             }}
           >
             <SelectTrigger className='mt-1'>
-              <SelectValue placeholder='Select Author' />
+              <SelectValue placeholder='Select Year' />
             </SelectTrigger>
             <SelectContent className='max-h-[200px]'>
               <SelectGroup>
@@ -82,7 +99,7 @@ export default function Statistics() {
             }}
           >
             <SelectTrigger className='mt-1'>
-              <SelectValue placeholder='Select Author' />
+              <SelectValue placeholder='Select Year' />
             </SelectTrigger>
             <SelectContent className='max-h-[200px]'>
               <SelectGroup>
@@ -99,53 +116,46 @@ export default function Statistics() {
     );
   };
 
+  const UserBorrowCountHeader = (): React.ReactNode => {
+    return (
+      <h2 className='relative mb-2 pr-16'>
+        User Borrow Count
+        <div className='absolute -top-2 right-[260px]'></div>
+      </h2>
+    );
+  };
+
   return (
     <div className='mx-2 md:mx-4 py-6 '>
-      {/* <div className='absolute z-10'>
-        <RangeDatePicker />
-      </div> */}
-      <div className='w-full flex'>
+      <div className='w-full flex flex-col md:flex-row'>
         <MyAreaChart
-          classname='h-60 w-[60%]'
+          classname='h-60 w-[95%] md:w-[60%]'
           data={borrowedBookByMonth.data}
           header={<AreaChartHeader />}
         />
         <MyBarChart
-          classname='h-60 w-[40%]'
+          classname='h-60 w-[95%] md:w-[40%] mt-10 md:mt-0'
           data={topCategories.data}
           header={<BarChartHeader />}
         />
       </div>
 
-      <div className='w-full flex'>
-        <MyPieChart />
-      </div>
-
-      {/* <div className='max-w-[60%] mx-auto mb-8'>
-        <BarChart
-          title='Top Book Category'
-          label='Borrow Count'
-          dataset={topCategories.data}
+      <div className='w-full flex flex-col md:flex-row'>
+        <div className='h-60 w-[95%] md:w-[60%] relative'>
+          <div className='absolute z-10 right-2 top-[70px]'>
+            <RangeDatePicker onRangeChange={setRange} />
+          </div>
+          <MyBarChart
+            classname='h-full w-full mt-20'
+            data={userBorrowCount.data}
+            header={<UserBorrowCountHeader />}
+          />
+        </div>
+        <MyPieChart
+          classname='h-80 w-[95%] md:w-[40%] mt-[130px] md:mt-10'
+          data={userCountData.data}
         />
       </div>
-
-      <div className='w-full flex items-center flex-col md:flex-row justify-evenly gap-6'>
-        <div className='max-w-[80%]'>
-          <PieChart
-            title='User Borrow Count'
-            label='total'
-            dataset={userBorrowCount.data ?? []}
-          />
-        </div>
-
-        <div className='max-w-[80%]'>
-          <PieChart
-            title='User Count'
-            label='total'
-            dataset={userCountData.data ?? []}
-          />
-        </div>
-      </div> */}
     </div>
   );
 }

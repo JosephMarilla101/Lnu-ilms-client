@@ -71,7 +71,7 @@ const DateRangeComp = ({ onRangeChange }: DateRangeCompProps) => {
                   'MMM dd, yyyy'
                 )}`
           }
-          placeholder='All time data until current date'
+          placeholder='All time data upto current date'
           readOnly
           onClick={() => setOpen((open) => !open)}
         />

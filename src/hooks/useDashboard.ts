@@ -29,12 +29,21 @@ export const useTopCategories = (
   });
 };
 
-const userBorrowCount = () => request({ url: '/dashboard/user_borrow_count' });
-
-export const useUserBorrowCount = (): UseQueryResult<ChartDataType> =>
-  useQuery(['user_borrow_count'], userBorrowCount, {
+export const useUserBorrowCount = ({
+  startDate,
+  endDate,
+}: {
+  startDate?: Date;
+  endDate?: Date;
+}): UseQueryResult<ChartDataType> => {
+  const userBorrowCount = () =>
+    request({
+      url: `/dashboard/user_borrow_count?startDate=${startDate}&endDate=${endDate}`,
+    });
+  return useQuery(['user_borrow_count'], userBorrowCount, {
     onError: (error: ErrorResponse) => error,
   });
+};
 
 const userCountData = () => request({ url: '/dashboard/user_count_data' });
 

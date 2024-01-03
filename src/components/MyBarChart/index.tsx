@@ -16,12 +16,14 @@ type MyBarChartProps = {
   data?: ChartDataType;
   header?: ReactNode;
   classname?: string;
+  barColor?: string;
 };
 
 export default function MyBarChart({
   data,
   header,
   classname,
+  barColor = '#D6A73D',
 }: MyBarChartProps) {
   return (
     <div className={cn('h-96 w-full', classname)}>
@@ -46,8 +48,8 @@ export default function MyBarChart({
           <Bar
             barSize={30}
             dataKey='count'
-            fill='#D6A73D'
-            activeBar={<Rectangle fill='#D6A73D' stroke='#D6A73D' />}
+            fill={barColor}
+            activeBar={<Rectangle fill={barColor} stroke={barColor} />}
           />
         </BarChart>
       </ResponsiveContainer>
