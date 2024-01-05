@@ -136,23 +136,29 @@ export default function Statistics() {
           classname='h-60 w-[95%] md:w-[60%]'
           data={borrowedBookByMonth.data}
           header={<AreaChartHeader />}
+          yAxisText='Total Count'
+          xAxisText={`Book Request for the year of ${chartFilters.requestYear}`}
         />
         <MyBarChart
           classname='h-60 w-[95%] md:w-[40%] mt-10 md:mt-0'
           data={topCategories.data}
           header={<BarChartHeader />}
+          yAxisText={`Total Count`}
+          xAxisText={`Book Category`}
         />
       </div>
 
       <div className='w-full flex flex-col md:flex-row'>
         <div className='h-60 w-[95%] md:w-[60%] relative'>
-          <div className='absolute z-10 right-2 top-[70px]'>
+          <div className='absolute z-10 right-2 top-[85px]'>
             <RangeDatePicker onRangeChange={setRange} />
           </div>
           <MyBarChart
-            classname='h-full w-full mt-20'
+            classname='h-full w-full mt-24'
             data={userBorrowCount.data}
             header={<UserBorrowCountHeader />}
+            yAxisText={`Total Count`}
+            xAxisText={`User Type`}
           />
         </div>
         <MyPieChart
