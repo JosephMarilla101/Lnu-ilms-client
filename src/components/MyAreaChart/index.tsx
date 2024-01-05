@@ -15,12 +15,16 @@ type MyAreaChartProps = {
   data?: ChartDataType;
   header?: ReactNode;
   classname?: string;
+  yAxisText?: string;
+  xAxisText?: string;
 };
 
 export default function MyAreaChart({
   data,
   header,
   classname,
+  yAxisText,
+  xAxisText,
 }: MyAreaChartProps) {
   const formatMonth = (month: string) => month.slice(0, 3);
 
@@ -35,15 +39,19 @@ export default function MyAreaChart({
           data={data}
           syncId='anyId'
           margin={{
-            top: 10,
-            right: 10,
+            top: 5,
+            right: 0,
             left: 0,
-            bottom: 0,
+            bottom: 20,
           }}
         >
           <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='name' tickFormatter={formatMonth} />
-          <YAxis />
+          <XAxis
+            dataKey='name'
+            label={{ value: xAxisText, dy: 25 }}
+            tickFormatter={formatMonth}
+          />
+          <YAxis label={{ value: yAxisText, angle: -90 }} />
           <Tooltip />
           <Area type='monotoneX' dataKey='count' stroke='blue' fill='blue' />
         </AreaChart>

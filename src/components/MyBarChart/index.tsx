@@ -17,6 +17,8 @@ type MyBarChartProps = {
   header?: ReactNode;
   classname?: string;
   barColor?: string;
+  yAxisText?: string;
+  xAxisText?: string;
 };
 
 export default function MyBarChart({
@@ -24,6 +26,8 @@ export default function MyBarChart({
   header,
   classname,
   barColor = '#D6A73D',
+  yAxisText,
+  xAxisText,
 }: MyBarChartProps) {
   return (
     <div className={cn('h-96 w-full', classname)}>
@@ -35,15 +39,15 @@ export default function MyBarChart({
         <BarChart
           data={data}
           margin={{
-            top: 10,
-            right: 10,
+            top: 5,
+            right: 0,
             left: 0,
-            bottom: 0,
+            bottom: 20,
           }}
         >
           <CartesianGrid strokeDasharray='3 3' />
-          <XAxis dataKey='name' />
-          <YAxis />
+          <XAxis dataKey='name' label={{ value: xAxisText, dy: 25 }} />
+          <YAxis label={{ value: yAxisText, angle: -90 }} />
           <Tooltip />
           <Bar
             barSize={30}
