@@ -27,6 +27,7 @@ export default function MyAreaChart({
   xAxisText,
 }: MyAreaChartProps) {
   const formatMonth = (month: string) => month.slice(0, 3);
+  const formatYAxisTick = (value: number) => Math.round(value).toString();
 
   return (
     <div className={cn('h-96 w-full', classname)}>
@@ -51,7 +52,10 @@ export default function MyAreaChart({
             label={{ value: xAxisText, dy: 25 }}
             tickFormatter={formatMonth}
           />
-          <YAxis label={{ value: yAxisText, angle: -90 }} />
+          <YAxis
+            label={{ value: yAxisText, angle: -90 }}
+            tickFormatter={formatYAxisTick}
+          />
           <Tooltip />
           <Area type='monotoneX' dataKey='count' stroke='blue' fill='blue' />
         </AreaChart>

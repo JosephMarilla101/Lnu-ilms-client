@@ -29,6 +29,7 @@ export default function MyBarChart({
   yAxisText,
   xAxisText,
 }: MyBarChartProps) {
+  const formatYAxisTick = (value: number) => Math.round(value).toString();
   return (
     <div className={cn('h-96 w-full', classname)}>
       {header && (
@@ -47,7 +48,10 @@ export default function MyBarChart({
         >
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis dataKey='name' label={{ value: xAxisText, dy: 25 }} />
-          <YAxis label={{ value: yAxisText, angle: -90 }} />
+          <YAxis
+            label={{ value: yAxisText, angle: -90 }}
+            tickFormatter={formatYAxisTick}
+          />
           <Tooltip />
           <Bar
             barSize={30}
