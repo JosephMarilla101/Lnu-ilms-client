@@ -54,7 +54,7 @@ const BookRequest = ({ status }: BookRequestProps) => {
   });
 
   const { action } = useBookRequest();
-  const columns = ColumnsFunction();
+  const columns = ColumnsFunction(status);
 
   const selectChange = (value: string) => {
     setSelected(value);

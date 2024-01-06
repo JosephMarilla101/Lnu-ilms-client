@@ -27,14 +27,23 @@ import { format, parseISO } from 'date-fns';
 import ColumnHeader from '@/components/DataTable/ColumnHeader';
 import { Button } from '@/components/ui/button';
 import useBookRequest from '@/context/useBookRequest';
+import { type RequestStatusType } from '@/hooks/useBookRequest';
 import { useEffect } from 'react';
 
-const ColumnsFunction = () => {
+const ColumnsFunction = (status: RequestStatusType | 'CANCELLED') => {
   const changeRequestStatus = useChangeRequestStatus();
   const cancelRequest = useCancelRequest();
   const releaseBook = useReleaseBook();
   const { setId, setBookId, setUserId, setAction } = useBookRequest();
   const { toast } = useToast();
+
+  const getUpdatedAtText = (): string => {
+    if (status === 'CANCELLED') return 'Cancelled Date';
+    if (status === 'DISAPPROVED') return 'Disapproved Date';
+    if (status === 'FORPICKUP') return 'Approved Date';
+    if (status === 'RELEASED') return 'Released Date';
+    else return 'Updation Date';
+  };
 
   useEffect(() => {
     if (changeRequestStatus.isSuccess) {
@@ -139,6 +148,20 @@ const ColumnsFunction = () => {
       ),
       cell: ({ row }) => {
         const date = parseISO(row.getValue('requestDate'));
+        const dateFormat = 'MMM dd yyyy hh:mm a';
+        const formattedDate = format(date, dateFormat);
+
+        return <div>{formattedDate}</div>;
+      },
+    },
+    {
+      accessorKey: 'updatedAt',
+      header: ({ column }) => (
+        <ColumnHeader column={column} title={getUpdatedAtText()} />
+      ),
+      cell: ({ row }) => {
+        if (status === 'PENDING') return 'N/A';
+        const date = parseISO(row.getValue('updatedAt'));
         const dateFormat = 'MMM dd yyyy hh:mm a';
         const formattedDate = format(date, dateFormat);
 

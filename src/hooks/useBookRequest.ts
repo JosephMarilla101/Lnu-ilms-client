@@ -24,6 +24,7 @@ export type RequestedBook = {
   status: RequestStatusType;
   isCancelled: boolean;
   requestDate: Date;
+  updatedAt: Date;
 };
 
 export const useGetALLRequestedBooks = ({
