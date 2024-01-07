@@ -9,7 +9,7 @@ import {
   Font,
 } from '@react-pdf/renderer';
 import { FileDown } from 'lucide-react';
-import { differenceInDays, format, isAfter, parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { useGetBookLateFee } from '@/hooks/useBook';
 import {
   type RequestStatusType,
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
 
 const MyDocument = ({
   data,
-  getBookLateFee,
   status,
 }: {
   data?: RequestedBook[];
@@ -131,28 +130,6 @@ const MyDocument = ({
     const formattedDate = format(date, dateFormat);
 
     return formattedDate;
-  };
-
-  const calculateLateFee = (
-    dueDate: Date,
-    initialFee: number,
-    feePerDay: number
-  ): number => {
-    const currentDateAndTime = new Date();
-
-    const daysLate = differenceInDays(currentDateAndTime, dueDate);
-
-    let lateFee = 0;
-    if (isAfter(currentDateAndTime, dueDate)) lateFee = lateFee + initialFee;
-
-    // add the followingDateFee if late for more than 1 day
-    if (daysLate >= 1) {
-      for (let i = daysLate; i >= 1; i--) {
-        lateFee = lateFee + feePerDay;
-      }
-    }
-
-    return lateFee;
   };
 
   return (
