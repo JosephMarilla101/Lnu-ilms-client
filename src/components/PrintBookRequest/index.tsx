@@ -10,13 +10,27 @@ import {
 } from '@react-pdf/renderer';
 import { FileDown } from 'lucide-react';
 import { differenceInDays, format, isAfter, parseISO } from 'date-fns';
-import { StudentWithBorrowedBook } from '@/hooks/useUser';
 import { useGetBookLateFee } from '@/hooks/useBook';
+import {
+  type RequestStatusType,
+  type RequestedBook,
+} from '@/hooks/useBookRequest';
+
+type RangeType = {
+  startDate?: Date;
+  endDate?: Date;
+};
+
+type StatusType = RequestStatusType | 'CANCELLED';
 
 export default function PrintBookRequest({
   data,
+  range,
+  status,
 }: {
-  data?: StudentWithBorrowedBook;
+  data?: RequestedBook[];
+  range?: RangeType;
+  status: StatusType;
 }) {
   const getBookLateFee = useGetBookLateFee();
 
@@ -25,8 +39,15 @@ export default function PrintBookRequest({
       <FileDown size={20} className='mr-1 text-primary' />
       <PDFDownloadLink
         className='text-primary'
-        document={<MyDocument data={data} getBookLateFee={getBookLateFee} />}
-        fileName={data?.profile?.fullname ?? 'document.pdf'}
+        document={
+          <MyDocument
+            data={data}
+            getBookLateFee={getBookLateFee}
+            status={status}
+            range={range}
+          />
+        }
+        fileName={'test' ?? 'document.pdf'}
       >
         {({ loading }) =>
           loading && getBookLateFee.isLoading
@@ -88,9 +109,12 @@ const styles = StyleSheet.create({
 const MyDocument = ({
   data,
   getBookLateFee,
+  status,
 }: {
-  data?: StudentWithBorrowedBook;
+  data?: RequestedBook[];
   getBookLateFee: any;
+  status: StatusType;
+  range?: RangeType;
 }) => {
   const renderDate = (param: Date) => {
     const date = parseISO(param.toString());
@@ -131,37 +155,12 @@ const MyDocument = ({
     return lateFee;
   };
 
-  const renderFine = ({
-    dueDate2,
-    isReturn,
-    lateFee,
-  }: {
-    dueDate2: string;
-    isReturn: boolean;
-    lateFee: number;
-  }) => {
-    if (getBookLateFee.isLoading || !getBookLateFee.data)
-      return <div>Please wait...</div>;
-
-    // calculate the late fee if the book is unreturn
-    const dueDate = dueDate2;
-    if (!isReturn) {
-      const fee = calculateLateFee(
-        parseISO(dueDate),
-        getBookLateFee.data?.initialFee,
-        getBookLateFee.data?.followingDateFee
-      );
-      return `${fee.toFixed(2)}`;
-    }
-
-    return `${lateFee.toFixed(2)}`;
-  };
   return (
     <Document>
       <Page size='A4' wrap style={styles.page}>
         {/* Header fixed on all pages */}
         <View fixed style={styles.header}>
-          <Text style={{ fontWeight: 'bold', color: 'blue' }}>
+          {/* <Text style={{ fontWeight: 'bold', color: 'blue' }}>
             {data?.profile?.fullname}
           </Text>
 
@@ -193,7 +192,7 @@ const MyDocument = ({
             }}
           >
             {`#${data?.profile?.id} BOOK ISSUED HISTORY`}
-          </Text>
+          </Text> */}
         </View>
 
         <View
@@ -217,19 +216,33 @@ const MyDocument = ({
           </View>
 
           <View style={[styles.section, styles.thead]}>
-            <Text>Issued Date</Text>
+            <Text>Requestor ID</Text>
           </View>
 
           <View style={[styles.section, styles.thead]}>
-            <Text>Returned Date</Text>
+            <Text>Request Date</Text>
+          </View>
+
+          <View style={[styles.section, styles.thead]}>
+            <Text>
+              {status === 'CANCELLED'
+                ? 'Cancelled Date'
+                : status === 'DISAPPROVED'
+                ? 'Disapproved Date'
+                : status === 'FORPICKUP'
+                ? 'Approved Date'
+                : status === 'RELEASED'
+                ? 'Released Date'
+                : 'Updation Date'}
+            </Text>
           </View>
 
           <View style={[styles.fine, styles.thead]}>
-            <Text>Fine (if any)</Text>
+            <Text>Status</Text>
           </View>
         </View>
 
-        {data?.borrowedBooks?.map((data, i) => (
+        {data?.map((data, i) => (
           <View
             style={{
               flexDirection: 'row',
@@ -244,28 +257,40 @@ const MyDocument = ({
             </View>
 
             <View style={[styles.isbn, styles.tbody]}>
-              <Text>{data?.book?.isbn}</Text>
+              <Text>{data?.isbn}</Text>
             </View>
 
             <View style={[styles.section, styles.tbody]}>
-              <Text>{data?.book?.name}</Text>
+              <Text>{data?.bookName}</Text>
             </View>
 
             <View style={[styles.section, styles.tbody]}>
-              <Text>{renderDate(data.createdAt)}</Text>
+              <Text>{data?.studentId}</Text>
             </View>
 
             <View style={[styles.section, styles.tbody]}>
-              <Text>{renderReturnDate(data.returnedDate)}</Text>
+              <Text>{renderDate(data.requestDate)}</Text>
+            </View>
+
+            <View style={[styles.section, styles.tbody]}>
+              <Text>
+                {status === 'PENDING'
+                  ? 'N/A'
+                  : renderReturnDate(data.updatedAt)}
+              </Text>
             </View>
 
             <View style={[styles.fine, styles.tbody]}>
               <Text>
-                {renderFine({
-                  dueDate2: data.dueDate,
-                  isReturn: data.isReturn,
-                  lateFee: data.lateFee,
-                })}
+                {status === 'CANCELLED'
+                  ? 'CANCELLED'
+                  : status === 'DISAPPROVED'
+                  ? 'DISAPPROVED'
+                  : status === 'FORPICKUP'
+                  ? 'FOR PICKUP'
+                  : status === 'RELEASED'
+                  ? 'RELEASED'
+                  : 'PENDING'}
               </Text>
             </View>
           </View>
