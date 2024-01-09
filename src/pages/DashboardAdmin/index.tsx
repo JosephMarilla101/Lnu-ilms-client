@@ -92,7 +92,7 @@ const DashboardAdmin = () => {
             color='text-red-700'
             title='Unreturned Books'
             count={myTotalUnreturnedBooks.data}
-            url='/book/issued'
+            url='/issued-books/unreturn'
           />
         ) : (
           <Card
@@ -100,7 +100,7 @@ const DashboardAdmin = () => {
             color='text-red-700'
             title='Unreturned Books'
             count={totalUnreturnedBooks.data}
-            url='/book/issued'
+            url='/issued-books/unreturn'
           />
         )}
 
@@ -112,7 +112,7 @@ const DashboardAdmin = () => {
             color='text-blue-600'
             title='Pending Requests'
             count={myTotalRequestedBooks.data}
-            url='/book/requests'
+            url='/book-request/pending'
           />
         ) : (
           <Card
@@ -120,7 +120,7 @@ const DashboardAdmin = () => {
             color='text-blue-600'
             title='Pending Requests'
             count={totalRequestedBooks.data}
-            url='/book/requests'
+            url='/book-request/pending'
           />
         )}
         {(auth.data?.role === 'ADMIN' || auth.data?.role === 'LIBRARIAN') && (
