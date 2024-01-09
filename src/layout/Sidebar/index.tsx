@@ -251,7 +251,7 @@ const SidebarLayout = () => {
               icon={<BookOpenCheckIcon />}
               component={<NavLink to='/borrowed-history' />}
             >
-              Borrowed Books
+              Borrowing History
             </MenuItem>
           </>
         )}

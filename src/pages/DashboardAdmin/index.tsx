@@ -149,7 +149,7 @@ const DashboardAdmin = () => {
           <Card
             icon={CalendarX}
             color='text-secondary'
-            title='Borrowed Books'
+            title='Borrowing History'
             count={myTotalBorrowedBooks.data}
             url='/borrowed-history'
           />

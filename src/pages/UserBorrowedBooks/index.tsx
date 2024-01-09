@@ -29,7 +29,7 @@ export default function StudentHistory() {
       </span>
 
       <h2 className='hidden md:block -mb-14 text-primary text-lg'>
-        #{borrowedBooks.data?.profile?.id} BOOK ISSUED HISTORY
+        #{borrowedBooks.data?.profile?.id} BORROWED BOOK HISTORY
       </h2>
 
       <DataTable
