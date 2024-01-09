@@ -25,7 +25,7 @@ const Home = () => {
 
         <div className='text-center'>
           <h1 className='font-semibold text-5xl'>
-            Welcome to <span className='text-secondary'>LNU-ILMS</span>
+            Welcome to <span className='text-secondary'>LNU Web and Mobile Based-ILMS</span>
           </h1>
           <p className='text-lg mt-2'>
             Manage books, students, and transactions with ease!
