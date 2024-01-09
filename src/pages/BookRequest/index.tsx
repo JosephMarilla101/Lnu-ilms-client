@@ -77,11 +77,16 @@ const BookRequest = ({ status }: BookRequestProps) => {
 
   return (
     <div className='container mx-auto py-10 relative'>
-      <PrintBookRequest
-        data={requestedBooks.data}
-        status={status}
-        range={range}
-      />
+      {requestedBooks.data?.length && requestedBooks.data.length > 0 ? (
+        <PrintBookRequest
+          data={requestedBooks.data}
+          status={status}
+          range={range}
+        />
+      ) : (
+        ''
+      )}
+
       <div className='hidden sm:flex absolute left-[250px] top-[80px] text-gray-500'>
         <Select name='status' value={selected} onValueChange={selectChange}>
           <SelectTrigger className='w-full'>
