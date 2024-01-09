@@ -55,6 +55,7 @@ export type IssuedBooks = {
   returnedDate: Date;
   isReturn: boolean;
   lateFee: number;
+  updatedAt: Date;
 };
 
 type ErrorResponse = {

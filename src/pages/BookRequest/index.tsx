@@ -17,6 +17,7 @@ import useBookRequest from '@/context/useBookRequest';
 import ApproveDialog from '@/components/RequestApproveDialog';
 import RangeDatePicker from '@/components/RangeDatePicker';
 import { minDate } from '@/lib/data';
+import PrintBookRequest from '@/components/PrintBookRequest';
 
 const searchSelection = [
   {
@@ -54,7 +55,7 @@ const BookRequest = ({ status }: BookRequestProps) => {
   });
 
   const { action } = useBookRequest();
-  const columns = ColumnsFunction();
+  const columns = ColumnsFunction(status);
 
   const selectChange = (value: string) => {
     setSelected(value);
@@ -76,7 +77,12 @@ const BookRequest = ({ status }: BookRequestProps) => {
 
   return (
     <div className='container mx-auto py-10 relative'>
-      <div className='hidden sm:flex absolute left-[250px] top-[55px] text-gray-500'>
+      <PrintBookRequest
+        data={requestedBooks.data}
+        status={status}
+        range={range}
+      />
+      <div className='hidden sm:flex absolute left-[250px] top-[80px] text-gray-500'>
         <Select name='status' value={selected} onValueChange={selectChange}>
           <SelectTrigger className='w-full'>
             <SelectValue placeholder='Author status' />
