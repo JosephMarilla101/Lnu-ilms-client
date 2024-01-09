@@ -29,7 +29,7 @@ export default function PrintBookRequest({
   status,
 }: {
   data?: RequestedBook[];
-  range?: RangeType;
+  range: RangeType;
   status: StatusType;
 }) {
   const getBookLateFee = useGetBookLateFee();
@@ -47,7 +47,7 @@ export default function PrintBookRequest({
             range={range}
           />
         }
-        fileName={'test' ?? 'document.pdf'}
+        fileName={`${status.toString()}` ?? 'document.pdf'}
       >
         {({ loading }) =>
           loading && getBookLateFee.isLoading
@@ -109,12 +109,29 @@ const styles = StyleSheet.create({
 const MyDocument = ({
   data,
   status,
+  range,
 }: {
   data?: RequestedBook[];
   getBookLateFee: any;
   status: StatusType;
   range?: RangeType;
 }) => {
+  const getHeaderText = (): string => {
+    if (status === 'PENDING') return 'Pending Book Request';
+    if (status === 'FORPICKUP') return 'For Pick Up Book Request';
+    if (status === 'CANCELLED') return 'Cancelled Book Request';
+    if (status === 'DISAPPROVED') return 'Disapproved Book Request';
+    else return 'Released Books Request';
+  };
+
+  const renderRange = (param: Date) => {
+    const date = new Date(param);
+    const dateFormat = 'MMM dd yyyy hh:mm a';
+    const formattedDate = format(date, dateFormat);
+
+    return formattedDate;
+  };
+
   const renderDate = (param: Date) => {
     const date = parseISO(param.toString());
     const dateFormat = 'MMM dd yyyy hh:mm a';
@@ -137,29 +154,19 @@ const MyDocument = ({
       <Page size='A4' wrap style={styles.page}>
         {/* Header fixed on all pages */}
         <View fixed style={styles.header}>
-          {/* <Text style={{ fontWeight: 'bold', color: 'blue' }}>
-            {data?.profile?.fullname}
+          <Text style={{ fontWeight: 'bold', color: 'blue', marginBottom: 10 }}>
+            {getHeaderText()}
           </Text>
 
-          {data?.role === 'STUDENT' ? (
-            <Text
-              style={{ fontSize: 12, color: '#D6A73D' }}
-            >{`#${data?.profile?.id} ${data?.profile?.course}(${data?.profile?.college})`}</Text>
-          ) : data?.role === 'TEACHER' ? (
-            <Text
-              style={{ fontSize: 12, color: '#D6A73D' }}
-            >{`#${data?.profile?.id} (${data?.profile?.department})`}</Text>
-          ) : data?.role === 'GRADUATE' ? (
-            <Text
-              style={{ fontSize: 12, color: '#D6A73D' }}
-            >{`#${data?.profile?.id} (GRADUATE)`}</Text>
+          {range?.startDate && range?.endDate ? (
+            <Text style={{ fontSize: 12, color: '#D6A73D' }}>{`${renderRange(
+              range.startDate
+            )} - ${renderRange(range.endDate)}`}</Text>
           ) : (
-            <Text
-              style={{ fontSize: 12, color: '#D6A73D' }}
-            >{`#${data?.profile?.id}`}</Text>
+            ''
           )}
 
-          <Text
+          {/* <Text
             style={{
               fontWeight: 'bold',
               color: 'blue',
