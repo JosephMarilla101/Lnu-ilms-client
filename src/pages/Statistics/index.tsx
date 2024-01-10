@@ -61,7 +61,7 @@ export default function Statistics() {
   const AreaChartHeader = (): React.ReactNode => {
     return (
       <h2 className='relative mb-2'>
-        Book Request Count{' '}
+        Book Request
         <div className='absolute -top-3 right-2'>
           <Select
             value={chartFilters.requestYear}
@@ -131,20 +131,35 @@ export default function Statistics() {
 
   return (
     <div className='mx-2 md:mx-4 py-6 '>
-      <div className='w-full flex flex-col md:flex-row'>
+      <div className='w-full flex flex-col md:flex-row justify-center items-center'>
         <MyAreaChart
-          classname='h-60 w-[95%] md:w-[60%]'
+          classname='h-64 w-[95%] md:w-[60%]'
           data={borrowedBookByMonth.data}
           header={<AreaChartHeader />}
           yAxisText='Total Count'
           xAxisText={`Book Request for the year of ${chartFilters.requestYear}`}
         />
+
+        <MyPieChart
+          classname='h-60 w-[95%] md:w-[40%] mt-[70px] md:mt-0'
+          data={borrowedBookByMonth.data}
+          legenClass='mt-4'
+        />
+      </div>
+
+      <div className='w-full flex flex-col md:flex-row mt-28'>
         <MyBarChart
-          classname='h-60 w-[95%] md:w-[40%] mt-10 md:mt-0'
+          classname='h-60 w-[95%] md:w-[60%] mt-10 md:mt-0'
           data={topCategories.data}
           header={<BarChartHeader />}
           yAxisText={`Total Count`}
           xAxisText={`Book Category`}
+        />
+
+        <MyPieChart
+          classname='h-60 w-[95%] md:w-[40%] mt-[70px] md:mt-0'
+          data={topCategories.data}
+          legenClass='mt-4'
         />
       </div>
 
@@ -161,6 +176,15 @@ export default function Statistics() {
             xAxisText={`User Type`}
           />
         </div>
+
+        <MyPieChart
+          classname='h-80 w-[95%] md:w-[40%] mt-[130px] md:mt-16'
+          data={userBorrowCount.data}
+          legenClass='mt-4'
+        />
+      </div>
+
+      <div className='flex justify-center items-center'>
         <MyPieChart
           classname='h-80 w-[95%] md:w-[40%] mt-[130px] md:mt-16'
           data={userCountData.data}
