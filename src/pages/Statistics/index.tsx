@@ -136,7 +136,7 @@ export default function Statistics() {
           classname='h-64 w-[95%] md:w-[60%]'
           data={borrowedBookByMonth.data}
           header={<AreaChartHeader />}
-          yAxisText='Total Count'
+          yAxisText='Total Request'
           xAxisText={`Book Request for the year of ${chartFilters.requestYear}`}
         />
 
@@ -147,7 +147,7 @@ export default function Statistics() {
         />
       </div>
 
-      <div className='w-full flex flex-col md:flex-row mt-28'>
+      <div className='w-full flex flex-col md:flex-row mt-32'>
         <MyBarChart
           classname='h-60 w-[95%] md:w-[60%] mt-10 md:mt-0'
           data={topCategories.data}
