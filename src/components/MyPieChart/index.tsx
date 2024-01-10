@@ -10,18 +10,33 @@ import {
 import { cn } from '@/lib/utils';
 import { ChartDataType } from '@/hooks/useDashboard';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = [
+  '#0088FE',
+  '#00C49F',
+  '#FFBB28',
+  '#FF8042',
+  '#4CAF50',
+  '#FF5722',
+  '#9C27B0',
+  '#795548',
+  '#607D8B',
+  '#2196F3',
+  '#FF9800',
+  '#E91E63',
+];
 
 type MyBarChartProps = {
   data?: ChartDataType;
   header?: ReactNode;
   classname?: string;
+  legenClass?: string;
 };
 
 export default function MyBarChart({
   data,
   header,
   classname,
+  legenClass,
 }: MyBarChartProps) {
   const values = data?.map((item) => item.count);
 
@@ -89,7 +104,12 @@ export default function MyBarChart({
               ></Pie>
               <Legend
                 content={() => (
-                  <div className='w-[320px] grid grid-cols-12 gap-4 pl-8 mx-auto text-sm'>
+                  <div
+                    className={cn(
+                      'flex flex-wrap gap-1 px-6 text-sm absolute',
+                      legenClass
+                    )}
+                  >
                     {data?.map((entry, index) => (
                       <div
                         className='col-span-6 grid grid-cols-12 items-center'
@@ -130,7 +150,12 @@ export default function MyBarChart({
               </Pie>
               <Legend
                 content={({ payload }) => (
-                  <div className='w-[320px] grid grid-cols-12 gap-4 pl-8 mx-auto text-sm'>
+                  <div
+                    className={cn(
+                      'flex flex-wrap gap-1 px-6 text-sm absolute',
+                      legenClass
+                    )}
+                  >
                     {payload?.map((entry, index) => (
                       <div
                         className='col-span-6 grid grid-cols-12 items-center'
