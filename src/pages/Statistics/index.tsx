@@ -89,7 +89,7 @@ export default function Statistics() {
 
   const BarChartHeader = (): React.ReactNode => {
     return (
-      <h2 className='relative mb-2 '>
+      <h2 className='relative mb-2'>
         Top Book Category
         <div className='absolute -top-2 right-2'>
           <Select
