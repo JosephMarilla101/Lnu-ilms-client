@@ -118,7 +118,7 @@ const DashboardAdmin = () => {
           <Card
             icon={BookUp}
             color='text-blue-600'
-            title='Pending Requests'
+            title='Book Requests'
             count={totalRequestedBooks.data}
             url='/book-request/pending'
           />
