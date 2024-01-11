@@ -136,7 +136,7 @@ const DashboardAdmin = () => {
             <Card
               icon={ScrollText}
               color='text-emerald-600'
-              title='Categories Listed'
+              title='Book Categories'
               count={totalCatoegories.data}
               url='/categories'
             />

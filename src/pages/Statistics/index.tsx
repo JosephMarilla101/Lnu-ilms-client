@@ -90,7 +90,7 @@ export default function Statistics() {
   const BarChartHeader = (): React.ReactNode => {
     return (
       <h2 className='relative mb-2'>
-        Top Book Category
+        Book Categories
         <div className='absolute -top-2 right-2'>
           <Select
             value={chartFilters.categoryYear}
@@ -119,7 +119,7 @@ export default function Statistics() {
   const UserBorrowCountHeader = (): React.ReactNode => {
     return (
       <h2 className='relative mb-2 pr-16'>
-        User Borrow Count
+        Users
         <div className='absolute -top-2 right-[260px]'></div>
       </h2>
     );
@@ -152,8 +152,8 @@ export default function Statistics() {
           classname='h-60 w-[95%] md:w-[60%] mt-10 md:mt-0'
           data={topCategories.data}
           header={<BarChartHeader />}
-          yAxisText={`Total Count`}
-          xAxisText={`Book Category`}
+          yAxisText={`Borrow count by Category`}
+          xAxisText={`Categories`}
         />
 
         <MyPieChart
@@ -172,7 +172,7 @@ export default function Statistics() {
             classname='h-full w-full mt-24'
             data={userBorrowCount.data}
             header={<UserBorrowCountHeader />}
-            yAxisText={`Total Count`}
+            yAxisText={`Borrow Count by User Type`}
             xAxisText={`User Type`}
           />
         </div>
