@@ -60,7 +60,7 @@ export default function Statistics() {
 
   const AreaChartHeader = (): React.ReactNode => {
     return (
-      <h2 className='relative mb-2'>
+      <h2 className='relative mb-2 left-2'>
         Book Request
         <div className='absolute -top-3 right-2'>
           <Select
@@ -90,7 +90,7 @@ export default function Statistics() {
   const BarChartHeader = (): React.ReactNode => {
     return (
       <h2 className='relative mb-2'>
-        Book Categories
+        Book Borrowed by Category
         <div className='absolute -top-2 right-2'>
           <Select
             value={chartFilters.categoryYear}
@@ -119,14 +119,14 @@ export default function Statistics() {
   const UserBorrowCountHeader = (): React.ReactNode => {
     return (
       <h2 className='relative mb-2 pr-16'>
-        Users
-        <div className='absolute -top-2 right-[260px]'></div>
+        Users Borrowed Books
+        <div className='absolute -top-3 right-[260px]'></div>
       </h2>
     );
   };
 
   const PieChartHeader = (): React.ReactNode => {
-    return <h2 className='relative mb-2'>Total User Count</h2>;
+    return <h2 className='relative mb-2 top-10'>Total User Count</h2>;
   };
 
   return (
@@ -136,14 +136,15 @@ export default function Statistics() {
           classname='h-64 w-[95%] md:w-[60%]'
           data={borrowedBookByMonth.data}
           header={<AreaChartHeader />}
-          yAxisText='Request count by Month'
+          yAxisText='Request count'
           xAxisText={`Book Request for the year of ${chartFilters.requestYear}`}
         />
-        
+  
         <MyPieChart
           classname='h-60 w-[95%] md:w-[40%] mt-[70px] md:mt-0'
           data={borrowedBookByMonth.data}
           legenClass='mt-4'
+          header={"Book Request"}
         />
       </div>
 
@@ -152,14 +153,15 @@ export default function Statistics() {
           classname='h-60 w-[95%] md:w-[60%] mt-10 md:mt-0'
           data={topCategories.data}
           header={<BarChartHeader />}
-          yAxisText={`Borrow count by Category`}
-          xAxisText={`Categories`}
+          yAxisText={`Borrow count`}
+          xAxisText={`Book Categories`}
         />
 
         <MyPieChart
           classname='h-60 w-[95%] md:w-[40%] mt-[70px] md:mt-0'
           data={topCategories.data}
           legenClass='mt-4'
+          header={"Book Borrowed by Category"}
         />
       </div>
 
@@ -172,15 +174,16 @@ export default function Statistics() {
             classname='h-full w-full mt-24'
             data={userBorrowCount.data}
             header={<UserBorrowCountHeader />}
-            yAxisText={`Borrow Count by User Type`}
+            yAxisText={`Borrow Count`}
             xAxisText={`User Type`}
           />
         </div>
 
         <MyPieChart
-          classname='h-80 w-[95%] md:w-[40%] mt-[130px] md:mt-16'
+          classname='h-60 w-[95%] md:w-[40%] mt-[130px] md:mt-24'
           data={userBorrowCount.data}
           legenClass='mt-4'
+          header={"Users Borrowed Books"}
         />
       </div>
 
