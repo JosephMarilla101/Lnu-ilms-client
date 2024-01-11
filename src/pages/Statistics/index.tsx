@@ -136,10 +136,10 @@ export default function Statistics() {
           classname='h-64 w-[95%] md:w-[60%]'
           data={borrowedBookByMonth.data}
           header={<AreaChartHeader />}
-          yAxisText='Total Request'
+          yAxisText='Request count by Month'
           xAxisText={`Book Request for the year of ${chartFilters.requestYear}`}
         />
-
+        
         <MyPieChart
           classname='h-60 w-[95%] md:w-[40%] mt-[70px] md:mt-0'
           data={borrowedBookByMonth.data}
