@@ -92,7 +92,7 @@ const DashboardAdmin = () => {
             color='text-red-700'
             title='Unreturned Books'
             count={myTotalUnreturnedBooks.data}
-            url='/issued-books/unreturn'
+            url='/books'
           />
         ) : (
           <Card
@@ -112,7 +112,7 @@ const DashboardAdmin = () => {
             color='text-blue-600'
             title='Pending Requests'
             count={myTotalRequestedBooks.data}
-            url='/book-request/pending'
+            url='/books'
           />
         ) : (
           <Card
